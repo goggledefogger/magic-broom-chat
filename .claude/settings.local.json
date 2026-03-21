@@ -5,7 +5,11 @@
       "Bash(npx bmad-method:*)",
       "Bash(git branch:*)",
       "Bash(gh auth:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(gh repo:*)",
+      "Bash(git push:*)",
+      "WebFetch(domain:docs.bmad-method.org)"
     ]
   }
 }

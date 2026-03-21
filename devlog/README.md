@@ -19,3 +19,4 @@ Educational course on AI-assisted software development. Each version builds the 
 
 - [2026-03-21 — Project Kickoff](./001-project-kickoff.md)
 - [2026-03-21 — BMAD Method v6 Installation](./002-bmad-install.md)
+- [2026-03-21 — BMAD Brainstorming Session](./003-bmad-brainstorming.md)
