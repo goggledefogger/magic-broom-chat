@@ -1,0 +1,96 @@
+<h2>Architecture Approaches</h2>
+<p class="subtitle">Three ways to build Magic Broom Chat — click to select your preference</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>React + Supabase (Recommended)</h3>
+      <p><strong>Frontend:</strong> React (Vite) + TailwindCSS</p>
+      <p><strong>Backend:</strong> Supabase (Postgres + Auth + Realtime)</p>
+      <p><strong>Real-time:</strong> Supabase Realtime (WebSocket, built-in)</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Least backend code — auth, database, and real-time all provided</li>
+            <li>Free tier covers a small group easily</li>
+            <li>Postgres row-level security for permissions</li>
+            <li>Full-text search built into Postgres</li>
+            <li>Fast to MVP — focus on UI, not infrastructure</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Vendor dependency on Supabase</li>
+            <li>Less control over backend logic</li>
+            <li>Real-time has some latency vs raw WebSockets</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>React + Express + Socket.io + SQLite</h3>
+      <p><strong>Frontend:</strong> React (Vite) + TailwindCSS</p>
+      <p><strong>Backend:</strong> Express.js REST API</p>
+      <p><strong>Real-time:</strong> Socket.io (WebSocket)</p>
+      <p><strong>Database:</strong> SQLite (via better-sqlite3)</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Full control over everything</li>
+            <li>No external dependencies — runs entirely local</li>
+            <li>SQLite is zero-config, file-based</li>
+            <li>Socket.io gives instant real-time</li>
+            <li>Most educational — see all the layers</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>More code to write (auth, API, WebSocket handling)</li>
+            <li>SQLite limits concurrency (fine for small group)</li>
+            <li>Must build auth from scratch or add passport.js</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Next.js + Prisma + Postgres + Pusher</h3>
+      <p><strong>Frontend + Backend:</strong> Next.js (App Router, Server Actions)</p>
+      <p><strong>ORM:</strong> Prisma</p>
+      <p><strong>Database:</strong> Postgres (local Docker)</p>
+      <p><strong>Real-time:</strong> Pusher or Ably (hosted WebSocket service)</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Modern full-stack in one framework</li>
+            <li>Prisma gives type-safe database access</li>
+            <li>Server Actions reduce API boilerplate</li>
+            <li>Good deployment story (Vercel)</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Requires Docker for local Postgres</li>
+            <li>Pusher/Ably adds another vendor dependency</li>
+            <li>Next.js App Router has a learning curve</li>
+            <li>Most complex setup of the three</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

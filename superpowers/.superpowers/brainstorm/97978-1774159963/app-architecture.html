@@ -1,0 +1,61 @@
+<h2>Application Architecture</h2>
+<p class="subtitle">How the pieces fit together</p>
+
+<div class="mockup">
+  <div class="mockup-header">System Architecture</div>
+  <div class="mockup-body" style="font-family: monospace; font-size: 14px; line-height: 1.8; padding: 24px;">
+    <pre style="margin: 0; white-space: pre;">
+┌─────────────────────────────────────────────┐
+│              React SPA (Vite)               │
+│                                             │
+│  ┌──────────┐ ┌──────────┐ ┌─────────────┐ │
+│  │ Auth     │ │ Channel  │ │ Message     │ │
+│  │ Pages    │ │ Sidebar  │ │ View        │ │
+│  │          │ │          │ │             │ │
+│  │ Login    │ │ List     │ │ History     │ │
+│  │ Signup   │ │ Create   │ │ Compose     │ │
+│  │          │ │ Join     │ │ Search      │ │
+│  └──────────┘ └──────────┘ └─────────────┘ │
+│                                             │
+│  ┌──────────────────────────────────────┐   │
+│  │ Supabase Client (JS SDK)            │   │
+│  │  • Auth sessions                    │   │
+│  │  • Database queries                 │   │
+│  │  • Realtime subscriptions           │   │
+│  └──────────────────────────────────────┘   │
+└──────────────────┬──────────────────────────┘
+                   │ HTTPS + WSS
+                   ▼
+┌─────────────────────────────────────────────┐
+│            Supabase (local Docker)          │
+│                                             │
+│  ┌──────────┐ ┌──────────┐ ┌─────────────┐ │
+│  │ Auth     │ │ Postgres │ │ Realtime    │ │
+│  │          │ │          │ │             │ │
+│  │ JWT      │ │ Tables   │ │ Broadcast   │ │
+│  │ Sessions │ │ RLS      │ │ Presence    │ │
+│  │ OAuth    │ │ Search   │ │ DB Changes  │ │
+│  └──────────┘ └──────────┘ └─────────────┘ │
+│                                             │
+│  ┌──────────────────────────────────────┐   │
+│  │ Row Level Security (RLS)            │   │
+│  │  • Users read channels they joined  │   │
+│  │  • Users post to joined channels    │   │
+│  │  • Users edit own profile only      │   │
+│  └──────────────────────────────────────┘   │
+└─────────────────────────────────────────────┘
+    </pre>
+  </div>
+</div>
+
+<div class="section" style="margin-top: 24px;">
+  <h3>Key Points</h3>
+  <ul>
+    <li><strong>No custom backend server</strong> — React talks directly to Supabase</li>
+    <li><strong>Auth</strong> — Supabase handles JWT sessions, signup/login flows</li>
+    <li><strong>Real-time</strong> — Subscribe to new messages via Supabase Realtime (Postgres changes)</li>
+    <li><strong>Presence</strong> — Supabase Presence API tracks online/offline/idle</li>
+    <li><strong>Security</strong> — Row Level Security policies enforce permissions at the database level</li>
+    <li><strong>Search</strong> — Postgres full-text search via tsvector, queried from the client</li>
+  </ul>
+</div>

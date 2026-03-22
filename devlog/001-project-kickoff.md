@@ -2,31 +2,25 @@
 
 **Date:** 2026-03-21
 
-## Decision
+## What We're Doing
 
-Set up a comparison experiment: build the same Zulip-like chat web app using four different AI-assisted development approaches, each in its own subfolder.
+Building the same Zulip-like chat web app four different ways to compare AI-assisted development frameworks. Each one gets its own subfolder, its own tech stack choices, its own process. This devlog tracks how each one actually goes.
 
-## Frameworks Selected
+## The Four Approaches
 
-1. **BMAD Method** — 12+ specialized agent personas, agile lifecycle, scale-adaptive planning
-2. **Compound Engineering** — Cyclical brainstorm→plan→work→review→compound loop, heavy upfront planning
-3. **Superpowers** — Mandatory TDD (red-green-refactor), 7 sequential phases, subagent-driven tasks
-4. **Vanilla Claude Code** — No framework, baseline for comparison
+1. **BMAD Method** — 12+ specialized agent personas, agile lifecycle, lots of upfront planning artifacts
+2. **Compound Engineering** — cyclical brainstorm→plan→work→review loop, heavy on planning
+3. **Superpowers** — mandatory TDD, 7 sequential phases, delegates tasks to subagents
+4. **Vanilla Claude Code** — no framework, baseline for comparison
 
-## Key Decisions
+## Decisions
 
-- Each framework chooses its own tech stack — stack selection is part of what we're comparing
-- App concept: Zulip-like chat (channels/topics, threaded messages, user presence, auth)
+- Each framework picks its own tech stack — that's part of what we're comparing
+- App concept: Zulip-inspired chat (channels, messages, auth, presence)
 - This devlog tracks experiences, observations, and results across all four
-
-## Open Questions
-
-- Which framework to start with?
-- Run sequentially or in parallel?
-- What's the minimum viable feature set for a fair comparison?
 
 ## Observations
 
-- All three frameworks (BMAD, Compound, Superpowers) are Claude Code plugins, not UI frameworks
-- They differ most in where they front-load effort: BMAD → architecture/personas, Compound → planning/review, Superpowers → testing/verification
+- All three frameworks are Claude Code plugins (skills), not UI frameworks — they help you think about what to build, not write the code
+- They front-load effort differently: BMAD on architecture and personas, Compound on planning and review cycles, Superpowers on testing and verification
 - Vanilla serves as the control group
