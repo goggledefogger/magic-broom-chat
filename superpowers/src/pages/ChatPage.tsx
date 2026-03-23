@@ -35,6 +35,22 @@ export function ChatPage() {
   const { getStatus } = usePresence(user?.id, profile?.username)
   const { results: searchResults, loading: searchLoading, error: searchError, search, clearResults } = useSearch()
 
+  // Connection status
+  const [connectionStatus, setConnectionStatus] = useState<'connected' | 'reconnecting'>('connected')
+
+  useEffect(() => {
+    const heartbeat = supabase.channel('heartbeat')
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          setConnectionStatus('connected')
+        } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+          setConnectionStatus('reconnecting')
+        }
+      })
+
+    return () => { supabase.removeChannel(heartbeat) }
+  }, [])
+
   // Channel members for the active channel
   const [channelMembers, setChannelMembers] = useState<Profile[]>([])
 
@@ -153,6 +169,11 @@ export function ChatPage() {
         main={
           activeChannel ? (
             <div className="flex flex-col h-full">
+              {connectionStatus === 'reconnecting' && (
+                <div className="bg-yellow-600/80 text-white text-sm text-center py-1">
+                  Reconnecting...
+                </div>
+              )}
               <ChannelHeader
                 channel={activeChannel}
                 memberCount={channelMembers.length}
