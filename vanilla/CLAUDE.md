@@ -4,4 +4,4 @@ This is the vanilla (no framework) version of Magic Broom Chat.
 
 ## Devlog Rule
 
-After completing any major milestone (planning, implementation, testing, etc.), **automatically** create a new numbered devlog entry in `../devlog/` and update `../devlog/README.md`. See the root `CLAUDE.md` for format details.
+After completing any major milestone (planning, implementation, testing, etc.), **automatically** create a devlog entry in `../devlog/` and update `../devlog/README.md`. Use the prefix `vanilla-NNN` (e.g., `vanilla-001-kickoff.md`). Check existing `vanilla-*` entries in `../devlog/` first to pick the next number. See the root `CLAUDE.md` for content details.

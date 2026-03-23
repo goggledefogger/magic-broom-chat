@@ -15,7 +15,7 @@ Devlog entries should include:
 - Anything surprising or noteworthy
 - What's next
 
-Use the naming pattern: `NNN-short-description.md` (e.g., `003-bmad-prd.md`)
+Use the naming pattern: `<framework>-NNN-short-description.md` (e.g., `bmad-003-prd.md`, `superpowers-002-spec.md`, `vanilla-001-kickoff.md`). Each framework uses its own prefix and numbering sequence to avoid collisions when multiple sessions write concurrently. Always check existing entries in `/devlog/` before picking a number to avoid duplicates within your prefix.
 
 ## Kickoff Prompt
 
