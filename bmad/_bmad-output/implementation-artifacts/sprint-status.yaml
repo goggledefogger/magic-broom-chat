@@ -1,0 +1,71 @@
+# generated: 2026-03-22
+# last_updated: 2026-03-22
+# project: Magic Broom Chat
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: {project-root}/_bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review
+#   - done: Story completed
+
+generated: 2026-03-22
+last_updated: 2026-03-22
+project: Magic Broom Chat
+project_key: NOKEY
+tracking_system: file-system
+story_location: "{project-root}/_bmad-output/implementation-artifacts"
+
+development_status:
+  # Epic 1: Project Foundation & User Authentication
+  epic-1: done
+  1-1-project-scaffold-and-dev-environment: done
+  1-2-sorcerers-apprentice-theme-and-app-shell: done
+  1-3-user-registration: done
+  1-4-user-login-and-logout: done
+  1-5-password-recovery: done
+  1-6-user-profile-management: done
+  epic-1-retrospective: optional
+
+  # Epic 2: Channels & Real-Time Messaging
+  epic-2: done
+  2-1-channel-data-model-and-channel-list: done
+  2-2-channel-creation-join-and-leave: done
+  2-3-real-time-messaging: done
+  2-4-message-reconnection-and-resilience: done
+  2-5-emoji-reactions-on-messages: done
+  epic-2-retrospective: optional
+
+  # Epic 3: Gallery & Resource Sharing
+  epic-3: done
+  3-1-gallery-channel-type-and-card-creation: done
+  3-2-gallery-grid-browse-view: done
+  3-3-gallery-card-detail-view: done
+  3-4-gallery-card-comments: done
+  3-5-gallery-card-reactions: done
+  epic-3-retrospective: optional
+
+  # Epic 4: Search & Awareness
+  epic-4: done
+  4-1-full-text-search: done
+  4-2-unread-indicators-and-new-activity-badges: done
+  epic-4-retrospective: optional
+
+  # Epic 5: Instructor Administration & Moderation
+  epic-5: done
+  5-1-channel-configuration-and-type-management: done
+  5-2-channel-moderation: done
+  5-3-instructor-role-management: done
+  5-4-channel-pre-population-and-archival: done
+  5-5-batch-gallery-card-creation: done
+  epic-5-retrospective: optional
