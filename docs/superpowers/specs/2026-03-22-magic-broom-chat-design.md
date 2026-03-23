@@ -87,7 +87,7 @@ Three-column layout that collapses responsively.
 6. Sign out button at bottom
 
 ### Message area
-1. Channel header (name, description, member count, member list toggle)
+1. Channel header (name, description, member count, member list toggle, "Leave" button)
 2. Scrollable message list (infinite scroll upward for history)
 3. Message input bar pinned to bottom (text input + send button, no file uploads in MVP)
 
@@ -95,6 +95,8 @@ Three-column layout that collapses responsively.
 - New messages auto-scroll to bottom only if already scrolled to bottom
 - Unread indicator ("X new messages") when scrolled up and new messages arrive
 - Presence dots on user avatars (green = online, yellow = idle, gray = offline)
+- Leave channel: "Leave" button in channel header removes membership, navigates to next joined channel (or browse view if none left)
+- Search result click: navigates to that channel and scrolls to the message with a brief highlight
 
 ## Component Structure
 
@@ -209,7 +211,7 @@ Test the logic that could break in non-obvious ways (hooks with async state + su
 1. **Authentication:** Sign up, log in, log out via Supabase Auth
 2. **Channels:** Create, join, browse, leave channels
 3. **Real-time messaging:** Send and receive messages in channels with Supabase Realtime
-4. **Presence:** Online/idle/offline status tracked via Supabase Presence
+4. **Presence:** Supabase Presence (ephemeral) is the live source of truth; `profiles.status` is updated on connect/disconnect to reflect last-known state
 5. **Search:** Full-text search across messages using Postgres full-text search
 
 ## Out of Scope (Future)
