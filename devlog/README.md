@@ -24,3 +24,4 @@ Educational course on AI-assisted software development. Each version builds the 
 - [2026-03-21 — Superpowers Brainstorming Started](./005-superpowers-brainstorming-start.md)
 - [2026-03-22 — Superpowers Brainstorming Resumed](./006-superpowers-brainstorming-resumed.md)
 - [2026-03-22 — Superpowers Design Spec Complete](./007-superpowers-spec-complete.md)
+- [2026-03-22 — Superpowers Implementation Plan Complete](./superpowers-001-implementation-plan.md)
