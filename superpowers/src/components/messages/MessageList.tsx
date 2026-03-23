@@ -10,9 +10,10 @@ interface MessageListProps {
   loading: boolean
   getStatus: (userId: string) => 'online' | 'idle' | 'offline'
   highlightedMessageId?: string | null
+  onLoadMore?: () => void
 }
 
-export function MessageList({ messages, profiles, loading, getStatus, highlightedMessageId }: MessageListProps) {
+export function MessageList({ messages, profiles, loading, getStatus, highlightedMessageId, onLoadMore }: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [isAtBottom, setIsAtBottom] = useState(true)
@@ -28,6 +29,11 @@ export function MessageList({ messages, profiles, loading, getStatus, highlighte
     if (!containerRef.current) return
     const { scrollTop, scrollHeight, clientHeight } = containerRef.current
     setIsAtBottom(scrollHeight - scrollTop - clientHeight < 50)
+
+    // Load more when scrolled near the top
+    if (scrollTop < 100 && onLoadMore) {
+      onLoadMore()
+    }
   }
 
   useEffect(() => {

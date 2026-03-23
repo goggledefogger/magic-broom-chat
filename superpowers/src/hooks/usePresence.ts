@@ -33,17 +33,19 @@ export function usePresence(userId: string | undefined, username: string | undef
         }
       })
 
+    // Best-effort profile status sync (Presence handles real-time; profiles.status is a fallback that may lag)
     supabase
       .from('profiles')
       .update({ status: 'online' })
       .eq('id', userId)
+      .then(({ error }) => {
+        if (error) console.warn('Failed to update profile status:', error.message)
+      })
 
     return () => {
-      supabase
-        .from('profiles')
-        .update({ status: 'offline' })
-        .eq('id', userId)
-
+      // Just remove the channel — offline status update is unreliable on unmount
+      // (browser close, tab close, etc.). A server-side mechanism should handle
+      // marking profiles offline for reliability.
       supabase.removeChannel(channel)
     }
   }, [userId, username])

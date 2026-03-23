@@ -89,5 +89,14 @@ export function useChannels(userId: string | undefined) {
     return { error }
   }, [userId])
 
-  return { channels, loading, error, createChannel, joinChannel, leaveChannel, refetch: fetchChannels }
+  const fetchAllChannels = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('channels')
+      .select('*')
+      .order('name')
+
+    return { channels: data ?? [], error }
+  }, [])
+
+  return { channels, loading, error, createChannel, joinChannel, leaveChannel, refetch: fetchChannels, fetchAllChannels }
 }

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { Modal } from '../ui/Modal'
 import { Button } from '../ui/Button'
 import { Spinner } from '../ui/Spinner'
-import { supabase } from '../../lib/supabase'
 import type { Channel } from '../../lib/types'
 
 interface BrowseChannelsModalProps {
@@ -10,9 +9,10 @@ interface BrowseChannelsModalProps {
   onClose: () => void
   joinedChannelIds: Set<string>
   onJoin: (channelId: string) => Promise<{ error: any }>
+  fetchAllChannels: () => Promise<{ channels: Channel[]; error: any }>
 }
 
-export function BrowseChannelsModal({ open, onClose, joinedChannelIds, onJoin }: BrowseChannelsModalProps) {
+export function BrowseChannelsModal({ open, onClose, joinedChannelIds, onJoin, fetchAllChannels }: BrowseChannelsModalProps) {
   const [allChannels, setAllChannels] = useState<Channel[]>([])
   const [loading, setLoading] = useState(true)
   const [joiningId, setJoiningId] = useState<string | null>(null)
@@ -20,19 +20,15 @@ export function BrowseChannelsModal({ open, onClose, joinedChannelIds, onJoin }:
   useEffect(() => {
     if (!open) return
 
-    async function fetch() {
+    async function load() {
       setLoading(true)
-      const { data } = await supabase
-        .from('channels')
-        .select('*')
-        .order('name')
-
-      setAllChannels(data ?? [])
+      const { channels } = await fetchAllChannels()
+      setAllChannels(channels)
       setLoading(false)
     }
 
-    fetch()
-  }, [open])
+    load()
+  }, [open, fetchAllChannels])
 
   async function handleJoin(channelId: string) {
     setJoiningId(channelId)

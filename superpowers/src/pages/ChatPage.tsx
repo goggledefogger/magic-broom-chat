@@ -4,8 +4,9 @@ import { useChannels } from '../hooks/useChannels'
 import { useMessages } from '../hooks/useMessages'
 import { usePresence } from '../hooks/usePresence'
 import { useSearch } from '../hooks/useSearch'
-import { supabase } from '../lib/supabase'
-import type { Profile } from '../lib/types'
+import { useProfiles } from '../hooks/useProfiles'
+import { useChannelMembers } from '../hooks/useChannelMembers'
+import { useConnectionStatus } from '../hooks/useConnectionStatus'
 import { AppShell } from '../components/layout/AppShell'
 import { Sidebar } from '../components/layout/Sidebar'
 import { MemberList } from '../components/layout/MemberList'
@@ -25,81 +26,14 @@ export function ChatPage() {
   const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null)
   const [memberListOpen, setMemberListOpen] = useState(false)
 
-  // Profile state
-  const [profile, setProfile] = useState<Profile | null>(null)
-  const [profiles, setProfiles] = useState<Map<string, Profile>>(new Map())
-
   // Hooks
-  const { channels, createChannel, joinChannel, leaveChannel } = useChannels(user?.id)
-  const { messages, loading: messagesLoading, sendMessage } = useMessages(activeChannelId)
+  const { channels, createChannel, joinChannel, leaveChannel, fetchAllChannels } = useChannels(user?.id)
+  const { messages, loading: messagesLoading, sendMessage, loadMore } = useMessages(activeChannelId)
+  const { profile, profiles } = useProfiles(user?.id)
   const { getStatus } = usePresence(user?.id, profile?.username)
   const { results: searchResults, loading: searchLoading, error: searchError, search, clearResults } = useSearch()
-
-  // Connection status
-  const [connectionStatus, setConnectionStatus] = useState<'connected' | 'reconnecting'>('connected')
-
-  useEffect(() => {
-    const heartbeat = supabase.channel('heartbeat')
-      .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          setConnectionStatus('connected')
-        } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
-          setConnectionStatus('reconnecting')
-        }
-      })
-
-    return () => { supabase.removeChannel(heartbeat) }
-  }, [])
-
-  // Channel members for the active channel
-  const [channelMembers, setChannelMembers] = useState<Profile[]>([])
-
-  // Fetch own profile
-  useEffect(() => {
-    if (!user?.id) return
-
-    async function fetchProfile() {
-      const { data } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user!.id)
-        .single()
-
-      if (data) setProfile(data)
-    }
-
-    fetchProfile()
-  }, [user?.id])
-
-  // Fetch all profiles (for displaying message authors)
-  useEffect(() => {
-    async function fetchProfiles() {
-      const { data } = await supabase.from('profiles').select('*')
-      if (data) {
-        setProfiles(new Map(data.map((p) => [p.id, p])))
-      }
-    }
-
-    fetchProfiles()
-  }, [])
-
-  // Fetch channel members when active channel changes
-  useEffect(() => {
-    if (!activeChannelId) return
-
-    async function fetchMembers() {
-      const { data } = await supabase
-        .from('channel_members')
-        .select('user_id, profiles(*)')
-        .eq('channel_id', activeChannelId)
-
-      if (data) {
-        setChannelMembers(data.map((row: any) => row.profiles).filter(Boolean))
-      }
-    }
-
-    fetchMembers()
-  }, [activeChannelId, channels])
+  const connectionStatus = useConnectionStatus()
+  const channelMembers = useChannelMembers(activeChannelId, channels)
 
   // Auto-select first channel
   useEffect(() => {
@@ -186,6 +120,7 @@ export function ChatPage() {
                 loading={messagesLoading}
                 getStatus={getStatus}
                 highlightedMessageId={highlightedMessageId}
+                onLoadMore={loadMore}
               />
               <MessageInput onSend={handleSendMessage} disabled={false} />
             </div>
@@ -215,6 +150,7 @@ export function ChatPage() {
         onClose={() => setShowBrowseChannels(false)}
         joinedChannelIds={new Set(channels.map((ch) => ch.id))}
         onJoin={joinChannel}
+        fetchAllChannels={fetchAllChannels}
       />
     </>
   )
