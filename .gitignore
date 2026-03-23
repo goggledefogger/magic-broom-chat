@@ -8,6 +8,11 @@
 # Dependencies
 node_modules/
 
+# Database temp files
+*.db-shm
+*.db-wal
+*.db-journal
+
 # Build output
 dist/
 

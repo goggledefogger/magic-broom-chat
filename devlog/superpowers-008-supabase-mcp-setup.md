@@ -14,6 +14,7 @@ Used the Supabase MCP server to set up the backend for the superpowers version:
 - Generated TypeScript types from the live schema via `generate_typescript_types`
 - Created `.env.local` with project URL and anon key
 - Fixed build issues: vite/vitest version conflict (separated configs), unused import, stale hand-written types
+- Merged feature branch code to main, committed and pushed
 
 ## Key decisions
 
@@ -35,4 +36,3 @@ Used the Supabase MCP server to set up the backend for the superpowers version:
 ## What's next
 
 - Manual smoke test (sign up, create channel, send messages, verify realtime)
-- Merge feature branch to main
