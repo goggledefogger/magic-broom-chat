@@ -31,3 +31,5 @@ Educational course on AI-assisted software development. Each version builds the 
 - [2026-03-22 — Speed Comparison: All Three Frameworks](./008-speed-comparison-snapshot.md)
 - [2026-03-22 — Superpowers Task 1: Project Scaffolding](./superpowers-004-task1-scaffolding.md)
 - [2026-03-22 — Superpowers Task 4: Auth Hook + Tests](./superpowers-005-task4-auth-hook.md)
+- [2026-03-22 — BMAD Missed Supabase Realtime](./bmad-001-missed-supabase-realtime.md)
+- [2026-03-22 — BMAD Architecture Decisions (Steps 1-4)](./bmad-002-architecture-decisions.md)
