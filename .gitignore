@@ -1,1 +1,18 @@
 .worktrees/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# IDE
+.idea/
+*.swp
+*.swo
+.DS_Store
