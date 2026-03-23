@@ -33,3 +33,7 @@ Educational course on AI-assisted software development. Each version builds the 
 - [2026-03-22 — Superpowers Task 4: Auth Hook + Tests](./superpowers-005-task4-auth-hook.md)
 - [2026-03-22 — BMAD Missed Supabase Realtime](./bmad-001-missed-supabase-realtime.md)
 - [2026-03-22 — BMAD Architecture Decisions (Steps 1-4)](./bmad-002-architecture-decisions.md)
+- [2026-03-22 — BMAD Architecture Pacing for Students](./bmad-003-architecture-pacing-for-students.md)
+- [2026-03-22 — BMAD Epics & Stories Complete](./bmad-004-epics-and-stories.md)
+- [2026-03-22 — Superpowers Code Review Fixes](./superpowers-006-code-review-fixes.md)
+- [2026-03-22 — Superpowers Full Implementation Complete](./superpowers-007-full-implementation-complete.md)
