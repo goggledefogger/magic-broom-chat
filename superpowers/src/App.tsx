@@ -1,5 +1,6 @@
 import { AuthProvider, useAuth } from './hooks/useAuth'
 import { LoginPage } from './pages/LoginPage'
+import { ChatPage } from './pages/ChatPage'
 
 function AppContent() {
   const { session, loading } = useAuth()
@@ -16,11 +17,7 @@ function AppContent() {
     return <LoginPage />
   }
 
-  return (
-    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
-      <h1 className="text-2xl">Welcome! Chat coming soon...</h1>
-    </div>
-  )
+  return <ChatPage />
 }
 
 export default function App() {
