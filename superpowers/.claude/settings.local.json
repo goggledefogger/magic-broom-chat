@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "mcp__plugin_context7_context7__query-docs",
+      "Bash(ls /Users/Danny/Source/magic-broom-chat/devlog/superpowers-*)",
+      "Bash(claude mcp:*)",
+      "Bash(npm create:*)",
+      "Read(//private/tmp/**)",
+      "Bash(rm -rf magic-broom-scaffold)",
+      "Bash(cp -rn /tmp/magic-broom-scaffold/* /Users/Danny/Source/magic-broom-chat/superpowers/)",
+      "Bash(cp /tmp/magic-broom-scaffold/.gitignore /Users/Danny/Source/magic-broom-chat/superpowers/)",
+      "Bash(cp /tmp/magic-broom-scaffold/.eslintrc.cjs /Users/Danny/Source/magic-broom-chat/superpowers/)",
+      "Bash(git worktree:*)",
+      "Bash(npm install:*)",
+      "Bash(timeout 15 npm run dev)",
+      "Bash(npx vitest:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(ls /Users/Danny/Source/magic-broom-chat/.worktrees/superpowers-chat/devlog/superpowers-007*)",
+      "Bash(find /Users/Danny/.claude/projects -name MEMORY.md -o -name *memory* -type f)",
+      "Bash(git:*)",
+      "mcp__supabase__list_projects",
+      "mcp__supabase__list_organizations",
+      "mcp__supabase__list_tables",
+      "mcp__supabase__get_cost",
+      "mcp__supabase__confirm_cost",
+      "mcp__supabase__create_project",
+      "mcp__supabase__pause_project",
+      "mcp__supabase__apply_migration",
+      "mcp__supabase__get_project_url",
+      "mcp__supabase__get_publishable_keys",
+      "Bash(npm run:*)",
+      "mcp__supabase__generate_typescript_types",
+      "Bash(npm ls:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
+}
