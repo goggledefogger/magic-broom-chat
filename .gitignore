@@ -16,6 +16,13 @@ node_modules/
 # Build output
 dist/
 
+# Claude Code local settings
+settings.local.json
+.playwright-mcp/
+
+# Test artifacts
+*.png
+
 # IDE
 .idea/
 *.swp
