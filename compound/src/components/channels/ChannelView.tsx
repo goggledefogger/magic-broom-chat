@@ -1,11 +1,33 @@
+import { useEffect } from 'react'
 import { useParams } from 'react-router'
 import { Hash, Lock } from 'lucide-react'
 import { useChannels } from '@/hooks/useChannels'
+import { useMessages } from '@/hooks/useMessages'
+import { MessageList } from '@/components/messages/MessageList'
+import { MessageInput } from '@/components/messages/MessageInput'
 
 export function ChannelView() {
   const { channelSlug } = useParams()
-  const { joinedChannels } = useChannels()
+  const { joinedChannels, updateLastRead } = useChannels()
   const channel = joinedChannels.find(c => c.slug === channelSlug)
+
+  const {
+    messages,
+    loading,
+    hasMore,
+    loadMore,
+    sendMessage,
+    retryMessage,
+    editMessage,
+    deleteMessage,
+  } = useMessages(channel?.id)
+
+  // Update last read when viewing channel
+  useEffect(() => {
+    if (channel?.id) {
+      updateLastRead(channel.id)
+    }
+  }, [channel?.id, messages.length, updateLastRead])
 
   if (!channel) {
     return (
@@ -30,10 +52,19 @@ export function ChannelView() {
         )}
       </header>
 
-      {/* Messages area - placeholder for Phase 5 */}
-      <div className="flex-1 flex items-center justify-center">
-        <p className="text-clay-400">Messages coming soon...</p>
-      </div>
+      {/* Messages */}
+      <MessageList
+        messages={messages}
+        loading={loading}
+        hasMore={hasMore}
+        onLoadMore={loadMore}
+        onEdit={editMessage}
+        onDelete={deleteMessage}
+        onRetry={retryMessage}
+      />
+
+      {/* Input */}
+      <MessageInput onSend={sendMessage} />
     </div>
   )
 }
