@@ -31,6 +31,21 @@ Tested the following flows:
 
 **Lesson:** When using Supabase PostgREST embedded joins and the FK target is `auth.users`, you need an additional FK to your public `profiles` table and must use FK hints to disambiguate.
 
+## Bug #2: Realtime Messages Not Appearing Cross-Browser
+
+Danny tested with two browser sessions and found that messages sent in one browser didn't appear in the other without a manual refresh.
+
+**Root cause:** The architecture specified "Broadcast + Database Triggers" for realtime. The implementation used manual `channel.send()` to broadcast after DB writes, but the sender's channel wasn't subscribed before sending — Supabase Broadcast requires subscription before you can send. The broadcasts were silently failing.
+
+**Fix:**
+1. Switched from manual Broadcast to `postgres_changes` listeners — these subscribe to actual DB change events, so any insert/update/delete on a table automatically notifies all subscribed clients.
+2. Removed manual `channel.send()` calls from `useSendMessage`, `useDeleteMessage`, and `useCreateGalleryCard`.
+3. Added `supabase_realtime` publication for `messages`, `reactions`, `gallery_cards`, and `card_comments` tables (required for `postgres_changes` to work).
+
+**Lesson:** Supabase Broadcast is peer-to-peer and requires both sides to subscribe before sending. For DB-backed realtime (where the source of truth is a table write), `postgres_changes` is simpler and more reliable — the DB itself emits the events.
+
+**BMAD reflection:** Danny asked whether BMAD could have prevented these bugs. Answer: no — these are runtime integration issues that only surface when connecting real components. The BMAD architecture doc specified the pattern correctly at a design level, but the Supabase API contract details (FK hints for PostgREST, subscription-before-send for Broadcast) are implementation-level concerns that require live testing to catch. The BMAD process got us to a testable app quickly; iteration on live bugs is the expected next phase.
+
 ## What's Next
 
 - Test gallery channel flows (create card, browse grid, detail view, comments)
