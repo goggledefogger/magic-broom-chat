@@ -41,3 +41,7 @@ Educational course on AI-assisted software development. Each version builds the 
 - [2026-03-22 — Superpowers Full Implementation Complete](./superpowers-007-full-implementation-complete.md)
 - [2026-03-22 — Superpowers Supabase MCP Setup](./superpowers-008-supabase-mcp-setup.md)
 - [2026-03-23 — Stale Knowledge Pattern: AI Using Outdated Approaches](./009-stale-knowledge-pattern.md)
+- [2026-03-23 — Compound Engineering Ideation](./compound-001-ideation.md)
+- [2026-03-23 — Compound Engineering Brainstorming](./compound-002-brainstorming.md)
+- [2026-03-23 — Compound Spec Flow Analysis](./compound-003-spec-flow-analysis.md)
+- [2026-03-23 — Compound Engineering Planning](./compound-004-planning.md)
