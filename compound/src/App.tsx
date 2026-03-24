@@ -1,16 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { AuthGuard } from '@/components/layout/AuthGuard'
+import { AppShell } from '@/components/layout/AppShell'
 import { AuthPage } from '@/components/auth/AuthPage'
 import { AuthCallback } from '@/components/auth/AuthCallback'
-
-function AppShellPlaceholder() {
-  return (
-    <div className="flex items-center justify-center min-h-svh">
-      <h1 className="text-2xl font-semibold text-sand-800">Magic Broom Chat</h1>
-    </div>
-  )
-}
+import { ChannelView } from '@/components/channels/ChannelView'
 
 function App() {
   return (
@@ -20,8 +14,10 @@ function App() {
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route element={<AuthGuard />}>
-            <Route path="/" element={<Navigate to="/channels/general" replace />} />
-            <Route path="/channels/:channelSlug" element={<AppShellPlaceholder />} />
+            <Route element={<AppShell />}>
+              <Route path="/" element={<Navigate to="/channels/general" replace />} />
+              <Route path="/channels/:channelSlug" element={<ChannelView />} />
+            </Route>
           </Route>
         </Routes>
       </AuthProvider>
