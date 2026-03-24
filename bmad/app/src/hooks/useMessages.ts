@@ -46,17 +46,23 @@ export function useMessages(channelId: string | undefined) {
     enabled: !!channelId,
   })
 
-  // Subscribe to realtime broadcast for this channel
+  // Subscribe to realtime postgres changes for this channel
   useEffect(() => {
     if (!channelId) return
 
-    const channel = supabase.channel(`room:${channelId}:messages`)
-      .on('broadcast', { event: 'message_created' }, () => {
-        queryClient.invalidateQueries({ queryKey: ['messages', channelId] })
-      })
-      .on('broadcast', { event: 'message_deleted' }, () => {
-        queryClient.invalidateQueries({ queryKey: ['messages', channelId] })
-      })
+    const channel = supabase.channel(`messages:${channelId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'messages',
+          filter: `channel_id=eq.${channelId}`,
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['messages', channelId] })
+        }
+      )
       .subscribe()
 
     return () => {
@@ -82,16 +88,6 @@ export function useSendMessage() {
         .select('*, profiles!messages_user_id_profiles_fkey(display_name, avatar_url)')
         .single()
       if (error) throw error
-
-      // Broadcast to other clients
-      const channel = supabase.channel(`room:${channelId}:messages`)
-      await channel.send({
-        type: 'broadcast',
-        event: 'message_created',
-        payload: { message: data },
-      })
-      supabase.removeChannel(channel)
-
       return toMessage(data)
     },
     onSuccess: (data) => {
@@ -113,17 +109,9 @@ export function useDeleteMessage() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ messageId, channelId }: { messageId: string; channelId: string }) => {
+    mutationFn: async ({ messageId }: { messageId: string; channelId: string }) => {
       const { error } = await supabase.from('messages').delete().eq('id', messageId)
       if (error) throw error
-
-      const channel = supabase.channel(`room:${channelId}:messages`)
-      await channel.send({
-        type: 'broadcast',
-        event: 'message_deleted',
-        payload: { messageId },
-      })
-      supabase.removeChannel(channel)
     },
     onSuccess: (_, { channelId }) => {
       queryClient.invalidateQueries({ queryKey: ['messages', channelId] })

@@ -81,10 +81,19 @@ export function useGalleryCards(channelId: string | undefined) {
 
   useEffect(() => {
     if (!channelId) return
-    const channel = supabase.channel(`room:${channelId}:cards`)
-      .on('broadcast', { event: 'card_created' }, () => {
-        queryClient.invalidateQueries({ queryKey: ['gallery-cards', channelId] })
-      })
+    const channel = supabase.channel(`gallery-cards:${channelId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'gallery_cards',
+          filter: `channel_id=eq.${channelId}`,
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['gallery-cards', channelId] })
+        }
+      )
       .subscribe()
     return () => { supabase.removeChannel(channel) }
   }, [channelId, queryClient])
@@ -133,11 +142,6 @@ export function useCreateGalleryCard() {
         .select('*, profiles!gallery_cards_user_id_profiles_fkey(display_name, avatar_url)')
         .single()
       if (error) throw error
-
-      const channel = supabase.channel(`room:${channelId}:cards`)
-      await channel.send({ type: 'broadcast', event: 'card_created', payload: { card: data } })
-      supabase.removeChannel(channel)
-
       return toCard(data)
     },
     onSuccess: (data) => {
