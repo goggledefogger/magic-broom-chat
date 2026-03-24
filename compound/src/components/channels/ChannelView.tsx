@@ -3,8 +3,10 @@ import { useParams } from 'react-router'
 import { Hash, Lock } from 'lucide-react'
 import { useChannels } from '@/hooks/useChannels'
 import { useMessages } from '@/hooks/useMessages'
+import { useTyping } from '@/hooks/useTyping'
 import { MessageList } from '@/components/messages/MessageList'
 import { MessageInput } from '@/components/messages/MessageInput'
+import { TypingIndicator } from '@/components/messages/TypingIndicator'
 
 export function ChannelView() {
   const { channelSlug } = useParams()
@@ -21,6 +23,8 @@ export function ChannelView() {
     editMessage,
     deleteMessage,
   } = useMessages(channel?.id)
+
+  const { typingUsers, sendTyping } = useTyping(channel?.id)
 
   // Update last read when viewing channel
   useEffect(() => {
@@ -63,8 +67,11 @@ export function ChannelView() {
         onRetry={retryMessage}
       />
 
+      {/* Typing indicator */}
+      <TypingIndicator typingUsers={typingUsers} />
+
       {/* Input */}
-      <MessageInput onSend={sendMessage} />
+      <MessageInput onSend={sendMessage} onTyping={sendTyping} />
     </div>
   )
 }

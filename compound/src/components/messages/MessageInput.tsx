@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { Send } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-export function MessageInput({ onSend }: { onSend: (content: string) => void }) {
+export function MessageInput({ onSend, onTyping }: { onSend: (content: string) => void; onTyping?: () => void }) {
   const [content, setContent] = useState('')
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
@@ -27,7 +27,7 @@ export function MessageInput({ onSend }: { onSend: (content: string) => void }) 
       <textarea
         ref={inputRef}
         value={content}
-        onChange={e => setContent(e.target.value)}
+        onChange={e => { setContent(e.target.value); onTyping?.() }}
         onKeyDown={handleKeyDown}
         placeholder="Type a message..."
         rows={1}
