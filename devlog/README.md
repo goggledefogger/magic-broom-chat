@@ -45,3 +45,4 @@ Educational course on AI-assisted software development. Each version builds the 
 - [2026-03-23 — Compound Engineering Brainstorming](./compound-002-brainstorming.md)
 - [2026-03-23 — Compound Spec Flow Analysis](./compound-003-spec-flow-analysis.md)
 - [2026-03-23 — Compound Engineering Planning](./compound-004-planning.md)
+- [2026-03-23 — Compound Full MVP Implementation](./compound-005-full-mvp-implementation.md)
