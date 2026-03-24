@@ -5,6 +5,7 @@ import { AppShell } from '@/components/layout/AppShell'
 import { AuthPage } from '@/components/auth/AuthPage'
 import { AuthCallback } from '@/components/auth/AuthCallback'
 import { ChannelView } from '@/components/channels/ChannelView'
+import { SearchPage } from '@/components/search/SearchPage'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route element={<AppShell />}>
               <Route path="/" element={<Navigate to="/channels/general" replace />} />
               <Route path="/channels/:channelSlug" element={<ChannelView />} />
+              <Route path="/search" element={<SearchPage />} />
             </Route>
           </Route>
         </Routes>
