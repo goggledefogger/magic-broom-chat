@@ -70,7 +70,7 @@ export function useGalleryCards(channelId: string | undefined) {
       if (!channelId) throw new Error('No channel ID')
       const { data, error } = await supabase
         .from('gallery_cards')
-        .select('*, profiles(display_name, avatar_url)')
+        .select('*, profiles!gallery_cards_user_id_profiles_fkey(display_name, avatar_url)')
         .eq('channel_id', channelId)
         .order('created_at', { ascending: false })
       if (error) throw error
@@ -99,7 +99,7 @@ export function useGalleryCard(cardId: string | undefined) {
       if (!cardId) throw new Error('No card ID')
       const { data, error } = await supabase
         .from('gallery_cards')
-        .select('*, profiles(display_name, avatar_url)')
+        .select('*, profiles!gallery_cards_user_id_profiles_fkey(display_name, avatar_url)')
         .eq('id', cardId)
         .single()
       if (error) throw error
@@ -130,7 +130,7 @@ export function useCreateGalleryCard() {
           link,
           image_url: imageUrl,
         })
-        .select('*, profiles(display_name, avatar_url)')
+        .select('*, profiles!gallery_cards_user_id_profiles_fkey(display_name, avatar_url)')
         .single()
       if (error) throw error
 
@@ -153,7 +153,7 @@ export function useCardComments(cardId: string | undefined) {
       if (!cardId) throw new Error('No card ID')
       const { data, error } = await supabase
         .from('card_comments')
-        .select('*, profiles(display_name, avatar_url)')
+        .select('*, profiles!card_comments_user_id_profiles_fkey(display_name, avatar_url)')
         .eq('card_id', cardId)
         .order('created_at', { ascending: true })
       if (error) throw error
@@ -174,7 +174,7 @@ export function useCreateCardComment() {
       const { data, error } = await supabase
         .from('card_comments')
         .insert({ card_id: cardId, user_id: userId, content })
-        .select('*, profiles(display_name, avatar_url)')
+        .select('*, profiles!card_comments_user_id_profiles_fkey(display_name, avatar_url)')
         .single()
       if (error) throw error
       return toComment(data)

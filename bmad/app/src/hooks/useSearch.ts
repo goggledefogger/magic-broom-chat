@@ -24,7 +24,7 @@ export function useSearch(query: string) {
       // Search messages
       const { data: messages } = await supabase
         .from('messages')
-        .select('id, channel_id, content, created_at, channels(name), profiles(display_name)')
+        .select('id, channel_id, content, created_at, channels(name), profiles!messages_user_id_profiles_fkey(display_name)')
         .textSearch('content', tsQuery)
         .limit(20)
 
@@ -47,7 +47,7 @@ export function useSearch(query: string) {
       // Search gallery cards
       const { data: cards } = await supabase
         .from('gallery_cards')
-        .select('id, channel_id, title, description, created_at, channels(name), profiles(display_name)')
+        .select('id, channel_id, title, description, created_at, channels(name), profiles!gallery_cards_user_id_profiles_fkey(display_name)')
         .or(`title.plfts.${tsQuery},description.plfts.${tsQuery}`)
         .limit(20)
 

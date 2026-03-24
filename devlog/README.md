@@ -36,6 +36,7 @@ Educational course on AI-assisted software development. Each version builds the 
 - [2026-03-22 — BMAD Architecture Pacing for Students](./bmad-003-architecture-pacing-for-students.md)
 - [2026-03-22 — BMAD Epics & Stories Complete](./bmad-004-epics-and-stories.md)
 - [2026-03-22 — BMAD Full MVP Implementation](./bmad-005-full-mvp-implementation.md)
+- [2026-03-23 — BMAD Playwright Testing & PostgREST FK Bugfix](./bmad-006-playwright-testing-and-bugfix.md)
 - [2026-03-22 — Superpowers Code Review Fixes](./superpowers-006-code-review-fixes.md)
 - [2026-03-22 — Superpowers Full Implementation Complete](./superpowers-007-full-implementation-complete.md)
 - [2026-03-22 — Superpowers Supabase MCP Setup](./superpowers-008-supabase-mcp-setup.md)

@@ -37,7 +37,7 @@ export function useMessages(channelId: string | undefined) {
       if (!channelId) throw new Error('No channel ID')
       const { data, error } = await supabase
         .from('messages')
-        .select('*, profiles(display_name, avatar_url)')
+        .select('*, profiles!messages_user_id_profiles_fkey(display_name, avatar_url)')
         .eq('channel_id', channelId)
         .order('created_at', { ascending: true })
       if (error) throw error
@@ -79,7 +79,7 @@ export function useSendMessage() {
       const { data, error } = await supabase
         .from('messages')
         .insert({ channel_id: channelId, user_id: userId, content })
-        .select('*, profiles(display_name, avatar_url)')
+        .select('*, profiles!messages_user_id_profiles_fkey(display_name, avatar_url)')
         .single()
       if (error) throw error
 
