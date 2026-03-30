@@ -48,3 +48,4 @@ Educational course on AI-assisted software development. Each version builds the 
 - [2026-03-23 — Compound Engineering Planning](./compound-004-planning.md)
 - [2026-03-23 — Compound Full MVP Implementation](./compound-005-full-mvp-implementation.md)
 - [2026-03-29 — gstack Office Hours Design Doc](./gstack-001-office-hours.md)
+- [2026-03-30 — gstack Full MVP Implementation](./gstack-002-full-mvp-implementation.md)
