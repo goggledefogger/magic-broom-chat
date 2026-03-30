@@ -28,12 +28,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const fetchProfile = useCallback(async (userId: string) => {
+  const fetchProfile = useCallback(async (currentUser: User) => {
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
-      .eq('id', userId)
+      .eq('id', currentUser.id)
       .single()
+
+    if (error && error.code === 'PGRST116') {
+      // No profile row exists (e.g. user created via Supabase dashboard).
+      // Auto-create one so the app works.
+      const displayName =
+        currentUser.user_metadata?.display_name ??
+        currentUser.email?.split('@')[0] ??
+        'User'
+      const { data: newProfile, error: insertErr } = await supabase
+        .from('profiles')
+        .insert({ id: currentUser.id, display_name: displayName })
+        .select()
+        .single()
+
+      if (insertErr) {
+        console.error('Failed to create profile:', insertErr.message)
+        setProfile(null)
+        return
+      }
+      setProfile(newProfile)
+      return
+    }
 
     if (error) {
       console.error('Failed to fetch profile:', error.message)
@@ -50,7 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const currentUser = session?.user ?? null
       setUser(currentUser)
       if (currentUser) {
-        fetchProfile(currentUser.id)
+        fetchProfile(currentUser)
       }
       setLoading(false)
     })
@@ -63,7 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(currentUser)
 
       if (currentUser) {
-        fetchProfile(currentUser.id)
+        fetchProfile(currentUser)
       } else {
         setProfile(null)
       }
