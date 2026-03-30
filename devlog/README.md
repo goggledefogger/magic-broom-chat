@@ -1,6 +1,6 @@
 # Dev Log: AI Framework Comparison Experiment
 
-Comparing four AI-assisted development approaches by building the same Zulip-like chat app.
+Comparing five AI-assisted development approaches by building the same Zulip-like chat app.
 
 ## Frameworks
 
@@ -9,6 +9,7 @@ Comparing four AI-assisted development approaches by building the same Zulip-lik
 | `bmad/` | [BMAD Method](https://github.com/bmad-code-org/BMAD-METHOD) | Agent-based agile, specialized personas |
 | `compound/` | [Compound Engineering](https://github.com/EveryInc/compound-engineering-plugin) | 80/20 planning-to-execution, compound returns |
 | `superpowers/` | [Superpowers](https://github.com/obra/superpowers) | TDD-first, sequential phases, subagents |
+| `gstack/` | [gstack](https://github.com/garrytan/gstack) | Virtual engineering team, role-based workflows, "boil the lake" |
 | `vanilla/` | Native Claude Code | No framework, straight AI-assisted dev |
 
 ## Purpose
