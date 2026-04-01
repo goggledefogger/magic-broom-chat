@@ -42,6 +42,55 @@ Open [http://localhost:5173](http://localhost:5173) and you're in.
 
 Ask your instructor for the shared Supabase credentials, or create your own project and apply the migrations in `bmad/app/supabase/migrations/`.
 
+## Deployment
+
+The app uses three environments. **Never develop against production.**
+
+| Environment | Database | Frontend | Purpose |
+|-------------|----------|----------|---------|
+| **Local dev** | Docker (`supabase start`) | `localhost:5173` | Day-to-day development |
+| **Your fork** | Your own Supabase project | Your own Vercel URL | Testing deployments |
+| **Production** | Instructor's Supabase | [magic-brooms.vercel.app](https://magic-brooms.vercel.app) | Live app for students |
+
+### Local development (recommended)
+
+Supabase runs entirely on your machine via Docker — your own database, auth, and realtime:
+
+```bash
+cd bmad/app
+npx supabase start          # starts local Supabase (first run downloads Docker images)
+cp .env.example .env.local  # then set the local URL and anon key from the output
+npm run dev
+```
+
+The migrations in `supabase/migrations/` are applied automatically. Local auth accepts any email — check [Mailpit](http://localhost:54324) for confirmation emails.
+
+```bash
+npx supabase stop           # when done (preserves data)
+```
+
+### Deploying your own fork
+
+To test in a production-like environment with your own infrastructure:
+
+**Supabase (backend):**
+1. Create a free project at [supabase.com/dashboard](https://supabase.com/dashboard)
+2. Apply the schema:
+   ```bash
+   npx supabase link --project-ref YOUR_PROJECT_REF
+   npx supabase db push
+   ```
+3. Copy your URL and anon key from **Settings > API**
+
+**Vercel (frontend):**
+1. Import your fork at [vercel.com/new](https://vercel.com/new)
+2. Set **Root Directory** to `bmad/app`
+3. Add env vars: `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (from your Supabase project)
+4. Deploy — you get a unique URL like `your-fork.vercel.app`
+5. Add your Vercel URL to Supabase **Authentication > URL Configuration** as the Site URL
+
+Every push to your fork creates an automatic preview deployment on Vercel.
+
 ## Contributing
 
 We welcome contributions! This is a great way to practice a real-world GitHub workflow. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide, but the short version:
