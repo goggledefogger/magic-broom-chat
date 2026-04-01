@@ -52,3 +52,4 @@ Educational course on AI-assisted software development. Each version builds the 
 - [2026-03-30 — gstack Full MVP Implementation](./gstack-002-full-mvp-implementation.md)
 - [2026-03-31 — AI Studio Kickoff & Firebase Error](./ai-studio-001-kickoff.md)
 - [2026-03-31 — Framework Decision & Production Deploy](./gstack-003-framework-decision-and-deploy.md)
+- [2026-03-31 — Zulip Data Migration & Badge Bug Fix](./bmad-007-zulip-migration-and-badge-fix.md)

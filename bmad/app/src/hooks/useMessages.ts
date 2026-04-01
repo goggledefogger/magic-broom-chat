@@ -115,6 +115,7 @@ export function useDeleteMessage() {
     },
     onSuccess: (_, { channelId }) => {
       queryClient.invalidateQueries({ queryKey: ['messages', channelId] })
+      queryClient.invalidateQueries({ queryKey: ['unread-counts'] })
     },
   })
 }

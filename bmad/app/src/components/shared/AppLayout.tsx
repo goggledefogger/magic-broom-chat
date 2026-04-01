@@ -14,7 +14,7 @@ import {
 import { useAuth } from '@/hooks/useAuth'
 import { useChannels, useMyMemberships, useCreateChannel, useJoinChannel } from '@/hooks/useChannels'
 import { useProfile } from '@/hooks/useProfile'
-import { useUnreadCounts } from '@/hooks/useUnreadCounts'
+import { useUnreadCounts, useGalleryCardCounts } from '@/hooks/useUnreadCounts'
 import { useSearch, type SearchResult } from '@/hooks/useSearch'
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
@@ -28,6 +28,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const joinChannel = useJoinChannel()
   const navigate = useNavigate()
   const { channelId } = useParams()
+
+  const galleryChannelIds = (channels ?? []).filter((c) => c.type === 'gallery').map((c) => c.id)
+  const { data: galleryCardCounts } = useGalleryCardCounts(galleryChannelIds)
 
   const [showCreateChannel, setShowCreateChannel] = useState(false)
   const [newChannelName, setNewChannelName] = useState('')
@@ -166,7 +169,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               ?.filter((c) => !c.isArchived)
               .map((ch) => {
                 const isMember = memberChannelIds.has(ch.id)
-                const unread = unreadCounts?.get(ch.id) ?? 0
+                const badgeCount = ch.type === 'gallery'
+                  ? (galleryCardCounts?.get(ch.id) ?? 0)
+                  : (unreadCounts?.get(ch.id) ?? 0)
                 const isActive = channelId === ch.id
 
                 return (
@@ -178,15 +183,15 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                           isActive
                             ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
                             : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50'
-                        } ${unread > 0 ? 'font-bold' : ''}`}
+                        } ${badgeCount > 0 ? 'font-bold' : ''}`}
                       >
                         <span className="text-sidebar-foreground/40 mr-1">
                           {ch.type === 'gallery' ? '🖼' : '#'}
                         </span>
                         {ch.name}
-                        {unread > 0 && (
+                        {badgeCount > 0 && (
                           <Badge variant="secondary" className="ml-1 h-4 min-w-4 justify-center px-1 text-[10px]">
-                            {unread}
+                            {badgeCount}
                           </Badge>
                         )}
                       </Link>
