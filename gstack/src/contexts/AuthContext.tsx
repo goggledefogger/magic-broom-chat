@@ -103,21 +103,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: { display_name: displayName },
+        },
       })
 
       if (error) throw error
       if (!data.user) throw new Error('Sign up failed: no user returned')
-
-      // Insert the profile row
-      const { error: profileError } = await supabase.from('profiles').insert({
-        id: data.user.id,
-        display_name: displayName,
-      })
-
-      if (profileError) {
-        console.error('Failed to create profile:', profileError.message)
-        throw new Error('Account created but profile setup failed. Please try logging in.')
-      }
     },
     [],
   )

@@ -2,6 +2,8 @@ import { Routes, Route, Navigate } from 'react-router'
 import { AuthGuard } from '@/components/layout/AuthGuard'
 import { AuthPage } from '@/components/auth/AuthPage'
 import { AuthCallback } from '@/components/auth/AuthCallback'
+import { ForgotPasswordPage } from '@/components/auth/ForgotPasswordPage'
+import { ResetPasswordPage } from '@/components/auth/ResetPasswordPage'
 import { AppShell } from '@/components/layout/AppShell'
 import { ChannelView } from '@/components/channels/ChannelView'
 import { ChannelBrowser } from '@/components/channels/ChannelBrowser'
@@ -12,6 +14,8 @@ export default function App() {
     <Routes>
       <Route path="/login" element={<AuthPage />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
+      <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
       <Route
         path="/"
         element={
