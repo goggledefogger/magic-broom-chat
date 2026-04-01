@@ -1,22 +1,38 @@
-# Magic Broom Chat — AI Framework Comparison
+# Magic Broom Chat
 
-This repo contains four versions of the same chat app, each built with a different AI-assisted development framework.
+Real-time chat app for Portland Career's AI-Assisted Software Development course.
+
+**Live:** [magic-brooms.vercel.app](https://magic-brooms.vercel.app)
+**Primary app code:** `bmad/app/`
+
+## Important Context
+
+This repo started as a framework comparison experiment (5 versions of the same app). **BMAD won** and is the production app. The other versions (`compound/`, `superpowers/`, `vanilla/`, `gstack/`) remain as educational artifacts but are not actively developed.
+
+All new work should happen in `bmad/app/`.
+
+## Tech Stack
+
+- React 19 + TypeScript + Vite
+- Tailwind CSS v4 + shadcn/ui components
+- Supabase (auth, Postgres database, Realtime)
+- TanStack Query (data fetching) + Zustand (state)
+- Vercel (hosting)
 
 ## Devlog Rule
 
-After completing any major milestone (brainstorming, PRD, architecture, sprint planning, story implementation, etc.), **automatically** create a new numbered entry in `/devlog/` and update `/devlog/README.md` with a link to it.
+After completing any major milestone, create a new entry in `/devlog/` and update `/devlog/README.md`. Use prefix `bmad-NNN` (e.g., `bmad-007-dark-mode.md`). Check existing entries first to avoid number collisions.
 
-Devlog entries should include:
-- Date
-- Which framework version (bmad, compound, superpowers, vanilla)
-- What phase/step was completed
-- Key decisions made (especially tech stack choices)
-- Time/effort observations (how many back-and-forth exchanges, any friction)
-- Anything surprising or noteworthy
-- What's next
+Devlog entries should include: date, what was completed, key decisions, time/effort observations, what's next.
 
-Use the naming pattern: `<framework>-NNN-short-description.md` (e.g., `bmad-003-prd.md`, `superpowers-002-spec.md`, `vanilla-001-kickoff.md`). Each framework uses its own prefix and numbering sequence to avoid collisions when multiple sessions write concurrently. Always check existing entries in `/devlog/` before picking a number to avoid duplicates within your prefix.
+## Student Contributions
+
+Students may contribute via GitHub PRs. See `CONTRIBUTING.md` for the workflow. Review PRs for:
+- TypeScript correctness (`npm run build` must pass)
+- No hardcoded credentials
+- Changes scoped to `bmad/app/`
+- Clear commit messages
 
 ## Kickoff Prompt
 
-See `KICKOFF_PROMPT.md` for the shared starting prompt used across all versions.
+See `KICKOFF_PROMPT.md` for the original project brief used across all framework versions.

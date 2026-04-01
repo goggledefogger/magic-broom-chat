@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Broom Chat — AI Framework Comparison Report</title>
+<style>
+  :root {
+    --aubergine: #3F0E40;
+    --aubergine-light: #4A154B;
+    --green: #2BAC76;
+    --red: #E01E5A;
+    --blue: #36C5F0;
+    --purple: #7B68EE;
+    --gold: #ECB22E;
+    --bg: #f8f7f4;
+    --card: #ffffff;
+    --text: #1d1c1d;
+    --text-muted: #616061;
+    --border: #e1e1e1;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  .hero {
+    background: linear-gradient(135deg, var(--aubergine) 0%, var(--aubergine-light) 100%);
+    color: white;
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+  .hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .hero p { font-size: 1.1rem; opacity: 0.8; max-width: 600px; margin: 0 auto; }
+  .hero .date { font-size: 0.85rem; opacity: 0.6; margin-top: 1rem; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  .winner-banner {
+    background: linear-gradient(135deg, var(--green), #1a8a5a);
+    color: white;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: -2rem auto 2rem;
+    max-width: 1100px;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: 0 8px 32px rgba(43, 172, 118, 0.3);
+  }
+  .winner-banner .trophy { font-size: 3rem; }
+  .winner-banner h2 { font-size: 1.5rem; font-weight: 700; }
+  .winner-banner p { opacity: 0.9; font-size: 0.95rem; margin-top: 0.25rem; }
+  .winner-banner .url { font-size: 0.85rem; opacity: 0.7; margin-top: 0.5rem; font-family: monospace; }
+
+  section { margin-bottom: 3rem; }
+  h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: var(--aubergine); }
+  h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .framework-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem;
+  }
+
+  .framework-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    position: relative;
+    transition: transform 0.15s ease;
+  }
+  .framework-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .framework-card.winner { border-color: var(--green); border-width: 2px; }
+  .framework-card.winner::after {
+    content: 'WINNER';
+    position: absolute;
+    top: -10px;
+    right: 16px;
+    background: var(--green);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+  .framework-card .name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  .framework-card .philosophy {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .framework-card .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .stat-item { font-size: 0.85rem; }
+  .stat-label { color: var(--text-muted); font-size: 0.75rem; display: block; }
+  .stat-value { font-weight: 600; }
+  .tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+  .tag-green { background: #e6f7ef; color: #1a6b42; }
+  .tag-red { background: #fde8ed; color: #a31545; }
+  .tag-blue { background: #e8f4fd; color: #1a6fa3; }
+  .tag-purple { background: #f0ebfd; color: #5a3ec8; }
+  .tag-gold { background: #fdf5e0; color: #9a7400; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  th {
+    text-align: left;
+    padding: 0.75rem;
+    border-bottom: 2px solid var(--border);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+  }
+  td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:last-child td { border-bottom: none; }
+  .check { color: var(--green); font-weight: 700; }
+  .cross { color: var(--red); font-weight: 700; }
+  .partial { color: var(--gold); font-weight: 700; }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--aubergine);
+    background: white;
+  }
+  .timeline-item.highlight::before { background: var(--green); border-color: var(--green); }
+  .timeline-date { font-size: 0.8rem; color: var(--text-muted); }
+  .timeline-title { font-weight: 600; }
+  .timeline-desc { font-size: 0.9rem; color: var(--text-muted); }
+
+  .verdict {
+    background: linear-gradient(135deg, #f8f4ff, #f0ebfd);
+    border: 1px solid #d4c8f0;
+    border-radius: 12px;
+    padding: 2rem;
+  }
+  .verdict h3 { color: var(--aubergine); }
+  .verdict ul { margin-top: 0.75rem; padding-left: 1.25rem; }
+  .verdict li { margin-bottom: 0.5rem; font-size: 0.95rem; }
+
+  .learnings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .learning-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  .learning-card .number {
+    display: inline-block;
+    background: var(--aubergine);
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .learning-card p { font-size: 0.85rem; color: var(--text-muted); }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 1.75rem; }
+    .winner-banner { flex-direction: column; text-align: center; margin: -1rem 1rem 2rem; }
+    .framework-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Magic Broom Chat</h1>
+  <p>AI Framework Comparison: Five approaches to building the same chat app, one clear winner for production.</p>
+  <div class="date">Portland Career &middot; AI-Assisted Development Course &middot; March 2026</div>
+</div>
+
+<div class="container">
+
+<div class="winner-banner">
+  <div class="trophy">&#127942;</div>
+  <div>
+    <h2>Winner: gstack</h2>
+    <p>Slack-like design, Framer Motion animations, optimistic updates, Cmd+K palette. The version users will actually want to open again.</p>
+    <div class="url">https://gstack-navy.vercel.app</div>
+  </div>
+</div>
+
+<!-- Framework Cards -->
+<section>
+  <h2>The Five Contenders</h2>
+  <div class="framework-grid">
+
+    <div class="framework-card">
+      <div class="name">BMAD Method</div>
+      <div class="philosophy">Agent-based agile with specialized personas</div>
+      <div class="stats">
+        <div class="stat-item"><span class="stat-label">Planning</span><span class="stat-value">2-3 days</span></div>
+        <div class="stat-item"><span class="stat-label">Source Files</span><span class="stat-value">38</span></div>
+        <div class="stat-item"><span class="stat-label">Tests</span><span class="stat-value">1 setup</span></div>
+        <div class="stat-item"><span class="stat-label">Focus</span><span class="stat-value">Product/UX</span></div>
+      </div>
+      <span class="tag tag-purple">12-step PRD</span>
+      <span class="tag tag-purple">User journeys</span>
+      <span class="tag tag-red">Slowest</span>
+    </div>
+
+    <div class="framework-card">
+      <div class="name">Compound Engineering</div>
+      <div class="philosophy">80/20 planning-to-execution, compound returns</div>
+      <div class="stats">
+        <div class="stat-item"><span class="stat-label">Planning</span><span class="stat-value">~38 min</span></div>
+        <div class="stat-item"><span class="stat-label">Source Files</span><span class="stat-value">31</span></div>
+        <div class="stat-item"><span class="stat-label">Tests</span><span class="stat-value">0</span></div>
+        <div class="stat-item"><span class="stat-label">Focus</span><span class="stat-value">Schema-first</span></div>
+      </div>
+      <span class="tag tag-green">Best process</span>
+      <span class="tag tag-blue">SpecFlow</span>
+      <span class="tag tag-gold">Teaching pick</span>
+    </div>
+
+    <div class="framework-card">
+      <div class="name">Superpowers</div>
+      <div class="philosophy">TDD-first, sequential phases, subagents</div>
+      <div class="stats">
+        <div class="stat-item"><span class="stat-label">Planning</span><span class="stat-value">~1 day</span></div>
+        <div class="stat-item"><span class="stat-label">Source Files</span><span class="stat-value">45</span></div>
+        <div class="stat-item"><span class="stat-label">Tests</span><span class="stat-value">6 files</span></div>
+        <div class="stat-item"><span class="stat-label">Focus</span><span class="stat-value">Quality gates</span></div>
+      </div>
+      <span class="tag tag-green">Most tests</span>
+      <span class="tag tag-purple">Worktrees</span>
+      <span class="tag tag-red">5-10x tokens</span>
+    </div>
+
+    <div class="framework-card">
+      <div class="name">Vanilla Claude Code</div>
+      <div class="philosophy">No framework, straight AI-assisted dev</div>
+      <div class="stats">
+        <div class="stat-item"><span class="stat-label">Planning</span><span class="stat-value">3 exchanges</span></div>
+        <div class="stat-item"><span class="stat-label">Source Files</span><span class="stat-value">~20</span></div>
+        <div class="stat-item"><span class="stat-label">Tests</span><span class="stat-value">0</span></div>
+        <div class="stat-item"><span class="stat-label">Focus</span><span class="stat-value">Speed</span></div>
+      </div>
+      <span class="tag tag-green">Fastest</span>
+      <span class="tag tag-red">No artifacts</span>
+      <span class="tag tag-red">No TypeScript</span>
+    </div>
+
+    <div class="framework-card winner">
+      <div class="name">gstack</div>
+      <div class="philosophy">Virtual engineering team, design-first</div>
+      <div class="stats">
+        <div class="stat-item"><span class="stat-label">Planning</span><span class="stat-value">~25 min</span></div>
+        <div class="stat-item"><span class="stat-label">Source Files</span><span class="stat-value">40</span></div>
+        <div class="stat-item"><span class="stat-label">Tests</span><span class="stat-value">0</span></div>
+        <div class="stat-item"><span class="stat-label">Focus</span><span class="stat-value">Design quality</span></div>
+      </div>
+      <span class="tag tag-green">Best design</span>
+      <span class="tag tag-green">Animations</span>
+      <span class="tag tag-green">Cmd+K</span>
+      <span class="tag tag-blue">RLS fix</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- Feature Comparison Table -->
+<section>
+  <h2>Feature Comparison</h2>
+  <div class="card" style="overflow-x: auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>BMAD</th>
+          <th>Compound</th>
+          <th>Superpowers</th>
+          <th>Vanilla</th>
+          <th>gstack</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Auth (email/password)</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Password reset</td>
+          <td class="check">&#10003;</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Real-time messaging</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Channels (create/join/browse)</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Message search (FTS)</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="partial">&#9679;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Typing indicators</td>
+          <td class="cross">&#10007;</td>
+          <td class="check">&#10003;</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Optimistic updates</td>
+          <td class="cross">&#10007;</td>
+          <td class="check">&#10003;</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Message grouping</td>
+          <td class="partial">&#9679;</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Animations / transitions</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Skeleton loaders</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Command palette (Cmd+K)</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Error boundary</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="check">&#10003;</td>
+          <td class="cross">&#10007;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Online presence</td>
+          <td class="cross">&#10007;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td>Deployed to production</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="cross">&#10007;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Why gstack -->
+<section>
+  <h2>Why gstack Wins</h2>
+  <div class="verdict">
+    <h3>It's not about features &mdash; it's about feel.</h3>
+    <p style="margin-top: 0.5rem;">All five implementations have the same core features: auth, channels, messaging, search, presence. The difference is in the details that make people want to come back:</p>
+    <ul>
+      <li><strong>Temporal UX:</strong> Animations and transitions make state changes feel intentional, not jarring. Messages slide in, channels cross-fade, typing dots bounce.</li>
+      <li><strong>Message grouping:</strong> Consecutive messages from the same user collapse into a compact stream &mdash; like Slack, not like a forum.</li>
+      <li><strong>Optimistic updates with retry:</strong> Messages appear instantly. If the network fails, a red border and retry button appear inline. No lost messages.</li>
+      <li><strong>Cmd+K command palette:</strong> Power user navigation. Jump to any channel without scrolling the sidebar.</li>
+      <li><strong>Skeleton loaders:</strong> Loading states show the shape of what's coming, not a blank screen or spinner.</li>
+      <li><strong>The RLS fix:</strong> gstack discovered and fixed an infinite recursion bug in Supabase RLS policies that none of the other four builds caught.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Process Comparison -->
+<section>
+  <h2>Process Comparison</h2>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>BMAD</th>
+          <th>Compound</th>
+          <th>Superpowers</th>
+          <th>Vanilla</th>
+          <th>gstack</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>First priority</td>
+          <td>Who &amp; why</td>
+          <td>Schema &amp; how</td>
+          <td>Test gates</td>
+          <td>Working code</td>
+          <td>Design quality</td>
+        </tr>
+        <tr>
+          <td>Planning time</td>
+          <td>2-3 days</td>
+          <td>~38 min</td>
+          <td>~1 day</td>
+          <td>Minutes</td>
+          <td>~25 min</td>
+        </tr>
+        <tr>
+          <td>Implementation time</td>
+          <td>1 session</td>
+          <td>~25 min</td>
+          <td>~6 dispatches</td>
+          <td>1 session</td>
+          <td>~30 min</td>
+        </tr>
+        <tr>
+          <td>Artifacts produced</td>
+          <td>PRD, architecture, epics</td>
+          <td>Ideation, requirements, plan</td>
+          <td>Spec, plan, tests</td>
+          <td>None</td>
+          <td>Design doc, plan</td>
+        </tr>
+        <tr>
+          <td>Token efficiency</td>
+          <td>High usage</td>
+          <td>Medium</td>
+          <td>Very high (5-10x)</td>
+          <td>Low</td>
+          <td>Medium-high</td>
+        </tr>
+        <tr>
+          <td>Best for</td>
+          <td>Complex products, teams</td>
+          <td>Balanced planning &amp; shipping</td>
+          <td>High-quality codebases</td>
+          <td>Quick prototypes</td>
+          <td>User-facing products</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Institutional Learnings -->
+<section>
+  <h2>Cross-Framework Learnings</h2>
+  <p style="color: var(--text-muted); margin-bottom: 1rem;">Patterns discovered by building the same app five different ways:</p>
+  <div class="learnings-grid">
+    <div class="learning-card">
+      <div class="number">1</div>
+      <h3>Broadcast Before Send</h3>
+      <p>Subscribe to Supabase Broadcast channels before sending. Broadcasts silently fail if the recipient isn't subscribed yet.</p>
+    </div>
+    <div class="learning-card">
+      <div class="number">2</div>
+      <h3>PostgREST FK Hints</h3>
+      <p>Messages&rarr;profiles joins need explicit FK hints: <code>profiles!messages_user_id_fkey(*)</code>. PostgREST can't resolve ambiguous FKs automatically.</p>
+    </div>
+    <div class="learning-card">
+      <div class="number">3</div>
+      <h3>Presence Cleanup is Unreliable</h3>
+      <p>Don't write "offline" status in React cleanup functions. Let Supabase Presence handle ephemeral state automatically.</p>
+    </div>
+    <div class="learning-card">
+      <div class="number">4</div>
+      <h3>RLS Recursion Trap</h3>
+      <p>RLS policies that cross-reference each other (channels &harr; channel_members) cause infinite recursion and 500 errors. Simplify to one-directional checks.</p>
+    </div>
+    <div class="learning-card">
+      <div class="number">5</div>
+      <h3>Schema-First Pays Off</h3>
+      <p>Design your database before your UI. Generated TypeScript types from a live schema prevent type mismatches and catch issues early.</p>
+    </div>
+    <div class="learning-card">
+      <div class="number">6</div>
+      <h3>AI Uses Stale Patterns</h3>
+      <p>Models default to older, better-documented APIs (like postgres_changes) over newer ones (Broadcast + DB Triggers). Always verify against current docs.</p>
+    </div>
+    <div class="learning-card">
+      <div class="number">7</div>
+      <h3>Worktree Isolation Matters</h3>
+      <p>Without git worktrees, parallel AI sessions contaminate each other's branches. Vanilla's direct-to-main approach created git status pollution for everyone.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Course Recommendation -->
+<section>
+  <h2>Course Structure Recommendation</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">Session 1</div>
+      <div class="timeline-title">Demo: Vanilla Claude Code</div>
+      <div class="timeline-desc">Show the baseline &mdash; what raw AI-assisted dev looks like with no framework. Fast, but no process artifacts.</div>
+    </div>
+    <div class="timeline-item highlight">
+      <div class="timeline-date">Sessions 2-5</div>
+      <div class="timeline-title">Teach: Compound Engineering Workflow</div>
+      <div class="timeline-desc">The core curriculum. One phase per session: ideation, brainstorming, planning (SpecFlow), implementation. The cleanest process with the best teaching moments.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Session 6</div>
+      <div class="timeline-title">Show: BMAD Artifacts</div>
+      <div class="timeline-desc">When heavier process is warranted &mdash; PRDs, user journeys, acceptance criteria. Compare against Compound's lighter approach.</div>
+    </div>
+    <div class="timeline-item highlight">
+      <div class="timeline-date">Production</div>
+      <div class="timeline-title">Ship: gstack</div>
+      <div class="timeline-desc">The app students actually use. Polished, deployed, reliable. Demonstrates what "production quality" means in practice.</div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  Magic Broom Chat &middot; AI Framework Comparison &middot; Generated 2026-03-31
+</footer>
+
+</body>
+</html>
