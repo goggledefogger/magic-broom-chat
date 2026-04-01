@@ -1,0 +1,126 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: {userId}
+    // Fields:
+    //   - uid: string (required)
+    //   - email: string (required)
+    //   - displayName: string (required)
+    //   - photoURL: string (optional)
+    //   - status: string (required, enum: 'online', 'offline', 'idle')
+    //   - lastSeen: timestamp (required)
+    //
+    // Collection: channels
+    // Document ID: {channelId}
+    // Fields:
+    //   - name: string (required, length 1-50)
+    //   - description: string (optional, length 0-200)
+    //   - createdBy: string (required, must match author uid)
+    //   - createdAt: timestamp (required)
+    //
+    // Collection: messages
+    // Document ID: {messageId}
+    // Fields:
+    //   - channelId: string (required)
+    //   - text: string (required, length 1-2000)
+    //   - authorId: string (required, must match author uid)
+    //   - authorName: string (required)
+    //   - authorPhotoURL: string (optional)
+    //   - createdAt: timestamp (required)
+    //
+    // ===============================================================
+    
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function hasOnlyAllowedFields(allowedFields) {
+      return request.resource.data.keys().hasOnly(allowedFields);
+    }
+    
+    function hasRequiredFields(requiredFields) {
+      return request.resource.data.keys().hasAll(requiredFields);
+    }
+    
+    function validStringLength(field, minLen, maxLen) {
+      return request.resource.data[field] is string &&
+        request.resource.data[field].size() >= minLen &&
+        request.resource.data[field].size() <= maxLen;
+    }
+    
+    function isValidOptionalString(field, minLen, maxLen) {
+      return !(field in request.resource.data) ||
+        (request.resource.data[field] is string &&
+         request.resource.data[field].size() >= minLen &&
+         request.resource.data[field].size() <= maxLen);
+    }
+
+    // Domain Validators
+    function isValidUser() {
+      return hasOnlyAllowedFields(['uid', 'email', 'displayName', 'photoURL', 'status', 'lastSeen']) &&
+             hasRequiredFields(['uid', 'email', 'displayName', 'status', 'lastSeen']) &&
+             request.resource.data.uid == request.auth.uid &&
+             validStringLength('email', 3, 100) &&
+             validStringLength('displayName', 1, 50) &&
+             isValidOptionalString('photoURL', 0, 500) &&
+             request.resource.data.status in ['online', 'offline', 'idle'] &&
+             request.resource.data.lastSeen is timestamp;
+    }
+    
+    function isValidChannel() {
+      return hasOnlyAllowedFields(['name', 'description', 'createdBy', 'createdAt']) &&
+             hasRequiredFields(['name', 'createdBy', 'createdAt']) &&
+             validStringLength('name', 1, 50) &&
+             isValidOptionalString('description', 0, 200) &&
+             request.resource.data.createdBy == request.auth.uid &&
+             request.resource.data.createdAt is timestamp;
+    }
+    
+    function isValidMessage() {
+      return hasOnlyAllowedFields(['channelId', 'text', 'authorId', 'authorName', 'authorPhotoURL', 'createdAt']) &&
+             hasRequiredFields(['channelId', 'text', 'authorId', 'authorName', 'createdAt']) &&
+             validStringLength('channelId', 1, 100) &&
+             validStringLength('text', 1, 2000) &&
+             request.resource.data.authorId == request.auth.uid &&
+             validStringLength('authorName', 1, 50) &&
+             isValidOptionalString('authorPhotoURL', 0, 500) &&
+             request.resource.data.createdAt is timestamp;
+    }
+
+    // Rules
+    match /users/{userId} {
+      allow read: if isAuthenticated(); // Users need to see other users' presence
+      allow create: if isOwner(userId) && isValidUser();
+      allow update: if isOwner(userId) && isValidUser() && 
+                    request.resource.data.uid == resource.data.uid &&
+                    request.resource.data.email == resource.data.email; // Email/UID immutable
+      allow delete: if false;
+    }
+    
+    match /channels/{channelId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidChannel();
+      allow update: if isAuthenticated() && isValidChannel() && 
+                    request.resource.data.createdBy == resource.data.createdBy &&
+                    request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if false;
+    }
+    
+    match /messages/{messageId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidMessage();
+      allow update: if false; // Messages are immutable for now
+      allow delete: if false;
+    }
+  }
+}

@@ -11,6 +11,7 @@ Comparing five AI-assisted development approaches by building the same Zulip-lik
 | `superpowers/` | [Superpowers](https://github.com/obra/superpowers) | TDD-first, sequential phases, subagents |
 | `gstack/` | [gstack](https://github.com/garrytan/gstack) | Virtual engineering team, role-based workflows, "boil the lake" |
 | `vanilla/` | Native Claude Code | No framework, straight AI-assisted dev |
+| `ai-studio/` | [Google AI Studio](https://aistudio.google.com/) | Google's integrated AI dev environment |
 
 ## Purpose
 
@@ -49,3 +50,5 @@ Educational course on AI-assisted software development. Each version builds the 
 - [2026-03-23 — Compound Full MVP Implementation](./compound-005-full-mvp-implementation.md)
 - [2026-03-29 — gstack Office Hours Design Doc](./gstack-001-office-hours.md)
 - [2026-03-30 — gstack Full MVP Implementation](./gstack-002-full-mvp-implementation.md)
+- [2026-03-31 — AI Studio Kickoff & Firebase Error](./ai-studio-001-kickoff.md)
+- [2026-03-31 — Framework Decision & Production Deploy](./gstack-003-framework-decision-and-deploy.md)

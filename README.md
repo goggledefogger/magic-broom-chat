@@ -10,6 +10,7 @@ This is a companion project for an educational course on AI-assisted software de
 | `compound/` | [Compound Engineering](https://github.com/EveryInc/compound-engineering-plugin) | Plan-heavy cyclical workflow |
 | `superpowers/` | [Superpowers](https://github.com/obra/superpowers) | TDD-first sequential phases |
 | `vanilla/` | Native Claude Code | No framework — baseline comparison |
+| `ai-studio/` | [Google AI Studio](https://aistudio.google.com/) | Google's AI Studio as dev tool |
 
 The `devlog/` folder tracks experiences, decisions, and observations across all four approaches.
 
