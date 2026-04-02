@@ -6,7 +6,7 @@
 
 ## What Was Completed
 
-Implemented the auth layer for Magic Broom Chat following strict TDD:
+Implemented the auth layer for Magic Brooms following strict TDD:
 
 1. **Replaced `src/tests/setup.ts`** with a `createMockSupabase()` factory that produces fully vi.fn()-based mock objects covering `auth`, `from`, `channel`, and `removeChannel`. This factory pattern allows each test module to get a fresh mock via `vi.mock()`.
 

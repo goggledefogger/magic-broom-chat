@@ -1,4 +1,4 @@
-# Magic Broom Chat — Design Spec
+# Magic Brooms — Design Spec
 
 **Date:** 2026-03-22
 **Framework:** Superpowers

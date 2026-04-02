@@ -1,6 +1,6 @@
-# gstack Version — Magic Broom Chat
+# gstack Version — Magic Brooms
 
-This is the gstack version of Magic Broom Chat, using Garry Tan's virtual engineering team framework.
+This is the gstack version of Magic Brooms, using Garry Tan's virtual engineering team framework.
 
 ## Devlog Rule
 

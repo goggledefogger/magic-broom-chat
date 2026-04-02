@@ -6,7 +6,7 @@
 
 ## What Was Completed
 
-Built the entire MVP for Magic Broom Chat in a single implementation session, covering all 23 stories across 5 epics.
+Built the entire MVP for Magic Brooms in a single implementation session, covering all 23 stories across 5 epics.
 
 ## Architecture
 

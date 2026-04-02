@@ -1,4 +1,4 @@
-# Contributing to Magic Broom Chat
+# Contributing to Magic Brooms
 
 Thanks for wanting to contribute! This guide will help you get set up and submit your first pull request.
 

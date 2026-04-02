@@ -1,6 +1,6 @@
-# AI Studio Version — Magic Broom Chat
+# AI Studio Version — Magic Brooms
 
-This is the Google AI Studio version of Magic Broom Chat, built using Google's AI Studio as the primary AI-assisted development tool.
+This is the Google AI Studio version of Magic Brooms, built using Google's AI Studio as the primary AI-assisted development tool.
 
 ## Devlog Rule
 

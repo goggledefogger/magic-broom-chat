@@ -1,10 +1,10 @@
 ---
 date: 2026-03-23
 topic: magic-broom-chat-kickoff
-focus: how to approach building Magic Broom Chat from scratch
+focus: how to approach building Magic Brooms from scratch
 ---
 
-# Ideation: Magic Broom Chat — Kickoff Architecture
+# Ideation: Magic Brooms — Kickoff Architecture
 
 ## Codebase Context
 

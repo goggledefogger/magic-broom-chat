@@ -1,12 +1,12 @@
 ---
-title: "feat: Build Magic Broom Chat MVP"
+title: "feat: Build Magic Brooms MVP"
 type: feat
 status: active
 date: 2026-03-23
 origin: docs/brainstorms/2026-03-23-magic-broom-chat-mvp-requirements.md
 ---
 
-# feat: Build Magic Broom Chat MVP
+# feat: Build Magic Brooms MVP
 
 ## Overview
 

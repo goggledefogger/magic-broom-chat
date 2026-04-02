@@ -1,6 +1,6 @@
-# Superpowers Version — Magic Broom Chat
+# Superpowers Version — Magic Brooms
 
-This is the Superpowers version of Magic Broom Chat.
+This is the Superpowers version of Magic Brooms.
 
 ## Devlog Rule
 

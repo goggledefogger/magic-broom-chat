@@ -29,7 +29,7 @@ export function Sidebar({
   return (
     <div className="flex flex-col h-full">
       <div className="p-4 border-b border-gray-700">
-        <h1 className="text-lg font-bold text-white">Magic Broom Chat</h1>
+        <h1 className="text-lg font-bold text-white">Magic Brooms</h1>
       </div>
 
       {user && (

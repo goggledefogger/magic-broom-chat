@@ -1,4 +1,4 @@
-# Magic Broom Chat Implementation Plan
+# Magic Brooms Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -163,7 +163,7 @@ Replace `src/App.tsx`:
 function App() {
   return (
     <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
-      <h1 className="text-3xl font-bold">Magic Broom Chat</h1>
+      <h1 className="text-3xl font-bold">Magic Brooms</h1>
     </div>
   )
 }
@@ -177,7 +177,7 @@ export default App
 npm run dev
 ```
 
-Expected: App renders "Magic Broom Chat" with dark background at http://localhost:5173
+Expected: App renders "Magic Brooms" with dark background at http://localhost:5173
 
 - [ ] **Step 8: Verify tests run**
 
@@ -209,7 +209,7 @@ Create `supabase/migrations/001_schema.sql`:
 
 ```sql
 -- ============================================
--- Magic Broom Chat — Database Schema
+-- Magic Brooms — Database Schema
 -- ============================================
 
 -- 1. Profiles
@@ -1012,7 +1012,7 @@ export function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center px-4">
-      <h1 className="text-3xl font-bold text-white mb-8">Magic Broom Chat</h1>
+      <h1 className="text-3xl font-bold text-white mb-8">Magic Brooms</h1>
       {mode === 'login' ? (
         <LoginForm onSubmit={signIn} onSwitchToSignUp={() => setMode('signup')} />
       ) : (
@@ -1942,7 +1942,7 @@ export function Sidebar({
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="p-4 border-b border-gray-700">
-        <h1 className="text-lg font-bold text-white">Magic Broom Chat</h1>
+        <h1 className="text-lg font-bold text-white">Magic Brooms</h1>
       </div>
 
       {/* User info */}

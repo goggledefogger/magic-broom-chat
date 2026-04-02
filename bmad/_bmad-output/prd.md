@@ -14,14 +14,14 @@ classification:
   projectContext: greenfield
 ---
 
-# Product Requirements Document - Magic Broom Chat
+# Product Requirements Document - Magic Brooms
 
 **Author:** Danny
 **Date:** 2026-03-21
 
 ## Executive Summary
 
-Magic Broom Chat is a real-time web chat application and cohort home base for an AI-assisted software development course run by Portland Career. It replaces scattered email and student portal sharing with a single space where course resources, project showcases, and peer collaboration live together. Students use the app while learning to build apps like it — creating a feedback loop where the platform itself is a teaching artifact.
+Magic Brooms is a real-time web chat application and cohort home base for an AI-assisted software development course run by A Portland Career. It replaces scattered email and student portal sharing with a single space where course resources, project showcases, and peer collaboration live together. Students use the app while learning to build apps like it — creating a feedback loop where the platform itself is a teaching artifact.
 
 The app is built around a Sorcerer's Apprentice theme: AI tools are the brooms — tireless, helpful, occasionally chaotic. The theme is adult and mystical in tone, minimalist in execution — more like a craftsperson's workshop with subtle magic than anything cartoonish. The platform makes student work visible and celebrated with minimal friction, serving students across all skill levels through a tiered contribution model where the architecture itself teaches separation of concerns.
 
@@ -30,7 +30,7 @@ The app is built around a Sorcerer's Apprentice theme: AI tools are the brooms �
 - **Gallery-first resource sharing** — course resources, links, and project showcases are posted as visual cards (image, title, link) browseable in a gallery view, with discussion threads attached but not cluttering the browse experience. Not a wiki, not a text stream.
 - **Auto-generated project hype videos** — GitHub sync reads READMEs, pulls repo highlights, and generates FFmpeg + AI-crafted intro videos with an epic, lo-fi/glitchy creative style. A wrestling entrance for your code.
 - **The app is the assignment** — students contribute to the platform they use daily. A beginner builds the emoji picker, an advanced student builds the WebSocket layer, everyone gets visible "built by" attribution.
-- **Anxiety-reducing design** — pull-based notifications (unread badges, no push interruptions), no topic threading in MVP, warm UI aligned with Portland Career's existing brand and color scheme.
+- **Anxiety-reducing design** — pull-based notifications (unread badges, no push interruptions), no topic threading in MVP, warm UI aligned with A Portland Career's existing brand and color scheme.
 
 ## Project Classification
 
@@ -43,7 +43,7 @@ The app is built around a Sorcerer's Apprentice theme: AI tools are the brooms �
 
 ### User Success
 
-- Students find course resources (links, lessons, tips) in Magic Broom Chat without digging through email or the student portal
+- Students find course resources (links, lessons, tips) in Magic Brooms without digging through email or the student portal
 - Students discover useful content shared by peers — organic peer contributions, not just instructor-posted material
 - Students share their own work and receive meaningful reactions — comments, ideas, collaboration offers
 - Collaborative moments feel rewarding — when someone helps or contributes, both parties get visible recognition
@@ -64,11 +64,11 @@ The app is built around a Sorcerer's Apprentice theme: AI tools are the brooms �
 
 ### Measurable Outcomes
 
-- 70%+ of enrolled students actively use Magic Broom Chat at least weekly during the course
+- 70%+ of enrolled students actively use Magic Brooms at least weekly during the course
 - At least half of students share a project or resource within the first two weeks
 - Peer-to-peer interactions outnumber instructor-to-student posts by end of course
 - At least 30% of students remain active one month after course completion
-- Students cite Magic Broom Chat contributions in portfolios or job applications
+- Students cite Magic Brooms contributions in portfolios or job applications
 
 ## Product Scope & Phased Development
 
@@ -154,15 +154,15 @@ The app is built around a Sorcerer's Apprentice theme: AI tools are the brooms �
 
 ### Journey 1: New Student — First Week Discovery
 
-**Persona:** Alex, a career changer two weeks into Portland Career's AI-assisted development course. Has some coding experience but has never used an AI coding tool. Feels behind compared to classmates who already have CS backgrounds.
+**Persona:** Alex, a career changer two weeks into A Portland Career's AI-assisted development course. Has some coding experience but has never used an AI coding tool. Feels behind compared to classmates who already have CS backgrounds.
 
-**Opening Scene:** Alex gets an invite link to Magic Broom Chat on day one. The onboarding is quick — sign up, pick a username, and they're in. The landing screen shows a few channels: #resources, #project-showcase, #general, and a welcome message with a subtle mystical tone that feels warm without being cheesy. There's already a gallery of links from Danny and Dan — the same tips and tools they mentioned in class yesterday, now browseable instead of buried in an email thread.
+**Opening Scene:** Alex gets an invite link to Magic Brooms on day one. The onboarding is quick — sign up, pick a username, and they're in. The landing screen shows a few channels: #resources, #project-showcase, #general, and a welcome message with a subtle mystical tone that feels warm without being cheesy. There's already a gallery of links from Danny and Dan — the same tips and tools they mentioned in class yesterday, now browseable instead of buried in an email thread.
 
 **Rising Action:** Alex browses the #resources gallery, flipping through cards — each one has a thumbnail, a short description, and a link. They find the Claude Code setup guide they couldn't find in their inbox last night. They click into it, see a couple of comments from other students ("this step tripped me up, here's what worked"), and feel less alone. Later that week, they push their first project to GitHub and post it to #project-showcase with a screenshot and a one-liner description.
 
-**Climax:** The next morning, Alex opens Magic Broom Chat and sees reactions on their post — a classmate left a comment saying "I tried this and it works great, have you thought about adding a --verbose flag?" Another student starred it. Alex realizes this isn't a grading rubric — people actually looked at their work and had ideas.
+**Climax:** The next morning, Alex opens Magic Brooms and sees reactions on their post — a classmate left a comment saying "I tried this and it works great, have you thought about adding a --verbose flag?" Another student starred it. Alex realizes this isn't a grading rubric — people actually looked at their work and had ideas.
 
-**Resolution:** By the end of week two, Alex checks Magic Broom Chat before email. They've commented on three classmates' projects and posted a second project. The app feels like the course's living room — not a classroom, not a Slack workspace, just the place where the cohort hangs out and helps each other.
+**Resolution:** By the end of week two, Alex checks Magic Brooms before email. They've commented on three classmates' projects and posted a second project. The app feels like the course's living room — not a classroom, not a Slack workspace, just the place where the cohort hangs out and helps each other.
 
 **Requirements revealed:** Onboarding flow, channel browsing, gallery view for resources, project showcase posting, reactions/comments, unread indicators.
 
@@ -172,7 +172,7 @@ The app is built around a Sorcerer's Apprentice theme: AI tools are the brooms �
 
 **Persona:** Sam, a bootcamp grad halfway through the course. Comfortable with JavaScript but hitting a wall on the real-time features of their personal project. Tends to struggle silently rather than ask for help.
 
-**Opening Scene:** Sam has been lurking in Magic Broom Chat for a few weeks — reading resources, occasionally reacting to posts, but hasn't shared their own project yet. Their WebSocket implementation keeps dropping connections and they've spent two evenings stuck on it.
+**Opening Scene:** Sam has been lurking in Magic Brooms for a few weeks — reading resources, occasionally reacting to posts, but hasn't shared their own project yet. Their WebSocket implementation keeps dropping connections and they've spent two evenings stuck on it.
 
 **Rising Action:** Sam notices a classmate, Jordan, posted a project in #project-showcase that has real-time features working. Sam clicks into the card, reads the description, and sees Jordan linked their GitHub repo. Sam leaves a comment: "How did you handle reconnection logic? Mine keeps dropping." Jordan replies with a code snippet and a suggestion. Another student chimes in with a link to a resource card in #resources that covers exactly this pattern.
 
@@ -186,15 +186,15 @@ The app is built around a Sorcerer's Apprentice theme: AI tools are the brooms �
 
 ### Journey 3: Instructor — Course Setup & Resource Curation
 
-**Persona:** Danny (co-instructor with Dan). Runs the AI-assisted development course at Portland Career. Currently shares resources via email and the student portal, which means things get lost and students ask for the same links repeatedly.
+**Persona:** Danny (co-instructor with Dan). Runs the AI-assisted development course at A Portland Career. Currently shares resources via email and the student portal, which means things get lost and students ask for the same links repeatedly.
 
 **Opening Scene:** Before a new cohort starts, Danny logs in and sets up the channels — #resources, #project-showcase, #general, a couple of topic-specific channels. He creates a batch of resource cards in the gallery: setup guides, tool links, lesson recaps, recommended reading. Dan adds a few of his own favorites.
 
 **Rising Action:** During the course, Danny posts new resources as they come up in class — "here's that thing I showed today" takes 30 seconds instead of composing an email. He can see which resources get the most views and comments, giving him signal on what's landing. When students post projects, Danny and Dan leave substantive feedback directly on the showcase cards.
 
-**Climax:** Midway through the cohort, Danny realizes he hasn't sent a "resources" email in three weeks. Everything lives in Magic Broom Chat now. Students are finding things on their own, sharing with each other, and the resource gallery has grown with student contributions alongside instructor posts. A student shares a tool Danny hadn't seen — he pins it.
+**Climax:** Midway through the cohort, Danny realizes he hasn't sent a "resources" email in three weeks. Everything lives in Magic Brooms now. Students are finding things on their own, sharing with each other, and the resource gallery has grown with student contributions alongside instructor posts. A student shares a tool Danny hadn't seen — he pins it.
 
-**Resolution:** By end of cohort, the Magic Broom Chat instance is a living archive of the course. Danny exports the best resource cards and showcase posts as starting content for the next cohort. The student-generated content is higher quality than what he could have curated alone.
+**Resolution:** By end of cohort, the Magic Brooms instance is a living archive of the course. Danny exports the best resource cards and showcase posts as starting content for the next cohort. The student-generated content is higher quality than what he could have curated alone.
 
 **Requirements revealed:** Channel management (create, configure), batch resource card creation, analytics/engagement visibility (views, comments), pinning, instructor role with moderation capabilities, content export/carry-forward between cohorts.
 
@@ -208,7 +208,7 @@ The app is built around a Sorcerer's Apprentice theme: AI tools are the brooms �
 
 **Rising Action:** Morgan answers the question, checks what the current cohort is building, and sees a few interesting projects. They share a tool they discovered at their new job that would have helped during the course. They post it to #resources with a note: "wish I'd had this during week 4."
 
-**Climax:** A current student DMs Morgan asking about job hunting with a portfolio built from course projects. Morgan shares their experience and links to their Magic Broom Chat contributions as an example of how they presented their work to employers.
+**Climax:** A current student DMs Morgan asking about job hunting with a portfolio built from course projects. Morgan shares their experience and links to their Magic Brooms contributions as an example of how they presented their work to employers.
 
 **Resolution:** Morgan stays loosely connected — not daily, but checking in when something catches their eye. The cohort boundary softens. The platform becomes a professional network that grew organically from a course, not a LinkedIn connection request.
 

@@ -1,4 +1,4 @@
-We're building a Zulip-like web chat application called "Magic Broom Chat" for an educational course on AI-assisted software development.
+We're building a Zulip-like web chat application called "Magic Brooms" for an educational course on AI-assisted software development.
 
 **Core concept:** A real-time team chat app inspired by Zulip, starting with a straightforward channel-based messaging model. Topic-based threading (Zulip's key differentiator) is a future goal but not part of the MVP.
 

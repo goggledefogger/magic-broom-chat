@@ -31,7 +31,7 @@ export function LoginForm({ onToggle }: { onToggle: () => void }) {
     <div className="w-full max-w-sm space-y-6">
       <div className="text-center">
         <h1 className="text-2xl font-semibold text-sand-800">Welcome back</h1>
-        <p className="mt-1 text-sm text-clay-500">Sign in to Magic Broom Chat</p>
+        <p className="mt-1 text-sm text-clay-500">Sign in to Magic Brooms</p>
       </div>
 
       <Button

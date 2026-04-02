@@ -1,6 +1,6 @@
-# Compound Engineering Version — Magic Broom Chat
+# Compound Engineering Version — Magic Brooms
 
-This is the Compound Engineering version of Magic Broom Chat.
+This is the Compound Engineering version of Magic Brooms.
 
 ## Devlog Rule
 

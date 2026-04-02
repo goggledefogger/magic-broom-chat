@@ -6,7 +6,7 @@
 
 ## What Was Completed
 
-Ran the `bmad-brainstorming` skill to explore feature ideas, prioritization, course tailoring, and project personality for Magic Broom Chat. Used AI-Recommended technique approach with three techniques: Role Playing, SCAMPER Method, and What If Scenarios.
+Ran the `bmad-brainstorming` skill to explore feature ideas, prioritization, course tailoring, and project personality for Magic Brooms. Used AI-Recommended technique approach with three techniques: Role Playing, SCAMPER Method, and What If Scenarios.
 
 ## Key Decisions
 

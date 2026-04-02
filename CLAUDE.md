@@ -1,6 +1,6 @@
-# Magic Broom Chat
+# Magic Brooms
 
-Real-time chat app for Portland Career's AI-Assisted Software Development course.
+Real-time chat app for A Portland Career's AI-Assisted Software Development course.
 
 **Live:** [magic-brooms.vercel.app](https://magic-brooms.vercel.app)
 **Primary app code:** `bmad/app/`

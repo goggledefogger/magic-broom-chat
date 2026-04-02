@@ -1,4 +1,4 @@
-# Magic Broom Chat
+# Magic Brooms
 
 The chat app we built *with AI, for learning AI*. Real-time, real users, real code — and you helped make it.
 
@@ -6,7 +6,7 @@ The chat app we built *with AI, for learning AI*. Real-time, real users, real co
 
 ## What Is This
 
-A Slack-style chat app for Portland Career's AI-Assisted Software Development course. You're not just learning about AI-assisted dev — you're using the product of it every day.
+A Slack-style chat app for [A Portland Career](https://aportlandcareer.com/)'s AI-Assisted Software Development course. You're not just learning about AI-assisted dev — you're using the product of it every day.
 
 Real-time messaging. Channels. Gallery showcases. Emoji reactions. Full-text search. Instructor tools. A Sorcerer's Apprentice theme because why not.
 

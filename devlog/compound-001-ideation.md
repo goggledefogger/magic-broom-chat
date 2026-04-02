@@ -6,7 +6,7 @@
 
 ## What Happened
 
-Ran the `ce-ideate` workflow to generate and filter architectural ideas for building Magic Broom Chat from scratch. Five parallel ideation agents each generated ~8 ideas from different frames (pain/friction, missing capability, inversion/automation, assumption-breaking, leverage/compounding), producing 40 raw candidates.
+Ran the `ce-ideate` workflow to generate and filter architectural ideas for building Magic Brooms from scratch. Five parallel ideation agents each generated ~8 ideas from different frames (pain/friction, missing capability, inversion/automation, assumption-breaking, leverage/compounding), producing 40 raw candidates.
 
 After merge, dedup, and adversarial filtering, 7 ideas survived. A mid-ideation review of the [Supabase Realtime docs](https://supabase.com/docs/guides/realtime) corrected a key architecture assumption: **Broadcast + DB triggers** is the right messaging pattern, not `postgres_changes` (which has a single-threaded RLS bottleneck the docs explicitly warn against for chat).
 

@@ -37,7 +37,7 @@ export function ChannelSidebar() {
             className="text-[15px] font-bold truncate"
             style={{ color: 'var(--slack-text-sidebar-bright)' }}
           >
-            Magic Broom Chat
+            Magic Brooms
           </h1>
         </div>
         <p

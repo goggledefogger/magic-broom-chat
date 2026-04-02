@@ -21,7 +21,7 @@ export default function Login() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900">
       <div className="w-full max-w-sm p-8 bg-gray-800 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold text-white mb-6 text-center">Magic Broom Chat</h1>
+        <h1 className="text-2xl font-bold text-white mb-6 text-center">Magic Brooms</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && <p className="text-red-400 text-sm">{error}</p>}
           <input

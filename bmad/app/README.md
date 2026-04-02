@@ -1,4 +1,4 @@
-# Magic Broom Chat — App
+# Magic Brooms — App
 
 The production chat application. Built with the BMAD Method using React 19, TypeScript, and Supabase.
 

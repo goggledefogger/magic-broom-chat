@@ -6,7 +6,7 @@
 
 ## What Happened
 
-Built the complete Magic Broom Chat MVP in a single session with vanilla Claude Code — no planning frameworks, no skills, no agents. Just a quick tech stack discussion, a 7-phase plan outlined in chat, and straight into coding.
+Built the complete Magic Brooms MVP in a single session with vanilla Claude Code — no planning frameworks, no skills, no agents. Just a quick tech stack discussion, a 7-phase plan outlined in chat, and straight into coding.
 
 ## Tech Stack Decisions
 

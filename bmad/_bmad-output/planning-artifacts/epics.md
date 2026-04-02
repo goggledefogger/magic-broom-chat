@@ -3,11 +3,11 @@ stepsCompleted: ['step-01-validate-prerequisites', 'step-02-design-epics', 'step
 inputDocuments: ['_bmad-output/prd.md', '_bmad-output/planning-artifacts/architecture.md']
 ---
 
-# Magic Broom Chat - Epic Breakdown
+# Magic Brooms - Epic Breakdown
 
 ## Overview
 
-This document provides the complete epic and story breakdown for Magic Broom Chat, decomposing the requirements from the PRD, UX Design if it exists, and Architecture requirements into implementable stories.
+This document provides the complete epic and story breakdown for Magic Brooms, decomposing the requirements from the PRD, UX Design if it exists, and Architecture requirements into implementable stories.
 
 ## Requirements Inventory
 
@@ -189,7 +189,7 @@ So that the interface feels adult, mystical, and minimalist from the first inter
 
 As a new student,
 I want to create an account with my email and password,
-So that I can access Magic Broom Chat.
+So that I can access Magic Brooms.
 
 **Acceptance Criteria:**
 

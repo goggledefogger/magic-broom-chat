@@ -1,7 +1,7 @@
 ---
 stepsCompleted: [1, 2, 3, 4]
 inputDocuments: []
-session_topic: 'Magic Broom Chat - Zulip-inspired real-time team chat app for AI-assisted software development course'
+session_topic: 'Magic Brooms - Zulip-inspired real-time team chat app for AI-assisted software development course'
 session_goals: 'Feature ideas, prioritization (quick wins vs big ideas), course tailoring, personality infusion'
 selected_approach: 'ai-recommended'
 techniques_used: ['Role Playing', 'SCAMPER Method', 'What If Scenarios']
@@ -19,7 +19,7 @@ context_file: ''
 
 ## Session Overview
 
-**Topic:** Magic Broom Chat - a Zulip-inspired real-time team chat web app built as an educational vehicle for an AI-assisted software development course
+**Topic:** Magic Brooms - a Zulip-inspired real-time team chat web app built as an educational vehicle for an AI-assisted software development course
 
 **Goals:**
 - Feature ideas beyond the stated MVP (auth, channels, messaging, presence, search)
@@ -35,7 +35,7 @@ _AI-Recommended technique approach selected. Session configured for multi-dimens
 ## Technique Selection
 
 **Approach:** AI-Recommended Techniques
-**Analysis Context:** Magic Broom Chat with focus on feature ideas, prioritization, course tailoring, and personality
+**Analysis Context:** Magic Brooms with focus on feature ideas, prioritization, course tailoring, and personality
 
 **Recommended Techniques:**
 
@@ -58,7 +58,7 @@ _AI-Recommended technique approach selected. Session configured for multi-dimens
 *Novelty*: Most chat apps treat all messages the same. This gives "project share" messages a structured, visual format — more like a mini product page than a text post.
 
 **[Student Perspective #2]**: Meta-Learning Loop
-*Concept*: The app itself becomes a teaching artifact. Students use Magic Broom Chat while building Magic Broom Chat — creating a feedback loop where bugs they find, features they want, and UX opinions feed directly back into the project.
+*Concept*: The app itself becomes a teaching artifact. Students use Magic Brooms while building Magic Brooms — creating a feedback loop where bugs they find, features they want, and UX opinions feed directly back into the project.
 *Novelty*: Turns the "distraction from personal projects" fear into a feature — the chat app serves personal projects rather than competing with them.
 
 **[Student Perspective #3]**: Cognitive Load Shield
@@ -66,7 +66,7 @@ _AI-Recommended technique approach selected. Session configured for multi-dimens
 *Novelty*: Most group projects require everyone to understand everything. This flips it — the architecture itself is a teaching tool about separation of concerns.
 
 **[Student Perspective #4]**: Personal Project Bridge
-*Concept*: Rather than competing with students' personal projects, Magic Broom Chat serves them — project showcase, built-in brainstorming channels, and peer feedback tools mean students use the chat app as infrastructure for their own work.
+*Concept*: Rather than competing with students' personal projects, Magic Brooms serves them — project showcase, built-in brainstorming channels, and peer feedback tools mean students use the chat app as infrastructure for their own work.
 *Novelty*: Reframes "extra work" into "helps my other work."
 
 **[Instructor Perspective #1]**: Tiered Contribution Model
@@ -120,7 +120,7 @@ _AI-Recommended technique approach selected. Session configured for multi-dimens
 *Novelty*: Treats the chat app as a data source for AI workflows. Students learn to build AI-consumable systems.
 
 **[Adapt #2]**: BMAD Skill Integration
-*Concept*: A skill that lets you interact with Magic Broom Chat data from inside your development workflow — pull brainstorm results as PRD input, reference feedback in architecture decisions.
+*Concept*: A skill that lets you interact with Magic Brooms data from inside your development workflow — pull brainstorm results as PRD input, reference feedback in architecture decisions.
 *Novelty*: Bridges communication tool and development tool.
 
 **[Adapt #3]**: Built-in Image Generation
@@ -229,7 +229,7 @@ _Focus: The app is built for and by AI-assisted workflows_
 _Pattern: The app treats its own data as fuel for AI workflows — students learn to build AI-consumable systems._
 
 **Theme 4: Identity & Delight**
-_Focus: Making Magic Broom Chat unmistakably yours_
+_Focus: Making Magic Brooms unmistakably yours_
 
 - **Sorcerer's Apprentice Theme** — Mickey/broom metaphor as the app's narrative and course metaphor for AI
 - **Broom Companion** — The AI bot is a broom character with personality

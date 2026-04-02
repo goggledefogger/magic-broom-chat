@@ -1,6 +1,6 @@
-# Vanilla Claude Code Version — Magic Broom Chat
+# Vanilla Claude Code Version — Magic Brooms
 
-This is the vanilla (no framework) version of Magic Broom Chat.
+This is the vanilla (no framework) version of Magic Brooms.
 
 ## Devlog Rule
 

@@ -6,7 +6,7 @@
 
 ## What Was Done
 
-Applied four targeted fixes from a code review pass on the Magic Broom Chat implementation:
+Applied four targeted fixes from a code review pass on the Magic Brooms implementation:
 
 ### Fix 1: usePresence cleanup bug
 The original cleanup function fired a `supabase.from('profiles').update({ status: 'offline' })` without awaiting it, then immediately removed the channel — meaning the update never had a chance to complete. The fix removes the offline update from cleanup entirely (it's unreliable in all teardown scenarios: browser close, tab close, React StrictMode double-invoke, etc.). Supabase Presence handles real-time status ephemerally. The online update on mount was also made error-visible via `.then()` instead of silently fire-and-forget.

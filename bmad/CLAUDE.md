@@ -1,6 +1,6 @@
-# BMAD Version — Magic Broom Chat
+# BMAD Version — Magic Brooms
 
-This is the BMAD Method version of Magic Broom Chat.
+This is the BMAD Method version of Magic Brooms.
 
 ## Devlog Rule
 

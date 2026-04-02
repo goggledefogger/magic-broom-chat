@@ -6,7 +6,7 @@
 
 ## What Was Completed
 
-Created the full Product Requirements Document for Magic Broom Chat using the `bmad-create-prd` skill — a 12-step facilitated workflow. The output is at `bmad/_bmad-output/prd.md`.
+Created the full Product Requirements Document for Magic Brooms using the `bmad-create-prd` skill — a 12-step facilitated workflow. The output is at `bmad/_bmad-output/prd.md`.
 
 ## How It Went — Honest Assessment
 
@@ -30,7 +30,7 @@ The user journeys came out strong. Four narrative-driven stories that ground the
 
 ### Danny's Experience
 
-Danny engaged most deeply during the vision discovery (step 2b) and success criteria (step 3) — these were genuine conversations where new ideas emerged (resource sharing as the core problem, the hype video concept, lo-fi/glitchy aesthetic for generated content, Portland Career brand alignment). He gave clear, decisive answers on scoping and was comfortable deferring features.
+Danny engaged most deeply during the vision discovery (step 2b) and success criteria (step 3) — these were genuine conversations where new ideas emerged (resource sharing as the core problem, the hype video concept, lo-fi/glitchy aesthetic for generated content, A Portland Career brand alignment). He gave clear, decisive answers on scoping and was comfortable deferring features.
 
 He pushed back on tone once — the Sorcerer's Apprentice theme should be "adult and mystical, not childish" — which was an important clarification that would have been easy to miss. He also corrected the framing around long processes: don't call them "never-ending," say "they're valuable steps, here's the bigger picture." That's a signal about how he wants to work — direct, no hand-wringing about process.
 
@@ -54,7 +54,7 @@ By the end, he was clearly ready to move on. The PRD is solid, but the workflow 
 - Sorcerer's Apprentice theme: adult, mystical, minimalist — not Disney
 - Experience MVP strategy — "the minimum that makes students say 'this is where I want to be'"
 - Danny and Dan as co-instructors with instructor admin roles
-- App UI aligned with Portland Career brand; lo-fi/glitchy aesthetic only for generated video content
+- App UI aligned with A Portland Career brand; lo-fi/glitchy aesthetic only for generated video content
 
 ## PRD Contents
 

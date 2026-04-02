@@ -6,7 +6,7 @@
 
 ## What was completed
 
-Ran the full gstack /office-hours skill to produce a design document for the gstack version of Magic Broom Chat. This is the fifth framework in the comparison experiment.
+Ran the full gstack /office-hours skill to produce a design document for the gstack version of Magic Brooms. This is the fifth framework in the comparison experiment.
 
 ## Key decisions
 

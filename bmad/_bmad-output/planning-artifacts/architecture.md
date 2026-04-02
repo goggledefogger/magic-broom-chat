@@ -5,7 +5,7 @@ status: 'complete'
 completedAt: '2026-03-22'
 inputDocuments: ['_bmad-output/prd.md', '_bmad-output/brainstorming/brainstorming-session-2026-03-21-2300.md']
 workflowType: 'architecture'
-project_name: 'Magic Broom Chat'
+project_name: 'Magic Brooms'
 user_name: 'Danny'
 date: '2026-03-22'
 ---

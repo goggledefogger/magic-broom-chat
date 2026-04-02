@@ -10,7 +10,7 @@ origin: ~/.gstack/projects/goggledefogger-magic-broom-chat/Danny-feat/compound-m
 
 ## Overview
 
-Build the gstack version of Magic Broom Chat as a visually polished, Slack-like web app. Same MVP features as the four existing versions (auth, channels, real-time messaging, presence, search) but with the design quality cranked up: Framer Motion animations, optimistic updates, skeleton loading states, message grouping, Cmd+K command palette, and animated typing indicators. Reuses compound's Supabase backend (same project, same schema). The differentiator is **design quality**, not features.
+Build the gstack version of Magic Brooms as a visually polished, Slack-like web app. Same MVP features as the four existing versions (auth, channels, real-time messaging, presence, search) but with the design quality cranked up: Framer Motion animations, optimistic updates, skeleton loading states, message grouping, Cmd+K command palette, and animated typing indicators. Reuses compound's Supabase backend (same project, same schema). The differentiator is **design quality**, not features.
 
 ## Problem Statement / Motivation
 

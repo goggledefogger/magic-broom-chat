@@ -14,7 +14,7 @@ export default function Header({ channel, onSearch, showSearch, onCloseSearch })
     <header className="flex items-center justify-between px-4 py-3 border-b border-gray-700 bg-gray-800">
       <div className="flex items-center gap-3">
         <h2 className="text-lg font-semibold">
-          {channel ? `# ${channel.name}` : 'Magic Broom Chat'}
+          {channel ? `# ${channel.name}` : 'Magic Brooms'}
         </h2>
         {channel?.description && (
           <span className="text-sm text-gray-400 hidden sm:inline">{channel.description}</span>

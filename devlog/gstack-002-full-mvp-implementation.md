@@ -6,7 +6,7 @@
 
 ## What was completed
 
-Built the entire gstack version of Magic Broom Chat from scaffold to working app. All MVP features functional: auth, channels, real-time messaging, presence, search, plus design polish features (Framer Motion animations, message grouping, Cmd+K command palette, skeleton loaders, empty states).
+Built the entire gstack version of Magic Brooms from scaffold to working app. All MVP features functional: auth, channels, real-time messaging, presence, search, plus design polish features (Framer Motion animations, message grouping, Cmd+K command palette, skeleton loaders, empty states).
 
 ## Key decisions
 

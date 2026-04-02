@@ -3,7 +3,7 @@ date: 2026-03-23
 topic: magic-broom-chat-mvp
 ---
 
-# Magic Broom Chat — MVP Requirements
+# Magic Brooms — MVP Requirements
 
 ## Problem Frame
 

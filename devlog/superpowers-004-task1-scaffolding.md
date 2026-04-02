@@ -6,16 +6,16 @@
 
 ## What Was Done
 
-Completed Task 1: Project Scaffolding for the Magic Broom Chat app in the git worktree at `.worktrees/superpowers-chat/superpowers/`.
+Completed Task 1: Project Scaffolding for the Magic Brooms app in the git worktree at `.worktrees/superpowers-chat/superpowers/`.
 
 ### Files Created
 
 - `package.json` — named `magic-broom-chat`, includes `@supabase/supabase-js` dep and all required dev deps (tailwindcss, vitest, testing-library, jsdom)
 - `vite.config.ts` — configured with `@tailwindcss/vite` plugin and Vitest test config (globals, jsdom environment, setup file)
 - `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json` — from Vite React-TS template
-- `index.html` — cleaned up (removed favicon ref, updated title to "Magic Broom Chat")
+- `index.html` — cleaned up (removed favicon ref, updated title to "Magic Brooms")
 - `src/main.tsx` — standard React entry point
-- `src/App.tsx` — minimal placeholder with dark bg (`bg-gray-900`) and "Magic Broom Chat" heading
+- `src/App.tsx` — minimal placeholder with dark bg (`bg-gray-900`) and "Magic Brooms" heading
 - `src/index.css` — just `@import "tailwindcss";` per Tailwind v4 style
 - `src/tests/setup.ts` — imports `@testing-library/jest-dom/vitest`
 - `.env.local` — placeholder Supabase env vars (not committed)

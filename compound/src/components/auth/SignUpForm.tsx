@@ -51,7 +51,7 @@ export function SignUpForm({ onToggle }: { onToggle: () => void }) {
     <div className="w-full max-w-sm space-y-6">
       <div className="text-center">
         <h1 className="text-2xl font-semibold text-sand-800">Create an account</h1>
-        <p className="mt-1 text-sm text-clay-500">Join Magic Broom Chat</p>
+        <p className="mt-1 text-sm text-clay-500">Join Magic Brooms</p>
       </div>
 
       <Button
