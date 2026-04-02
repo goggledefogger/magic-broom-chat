@@ -231,6 +231,35 @@ For your deployed fork, you need your own Supabase project (free tier works):
 | **Your fork** | Your own Supabase project | Your Vercel URL | You, for testing deploys |
 | **Production** | Instructor's Supabase | magic-brooms.vercel.app | Everyone (don't touch!) |
 
+## For Instructors: Merging PRs
+
+The `main` branch is protected — all changes require a PR with at least one approving review. Admins (instructors) can bypass this to merge their own work.
+
+### Merging with admin bypass
+
+```bash
+gh pr merge <PR_NUMBER> --squash --delete-branch --admin
+```
+
+The `--admin` flag overrides the review requirement. Use `--squash` to keep the commit history clean.
+
+### Merging student PRs
+
+Student PRs require your review and approval first:
+
+1. Review on GitHub or via `gh pr review <PR_NUMBER>`
+2. Approve if it looks good
+3. Merge: `gh pr merge <PR_NUMBER> --squash --delete-branch`
+
+### Branch protection settings
+
+Configured via GitHub API or **Settings > Branches** on GitHub:
+
+- 1 approving review required (for non-admins)
+- Stale reviews dismissed on new pushes
+- Admin bypass enabled (`enforce_admins: false`)
+- Force pushes blocked
+
 ## Need Help?
 
 - Check existing code for patterns to follow
