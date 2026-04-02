@@ -114,7 +114,9 @@ function MessageItem({
   const [isEditing, setIsEditing] = useState(false)
   const [editContent, setEditContent] = useState('')
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [showMobileToolbar, setShowMobileToolbar] = useState(false)
   const editRef = useRef<HTMLTextAreaElement>(null)
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const isOwn = message.userId === userId
   const isEdited = message.updatedAt !== message.createdAt
@@ -163,8 +165,30 @@ function MessageItem({
 
   const showToolbar = isOwn || isInstructor
 
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType !== 'touch' || !showToolbar || isEditing) return
+    longPressTimer.current = setTimeout(() => {
+      setShowMobileToolbar(true)
+    }, 500)
+  }
+
+  const handlePointerUp = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current)
+      longPressTimer.current = null
+    }
+  }
+
+  const handlePointerCancel = handlePointerUp
+
   return (
-    <div className="group relative flex gap-3 px-4 py-2 hover:bg-muted/30">
+    <div
+      className="group relative flex gap-3 px-4 py-2 hover:bg-muted/30"
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerCancel}
+      onPointerMove={handlePointerUp}
+    >
       <Avatar className="mt-0.5 h-8 w-8 flex-shrink-0">
         <AvatarImage src={message.profile?.avatarUrl ?? undefined} />
         <AvatarFallback className="text-xs">{initials}</AvatarFallback>
@@ -209,16 +233,18 @@ function MessageItem({
         <MessageReactions messageId={message.id} userId={userId} />
       </div>
 
-      {/* Floating toolbar */}
+      {/* Floating toolbar - desktop hover + mobile long-press */}
       {showToolbar && !isEditing && (
-        <div className="absolute -top-3 right-4 flex items-center gap-0.5 rounded-md border bg-background px-1 py-0.5 shadow-sm opacity-0 transition-opacity group-hover:opacity-100">
+        <div className={`absolute -top-3 right-4 flex items-center gap-0.5 rounded-md border bg-background px-1 py-0.5 shadow-sm transition-opacity ${
+          showMobileToolbar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+        }`}>
           {isOwn && (
             <button
-              onClick={startEditing}
-              className="rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+              onClick={() => { startEditing(); setShowMobileToolbar(false) }}
+              className="rounded p-2.5 md:p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
               title="Edit message"
             >
-              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="h-4 w-4 md:h-3.5 md:w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
                 <path d="m15 5 4 4" />
               </svg>
@@ -226,11 +252,11 @@ function MessageItem({
           )}
           {isInstructor && (
             <button
-              onClick={() => setShowDeleteConfirm(true)}
-              className="rounded p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+              onClick={() => { setShowDeleteConfirm(true); setShowMobileToolbar(false) }}
+              className="rounded p-2.5 md:p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
               title="Delete message"
             >
-              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="h-4 w-4 md:h-3.5 md:w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 6h18" />
                 <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
                 <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
@@ -238,6 +264,11 @@ function MessageItem({
             </button>
           )}
         </div>
+      )}
+
+      {/* Dismiss mobile toolbar on tap outside */}
+      {showMobileToolbar && (
+        <div className="fixed inset-0 z-40" onClick={() => setShowMobileToolbar(false)} />
       )}
 
       {/* Delete confirmation dialog */}
@@ -318,8 +349,8 @@ export function ChatView({ channelId }: { channelId: string }) {
 
   return (
     <div className="flex h-full flex-col">
-      {/* Channel header */}
-      <div className="flex items-center gap-3 border-b px-4 py-3">
+      {/* Channel header - hidden on mobile (mobile header in AppLayout) */}
+      <div className="hidden md:flex items-center gap-3 border-b px-4 py-3">
         <div>
           <h2 className="text-lg font-semibold">#{channel?.name}</h2>
           {channel?.description && (
