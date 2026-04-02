@@ -1,16 +1,14 @@
 # Magic Brooms
 
-The chat app we built *with AI, for learning AI*. Real-time, real users, real code — and you helped make it.
+The chat app for [A Portland Career](https://aportlandcareer.com/)'s AI-Assisted Software Development course. Built with AI, used by students, open for contributions.
 
-**Live now:** [magic-brooms.vercel.app](https://magic-brooms.vercel.app)
+**Live at** [magic-brooms.vercel.app](https://magic-brooms.vercel.app)
 
 ## What Is This
 
-A Slack-style chat app for [A Portland Career](https://aportlandcareer.com/)'s AI-Assisted Software Development course. You're not just learning about AI-assisted dev — you're using the product of it every day.
+A Slack-style chat app with real-time messaging, channels, gallery showcases, emoji reactions, full-text search, and instructor tools. Sorcerer's Apprentice themed.
 
-Real-time messaging. Channels. Gallery showcases. Emoji reactions. Full-text search. Instructor tools. A Sorcerer's Apprentice theme because why not.
-
-**Stack:** React 19 / TypeScript / Vite / Tailwind / Supabase / Vercel
+React 19 / TypeScript / Vite / Tailwind / Supabase / Vercel
 
 ## Run It Locally
 
@@ -46,7 +44,7 @@ npx supabase stop             # when done
 
 ## Contribute
 
-This counts as your **open source side quest**. Fork it, branch it, PR it.
+This counts as your open source side quest. Fork it, branch it, PR it.
 
 ```bash
 git checkout -b feat/your-thing
@@ -56,7 +54,7 @@ git push origin feat/your-thing
 # open PR on GitHub
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the full walkthrough. Ideas if you need 'em:
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full walkthrough. Ideas if you need them:
 
 - Dark mode
 - Message threading
@@ -79,19 +77,17 @@ CONTRIBUTING.md        # How to contribute
 
 ## The Origin Story
 
-We built this app *five different ways* with five AI frameworks, head-to-head, to find out which one actually ships. Arrr, the results:
+We built this app five different ways with five AI frameworks to find out which one actually ships.
 
 | Framework | What Happened |
 |-----------|--------------|
-| **BMAD Method** | Walked the plank last and came back with a full ship. Auth, galleries, reactions, roles, 9 migrations. **The winner.** |
-| Compound Engineering | Best process. Great for teaching. The app itself? Serviceable, not spectacular. |
-| Superpowers | TDD everything. Most tests. Also most tokens burned. Your wallet felt that one. |
-| Vanilla Claude Code | Fastest to "something works." First to hit a wall. No framework = no guardrails. |
-| gstack | Prettiest of the bunch. Design-first energy. Substance caught up eventually. |
+| **BMAD Method** | Most complete. Auth, galleries, reactions, roles, 9 migrations. The one we shipped. |
+| Compound Engineering | Best process. Great for teaching. The app was solid but not standout. |
+| Superpowers | TDD everything. Most tests. Also most tokens burned. |
+| Vanilla Claude Code | Fastest to get something working. First to hit a wall. |
+| gstack | Prettiest. Design-first approach. Substance caught up eventually. |
 
-BMAD won because it built the most complete thing that actually worked. Not the fastest, not the cheapest — the most *shippable*.
-
-The other versions are still here as educational treasure. Dig through `devlog/` for the full saga, or open `devlog/framework-comparison-report.html` for the visual showdown.
+BMAD won because it built the most complete thing that actually worked. The other versions are still in the repo as learning material. Check `devlog/` for the full story, or open `devlog/framework-comparison-report.html` for a visual comparison.
 
 ## License
 
