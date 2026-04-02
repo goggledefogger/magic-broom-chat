@@ -25,6 +25,10 @@ After completing any major milestone, create a new entry in `/devlog/` and updat
 
 Devlog entries should include: date, what was completed, key decisions, time/effort observations, what's next.
 
+## UX Conventions
+
+- **Confirm before delete.** Any destructive action (deleting messages, removing avatars, leaving channels, etc.) must show a confirmation dialog before executing. Use shadcn AlertDialog, styled to match the app theme.
+
 ## Student Contributions
 
 Students may contribute via GitHub PRs. See `CONTRIBUTING.md` for the workflow. Review PRs for:
