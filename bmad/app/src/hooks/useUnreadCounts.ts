@@ -1,38 +1,41 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { supabase } from '@/lib/supabase'
 
 export function useGalleryCardCounts(channelIds: string[]) {
   const queryClient = useQueryClient()
+  const stableKey = useMemo(() => channelIds.slice().sort().join(','), [channelIds])
 
   const query = useQuery({
-    queryKey: ['gallery-card-counts', channelIds],
+    queryKey: ['gallery-card-counts', stableKey],
     queryFn: async () => {
+      const results = await Promise.all(
+        channelIds.map(async (channelId) => {
+          const { count } = await supabase
+            .from('gallery_cards')
+            .select('id', { count: 'exact', head: true })
+            .eq('channel_id', channelId)
+          return { channelId, count: count ?? 0 }
+        })
+      )
       const counts = new Map<string, number>()
-      for (const channelId of channelIds) {
-        const { count } = await supabase
-          .from('gallery_cards')
-          .select('id', { count: 'exact', head: true })
-          .eq('channel_id', channelId)
-        if (count && count > 0) {
-          counts.set(channelId, count)
-        }
+      for (const r of results) {
+        if (r.count > 0) counts.set(r.channelId, r.count)
       }
       return counts
     },
     enabled: channelIds.length > 0,
   })
 
-  // Refresh when gallery cards change
   useEffect(() => {
-    if (!channelIds.length) return
+    if (!stableKey) return
     const channel = supabase.channel('gallery-card-counts')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'gallery_cards' }, () => {
-        queryClient.invalidateQueries({ queryKey: ['gallery-card-counts'] })
+        queryClient.invalidateQueries({ queryKey: ['gallery-card-counts', stableKey] })
       })
       .subscribe()
     return () => { supabase.removeChannel(channel) }
-  }, [channelIds, queryClient])
+  }, [stableKey, queryClient])
 
   return query
 }
@@ -74,12 +77,11 @@ export function useUnreadCounts(userId: string | undefined) {
     enabled: !!userId,
   })
 
-  // Refresh unread counts on any message insert or delete
   useEffect(() => {
     if (!userId) return
     const channel = supabase.channel('unread-counts-sync')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, () => {
-        queryClient.invalidateQueries({ queryKey: ['unread-counts'] })
+        queryClient.invalidateQueries({ queryKey: ['unread-counts', userId] })
       })
       .subscribe()
     return () => { supabase.removeChannel(channel) }
@@ -96,6 +98,6 @@ export function useMarkChannelRead() {
       .update({ last_read_at: new Date().toISOString() })
       .eq('channel_id', channelId)
       .eq('user_id', userId)
-    queryClient.invalidateQueries({ queryKey: ['unread-counts'] })
+    queryClient.invalidateQueries({ queryKey: ['unread-counts', userId] })
   }
 }

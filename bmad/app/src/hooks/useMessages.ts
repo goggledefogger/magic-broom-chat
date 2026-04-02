@@ -90,17 +90,14 @@ export function useSendMessage() {
       if (error) throw error
       return toMessage(data)
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       queryClient.invalidateQueries({ queryKey: ['messages', data.channelId] })
-      // Update last_read_at
-      supabase
+      await supabase
         .from('channel_members')
         .update({ last_read_at: new Date().toISOString() })
         .eq('channel_id', data.channelId)
         .eq('user_id', data.userId)
-        .then(() => {
-          queryClient.invalidateQueries({ queryKey: ['memberships'] })
-        })
+      queryClient.invalidateQueries({ queryKey: ['memberships'] })
     },
   })
 }

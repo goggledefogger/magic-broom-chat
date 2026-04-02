@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -41,7 +41,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate()
   const { channelId } = useParams()
 
-  const galleryChannelIds = (channels ?? []).filter((c) => c.type === 'gallery').map((c) => c.id)
+  const galleryChannelIds = useMemo(
+    () => (channels ?? []).filter((c) => c.type === 'gallery').map((c) => c.id),
+    [channels]
+  )
   const { data: galleryCardCounts } = useGalleryCardCounts(galleryChannelIds)
 
   const [showCreateChannel, setShowCreateChannel] = useState(false)
@@ -52,12 +55,16 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const [showSearch, setShowSearch] = useState(false)
   const { data: searchResults } = useSearch(searchQuery)
 
-  const memberChannelIds = new Set(memberships?.map((m) => m.channelId) ?? [])
+  const memberChannelIds = useMemo(
+    () => new Set(memberships?.map((m) => m.channelId) ?? []),
+    [memberships]
+  )
   const [recentlyJoined, setRecentlyJoined] = useState<Set<string>>(new Set())
   const autoJoinedRef = useRef(false)
   const [autoJoinTarget, setAutoJoinTarget] = useState<string | null>(null)
 
   // Auto-join default channels on first login (no memberships yet)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (autoJoinedRef.current || !user || !channels || !memberships) return
     if (memberships.length > 0) {
@@ -72,7 +79,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     toJoin.forEach((c) => {
       joinChannel.mutate({ channelId: c.id, userId: user.id })
     })
-  }, [user, channels, memberships, joinChannel])
+  }, [user, channels, memberships])
 
   // Navigate to general after auto-join completes
   useEffect(() => {
