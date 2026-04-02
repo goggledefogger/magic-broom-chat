@@ -6,7 +6,7 @@ The chat app for [A Portland Career](https://aportlandcareer.com/)'s AI-Assisted
 
 ## What Is This
 
-A Slack-style chat app with real-time messaging, channels, gallery showcases, emoji reactions, full-text search, and instructor tools. Sorcerer's Apprentice themed.
+A Slack-style chat app with real-time messaging, channels, gallery showcases, emoji reactions, full-text search, profile image upload, and instructor tools. Sorcerer's Apprentice themed.
 
 React 19 / TypeScript / Vite / Tailwind / Supabase / Vercel
 
