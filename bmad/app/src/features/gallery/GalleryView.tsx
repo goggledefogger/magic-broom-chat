@@ -64,12 +64,13 @@ export function GalleryView({ channelId }: { channelId: string }) {
     <div className="flex h-full flex-col">
       {/* Header */}
       <div className="flex items-center justify-between border-b px-4 py-3">
-        <div>
+        <div className="hidden md:block">
           <h2 className="text-lg font-semibold">#{channel?.name}</h2>
           {channel?.description && (
             <p className="text-sm text-muted-foreground">{channel.description}</p>
           )}
         </div>
+        <span className="md:hidden text-sm font-medium text-muted-foreground">{channel?.description}</span>
         <Button size="sm" onClick={() => setOpen(true)}>New Card</Button>
         <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) resetForm() }}>
           <DialogContent>
