@@ -53,28 +53,25 @@ export function useUnreadCounts(userId: string | undefined) {
       if (memErr) throw memErr
       if (!memberships?.length) return new Map<string, number>()
 
+      const results = await Promise.all(
+        memberships.map(async (m) => {
+          const q = supabase
+            .from('messages')
+            .select('id', { count: 'exact', head: true })
+            .eq('channel_id', m.channel_id)
+          if (m.last_read_at) q.gt('created_at', m.last_read_at)
+          const { count } = await q
+          return { channelId: m.channel_id, count: count ?? 0 }
+        })
+      )
+
       const counts = new Map<string, number>()
-
-      for (const membership of memberships) {
-        const query = supabase
-          .from('messages')
-          .select('id', { count: 'exact', head: true })
-          .eq('channel_id', membership.channel_id)
-
-        if (membership.last_read_at) {
-          query.gt('created_at', membership.last_read_at)
-        }
-
-        const { count } = await query
-        if (count && count > 0) {
-          counts.set(membership.channel_id, count)
-        }
+      for (const r of results) {
+        if (r.count > 0) counts.set(r.channelId, r.count)
       }
-
       return counts
     },
     enabled: !!userId,
-    refetchInterval: 30000,
   })
 
   // Refresh unread counts on any message insert or delete
