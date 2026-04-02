@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -16,6 +16,18 @@ import { useChannels, useMyMemberships, useCreateChannel, useJoinChannel } from 
 import { useProfile } from '@/hooks/useProfile'
 import { useUnreadCounts, useGalleryCardCounts } from '@/hooks/useUnreadCounts'
 import { useSearch, type SearchResult } from '@/hooks/useSearch'
+
+// Channels new users auto-join on first login (by name).
+// Add/remove names here to change the first-time experience.
+const AUTO_JOIN_CHANNELS = [
+  'general',
+  'welcome',
+  'announcements',
+  'cohort-2',
+  'pilot-cohort',
+  'project-showcase',
+  'resources',
+]
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const { user } = useAuth()
@@ -41,6 +53,33 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const { data: searchResults } = useSearch(searchQuery)
 
   const memberChannelIds = new Set(memberships?.map((m) => m.channelId) ?? [])
+  const [recentlyJoined, setRecentlyJoined] = useState<Set<string>>(new Set())
+  const autoJoinedRef = useRef(false)
+  const [autoJoinTarget, setAutoJoinTarget] = useState<string | null>(null)
+
+  // Auto-join default channels on first login (no memberships yet)
+  useEffect(() => {
+    if (autoJoinedRef.current || !user || !channels || !memberships) return
+    if (memberships.length > 0) {
+      autoJoinedRef.current = true
+      return
+    }
+    autoJoinedRef.current = true
+    const toJoin = channels.filter((c) => AUTO_JOIN_CHANNELS.includes(c.name))
+    if (!toJoin.length) return
+    const general = toJoin.find((c) => c.name === 'general')
+    setAutoJoinTarget(general?.id ?? toJoin[0].id)
+    toJoin.forEach((c) => {
+      joinChannel.mutate({ channelId: c.id, userId: user.id })
+    })
+  }, [user, channels, memberships, joinChannel])
+
+  // Navigate to general after auto-join completes
+  useEffect(() => {
+    if (!autoJoinTarget || !memberships || memberships.length === 0) return
+    navigate(`/channels/${autoJoinTarget}`, { replace: true })
+    setAutoJoinTarget(null)
+  }, [autoJoinTarget, memberships, navigate])
 
   const handleCreateChannel = async () => {
     if (!newChannelName.trim() || !user) return
@@ -59,6 +98,15 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const handleJoinChannel = async (chId: string) => {
     if (!user) return
     await joinChannel.mutateAsync({ channelId: chId, userId: user.id })
+    setRecentlyJoined((prev) => new Set(prev).add(chId))
+    setTimeout(() => {
+      setRecentlyJoined((prev) => {
+        const next = new Set(prev)
+        next.delete(chId)
+        return next
+      })
+    }, 1200)
+    navigate(`/channels/${chId}`)
   }
 
   const handleSearchResultClick = (result: SearchResult) => {
@@ -173,9 +221,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   ? (galleryCardCounts?.get(ch.id) ?? 0)
                   : (unreadCounts?.get(ch.id) ?? 0)
                 const isActive = channelId === ch.id
+                const justJoined = recentlyJoined.has(ch.id)
 
                 return (
-                  <div key={ch.id} className="flex items-center gap-1">
+                  <div key={ch.id} className={`flex items-center gap-1 ${justJoined ? 'animate-channel-join' : ''}`}>
                     {isMember ? (
                       <Link
                         to={`/channels/${ch.id}`}
