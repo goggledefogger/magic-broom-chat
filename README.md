@@ -1,159 +1,97 @@
 # Magic Broom Chat
 
-A real-time team chat app built with AI-assisted development, used as the hands-on project for Portland Career's AI-Assisted Software Development course.
+The chat app we built *with AI, for learning AI*. Real-time, real users, real code — and you helped make it.
 
-**Live app:** [magic-brooms.vercel.app](https://magic-brooms.vercel.app)
+**Live now:** [magic-brooms.vercel.app](https://magic-brooms.vercel.app)
 
-## The App
+## What Is This
 
-Magic Broom Chat is a Slack/Zulip-inspired chat application with:
+A Slack-style chat app for Portland Career's AI-Assisted Software Development course. You're not just learning about AI-assisted dev — you're using the product of it every day.
 
-- Real-time messaging across channels
-- User authentication (email/password, password reset)
-- Channel creation and browsing (standard + gallery types)
-- Emoji reactions and message deletion
-- Gallery cards with comments
-- User profiles with display name editing
-- Instructor/student roles
-- Full-text search across messages
-- Sorcerer's Apprentice theme throughout
+Real-time messaging. Channels. Gallery showcases. Emoji reactions. Full-text search. Instructor tools. A Sorcerer's Apprentice theme because why not.
 
-**Tech stack:** React 19 + TypeScript + Vite + Tailwind CSS + Supabase (auth, database, realtime) + Vercel
+**Stack:** React 19 / TypeScript / Vite / Tailwind / Supabase / Vercel
 
-## Getting Started
-
-The production app lives in `bmad/app/`. To run it locally:
+## Run It Locally
 
 ```bash
 cd bmad/app
 npm install
-cp .env.example .env.local   # then fill in your Supabase credentials
+cp .env.example .env.local   # fill in Supabase creds (ask your instructor)
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) and you're in.
+That's it. [localhost:5173](http://localhost:5173). You're in.
 
-### Environment Variables
-
-| Variable | Description |
-|----------|-------------|
-| `VITE_SUPABASE_URL` | Your Supabase project URL |
-| `VITE_SUPABASE_ANON_KEY` | Your Supabase anonymous/public key |
-
-Ask your instructor for the shared Supabase credentials, or create your own project and apply the migrations in `bmad/app/supabase/migrations/`.
-
-## Deployment
-
-The app uses three environments. **Never develop against production.**
-
-| Environment | Database | Frontend | Purpose |
-|-------------|----------|----------|---------|
-| **Local dev** | Docker (`supabase start`) | `localhost:5173` | Day-to-day development |
-| **Your fork** | Your own Supabase project | Your own Vercel URL | Testing deployments |
-| **Production** | Instructor's Supabase | [magic-brooms.vercel.app](https://magic-brooms.vercel.app) | Live app for students |
-
-### Local development (recommended)
-
-Supabase runs entirely on your machine via Docker — your own database, auth, and realtime:
+For full local Supabase (your own database, no cloud needed):
 
 ```bash
-cd bmad/app
-npx supabase start          # starts local Supabase (first run downloads Docker images)
-cp .env.example .env.local  # then set the local URL and anon key from the output
+npx supabase start            # Docker pulls images on first run
+cp .env.example .env.local    # use the local URL + anon key from output
 npm run dev
+npx supabase stop             # when done
 ```
 
-The migrations in `supabase/migrations/` are applied automatically. Local auth accepts any email — check [Mailpit](http://localhost:54324) for confirmation emails.
+## Deploy Your Own
+
+| Environment | Database | Frontend | For |
+|-------------|----------|----------|-----|
+| **Local** | Docker | localhost:5173 | Development |
+| **Your fork** | Your Supabase | Your Vercel | Testing |
+| **Production** | Instructor's | [magic-brooms.vercel.app](https://magic-brooms.vercel.app) | Don't break this one |
+
+**Frontend:** Import your fork on [Vercel](https://vercel.com/new). Root directory = `bmad/app`. Add your Supabase env vars.
+
+**Backend:** Create a free [Supabase](https://supabase.com/dashboard) project, then `npx supabase link && npx supabase db push`.
+
+## Contribute
+
+This counts as your **open source side quest**. Fork it, branch it, PR it.
 
 ```bash
-npx supabase stop           # when done (preserves data)
+git checkout -b feat/your-thing
+# hack hack hack
+npm run build                  # if TypeScript yells, fix it
+git push origin feat/your-thing
+# open PR on GitHub
 ```
 
-### Deploying your own fork
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full walkthrough. Ideas if you need 'em:
 
-To test in a production-like environment with your own infrastructure:
-
-**Supabase (backend):**
-1. Create a free project at [supabase.com/dashboard](https://supabase.com/dashboard)
-2. Apply the schema:
-   ```bash
-   npx supabase link --project-ref YOUR_PROJECT_REF
-   npx supabase db push
-   ```
-3. Copy your URL and anon key from **Settings > API**
-
-**Vercel (frontend):**
-1. Import your fork at [vercel.com/new](https://vercel.com/new)
-2. Set **Root Directory** to `bmad/app`
-3. Add env vars: `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (from your Supabase project)
-4. Deploy — you get a unique URL like `your-fork.vercel.app`
-5. Add your Vercel URL to Supabase **Authentication > URL Configuration** as the Site URL
-
-Every push to your fork creates an automatic preview deployment on Vercel.
-
-## Contributing
-
-We welcome contributions! This is a great way to practice a real-world GitHub workflow. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide, but the short version:
-
-1. Fork the repo
-2. Create a feature branch (`git checkout -b feat/your-feature`)
-3. Make your changes in `bmad/app/`
-4. Test locally (`npm run dev`, `npm run build`)
-5. Commit with a clear message
-6. Open a Pull Request
-
-### Side Quest: Open Source Contribution
-
-Contributing to this repo counts as the **open source contribution side quest**. Good first issues are labeled [`good first issue`](../../labels/good%20first%20issue) on GitHub. Ideas for contributions:
-
-- UI improvements and polish
-- New emoji reactions
 - Dark mode
 - Message threading
-- Mobile responsiveness fixes
-- Accessibility improvements
-- Test coverage
+- Mobile fixes
+- Accessibility
+- New reactions
+- Anything tagged [`good first issue`](../../labels/good%20first%20issue)
 
 ## Project Structure
 
 ```
-magic-broom-chat/
-├── bmad/app/          # The production app (BMAD Method)
-│   ├── src/
-│   │   ├── features/  # Auth, channels, gallery, profile
-│   │   ├── hooks/     # React hooks (useMessages, useChannels, etc.)
-│   │   ├── components/# Shared UI components
-│   │   ├── stores/    # Zustand state management
-│   │   └── lib/       # Supabase client, utilities
-│   └── supabase/      # Database migrations
-├── devlog/            # Development journal across all experiments
-├── CONTRIBUTING.md    # How to contribute
-└── KICKOFF_PROMPT.md  # Original project brief
+bmad/app/              # The app. All your code goes here.
+  src/features/        # Auth, channels, gallery, profile
+  src/hooks/           # Data fetching (useMessages, useChannels, etc.)
+  src/components/ui/   # Reusable UI bits
+  supabase/migrations/ # Database schema (9 migrations)
+devlog/                # How we got here (the whole experiment)
+CONTRIBUTING.md        # How to contribute
 ```
 
-## Background: How We Got Here
+## The Origin Story
 
-This app was built as a framework comparison experiment. We built the same chat app five different ways using different AI-assisted development frameworks, then chose the best one to ship:
+We built this app *five different ways* with five AI frameworks, head-to-head, to find out which one actually ships. Arrr, the results:
 
-| Framework | Approach | Outcome |
-|-----------|----------|---------|
-| **BMAD Method** | Agent-based agile, specialized personas | **Winner** — best scaffolding, most features, production-ready |
-| Compound Engineering | Schema-first, 80/20 planning | Best process workflow, used for teaching |
-| Superpowers | TDD-first, sequential phases | Most tests, highest token cost |
-| Vanilla Claude Code | No framework, direct AI coding | Fastest to prototype |
-| gstack | Design-first, virtual team | Best visual polish |
+| Framework | What Happened |
+|-----------|--------------|
+| **BMAD Method** | Walked the plank last and came back with a full ship. Auth, galleries, reactions, roles, 9 migrations. **The winner.** |
+| Compound Engineering | Best process. Great for teaching. The app itself? Serviceable, not spectacular. |
+| Superpowers | TDD everything. Most tests. Also most tokens burned. Your wallet felt that one. |
+| Vanilla Claude Code | Fastest to "something works." First to hit a wall. No framework = no guardrails. |
+| gstack | Prettiest of the bunch. Design-first energy. Substance caught up eventually. |
 
-We chose **BMAD** because it produced the most complete, well-structured application:
-- Full auth flow including password reset
-- Profile management (edit display name, view role)
-- Gallery channels with cards and comments
-- Emoji reactions
-- Instructor/student role system
-- 9 versioned database migrations
-- TanStack Query for data management
-- Zustand for state
+BMAD won because it built the most complete thing that actually worked. Not the fastest, not the cheapest — the most *shippable*.
 
-The other versions remain in the repo as educational artifacts. See `devlog/` for the full comparison journey, or open `devlog/framework-comparison-report.html` for a visual report.
+The other versions are still here as educational treasure. Dig through `devlog/` for the full saga, or open `devlog/framework-comparison-report.html` for the visual showdown.
 
 ## License
 
