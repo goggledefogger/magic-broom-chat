@@ -28,4 +28,5 @@ settings.local.json
 *.swp
 *.swo
 .DS_Store
-.gstack/
+# QA test artifacts
+.gstack/qa-reports/
