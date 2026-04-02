@@ -108,7 +108,7 @@ export function useEditMessage() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ messageId, channelId, content }: {
+    mutationFn: async ({ messageId, content }: {
       messageId: string
       channelId: string
       content: string
