@@ -73,8 +73,7 @@ export function useUpdateProfile() {
 export function useUploadAvatar() {
   return useMutation({
     mutationFn: async ({ userId, file }: { userId: string; file: File }) => {
-      const fileExt = file.name.split('.').pop()
-      const filePath = `${userId}/avatar.${fileExt}`
+      const filePath = `${userId}/avatar.jpeg`
 
       const { error: uploadError } = await supabase.storage
         .from('avatars')
@@ -82,7 +81,37 @@ export function useUploadAvatar() {
       if (uploadError) throw uploadError
 
       const { data } = supabase.storage.from('avatars').getPublicUrl(filePath)
-      return data.publicUrl
+      return `${data.publicUrl}?t=${Date.now()}`
+    },
+  })
+}
+
+export function useRemoveAvatar() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async ({ userId }: { userId: string }) => {
+      const { data: files } = await supabase.storage
+        .from('avatars')
+        .list(userId)
+
+      if (files?.length) {
+        await supabase.storage
+          .from('avatars')
+          .remove(files.map((f) => `${userId}/${f.name}`))
+      }
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .update({ avatar_url: null, updated_at: new Date().toISOString() })
+        .eq('id', userId)
+        .select()
+        .single()
+      if (error) throw error
+      return toProfile(data)
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(['profile', data.id], data)
     },
   })
 }
