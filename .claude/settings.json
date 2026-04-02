@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'if echo \"$TOOL_INPUT\" | grep -q \"git commit\"; then cd /Users/Danny/Source/magic-broom-chat/bmad/app && npx tsc --noEmit 2>&1; fi'"
+          }
+        ]
+      }
+    ]
+  }
+}
