@@ -2,11 +2,11 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Bash",
+        "matcher": "Bash(git commit*)",
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'if echo \"$TOOL_INPUT\" | grep -q \"git commit\"; then cd /Users/Danny/Source/magic-broom-chat/bmad/app && npx tsc --noEmit 2>&1; fi'"
+            "command": "cd /Users/Danny/Source/magic-broom-chat/bmad/app && npm run build 2>&1 | tail -5"
           }
         ]
       }
