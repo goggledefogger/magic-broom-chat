@@ -8,6 +8,7 @@ export interface Message {
   userId: string
   content: string
   createdAt: string
+  updatedAt: string
   profile?: {
     displayName: string | null
     avatarUrl: string | null
@@ -22,6 +23,7 @@ function toMessage(row: Record<string, unknown>): Message {
     userId: row.user_id as string,
     content: row.content as string,
     createdAt: row.created_at as string,
+    updatedAt: row.updated_at as string,
     profile: profile
       ? { displayName: profile.display_name as string | null, avatarUrl: profile.avatar_url as string | null }
       : undefined,
@@ -98,6 +100,30 @@ export function useSendMessage() {
         .eq('channel_id', data.channelId)
         .eq('user_id', data.userId)
       queryClient.invalidateQueries({ queryKey: ['memberships'] })
+    },
+  })
+}
+
+export function useEditMessage() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async ({ messageId, channelId, content }: {
+      messageId: string
+      channelId: string
+      content: string
+    }) => {
+      const { data, error } = await supabase
+        .from('messages')
+        .update({ content, updated_at: new Date().toISOString() })
+        .eq('id', messageId)
+        .select('*, profiles!messages_user_id_profiles_fkey(display_name, avatar_url)')
+        .single()
+      if (error) throw error
+      return toMessage(data)
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['messages', data.channelId] })
     },
   })
 }

@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { useAuth } from '@/hooks/useAuth'
 import { useProfile } from '@/hooks/useProfile'
 import { useChannel } from '@/hooks/useChannels'
-import { useMessages, useSendMessage, useDeleteMessage, type Message } from '@/hooks/useMessages'
+import { useMessages, useSendMessage, useEditMessage, useDeleteMessage, type Message } from '@/hooks/useMessages'
 import { useMessageReactions, useToggleReaction, summarizeReactions } from '@/hooks/useReactions'
 
 const EMOJI_OPTIONS = ['\u{1F44D}', '\u{2764}\u{FE0F}', '\u{1F389}', '\u{1F525}', '\u{1F440}', '\u{1F4A1}', '\u{2728}', '\u{1F64C}']
@@ -99,7 +99,14 @@ function MessageItem({
   isInstructor: boolean
   channelId: string
 }) {
+  const editMessage = useEditMessage()
   const deleteMessage = useDeleteMessage()
+  const [isEditing, setIsEditing] = useState(false)
+  const [editContent, setEditContent] = useState('')
+  const editRef = useRef<HTMLTextAreaElement>(null)
+
+  const isOwn = message.userId === userId
+  const isEdited = message.updatedAt !== message.createdAt
   const authorName = message.profile?.displayName ?? 'Unknown Apprentice'
   const initials = authorName
     .split(/\s+/)
@@ -108,8 +115,45 @@ function MessageItem({
     .slice(0, 2)
     .toUpperCase()
 
+  const startEditing = () => {
+    setEditContent(message.content)
+    setIsEditing(true)
+  }
+
+  const cancelEditing = () => {
+    setIsEditing(false)
+    setEditContent('')
+  }
+
+  const saveEdit = () => {
+    const trimmed = editContent.trim()
+    if (!trimmed || trimmed === message.content) {
+      cancelEditing()
+      return
+    }
+    editMessage.mutate(
+      { messageId: message.id, channelId, content: trimmed },
+      { onSuccess: () => setIsEditing(false) }
+    )
+  }
+
+  const handleEditKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      saveEdit()
+    } else if (e.key === 'Escape') {
+      cancelEditing()
+    }
+  }
+
+  useEffect(() => {
+    if (isEditing) editRef.current?.focus()
+  }, [isEditing])
+
+  const showToolbar = isOwn || isInstructor
+
   return (
-    <div className="group flex gap-3 px-4 py-2 hover:bg-muted/30">
+    <div className="group relative flex gap-3 px-4 py-2 hover:bg-muted/30">
       <Avatar className="mt-0.5 h-8 w-8 flex-shrink-0">
         <AvatarImage src={message.profile?.avatarUrl ?? undefined} />
         <AvatarFallback className="text-xs">{initials}</AvatarFallback>
@@ -118,18 +162,72 @@ function MessageItem({
         <div className="flex items-baseline gap-2">
           <span className="text-sm font-semibold">{authorName}</span>
           <span className="text-xs text-muted-foreground">{formatTime(message.createdAt)}</span>
+          {isEdited && (
+            <span className="text-xs text-muted-foreground/60">(edited)</span>
+          )}
+        </div>
+        {isEditing ? (
+          <div className="mt-1">
+            <Textarea
+              ref={editRef}
+              value={editContent}
+              onChange={(e) => setEditContent(e.target.value)}
+              onKeyDown={handleEditKeyDown}
+              className="min-h-[40px] max-h-[120px] resize-none text-sm"
+              rows={1}
+            />
+            <div className="mt-1 flex gap-2">
+              <button
+                onClick={saveEdit}
+                disabled={editMessage.isPending}
+                className="text-xs text-primary hover:text-primary/80"
+              >
+                {editMessage.isPending ? 'Saving...' : 'Save'}
+              </button>
+              <button
+                onClick={cancelEditing}
+                className="text-xs text-muted-foreground hover:text-foreground"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          <p className="whitespace-pre-wrap text-sm">{message.content}</p>
+        )}
+        <MessageReactions messageId={message.id} userId={userId} />
+      </div>
+
+      {/* Floating toolbar */}
+      {showToolbar && !isEditing && (
+        <div className="absolute -top-3 right-4 flex items-center gap-0.5 rounded-md border bg-background px-1 py-0.5 shadow-sm opacity-0 transition-opacity group-hover:opacity-100">
+          {isOwn && (
+            <button
+              onClick={startEditing}
+              className="rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+              title="Edit message"
+            >
+              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                <path d="m15 5 4 4" />
+              </svg>
+            </button>
+          )}
           {isInstructor && (
             <button
               onClick={() => deleteMessage.mutate({ messageId: message.id, channelId })}
-              className="ml-auto text-xs text-destructive/60 opacity-0 transition-opacity hover:text-destructive group-hover:opacity-100"
+              className="rounded p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+              title="Delete message"
             >
-              Delete
+              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 6h18" />
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+              </svg>
             </button>
           )}
         </div>
-        <p className="whitespace-pre-wrap text-sm">{message.content}</p>
-        <MessageReactions messageId={message.id} userId={userId} />
-      </div>
+      )}
     </div>
   )
 }
