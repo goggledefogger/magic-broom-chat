@@ -131,7 +131,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       {/* Sidebar */}
       <aside className="flex w-64 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
         <div className="flex items-center gap-2 p-4">
-          <h1 className="text-lg font-bold text-sidebar-primary">Magic Broom</h1>
+          <h1 className="text-lg font-bold text-sidebar-primary">Magic Brooms</h1>
         </div>
         <Separator className="bg-sidebar-border" />
 
