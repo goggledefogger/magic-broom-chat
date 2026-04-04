@@ -62,8 +62,8 @@ function MessageReactions({ messageId, userId }: { messageId: string; userId: st
           onClick={() => toggleReaction.mutate({ userId, emoji: r.emoji, messageId })}
           className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs transition-colors ${
             r.userReacted
-              ? 'border-primary/50 bg-primary/10'
-              : 'border-border bg-muted/50 hover:bg-muted'
+              ? 'border-primary/50 bg-primary/15 shadow-[0_0_6px_rgba(241,90,36,0.1)]'
+              : 'border-border bg-muted/30 hover:bg-muted/50'
           }`}
         >
           <span>{r.emoji}</span>
@@ -73,12 +73,12 @@ function MessageReactions({ messageId, userId }: { messageId: string; userId: st
       <div className="relative">
         <button
           onClick={() => setShowPicker(!showPicker)}
-          className="inline-flex h-6 w-6 items-center justify-center rounded-full text-xs text-muted-foreground hover:bg-muted"
+          className="inline-flex h-6 w-6 items-center justify-center rounded-full text-xs text-muted-foreground hover:bg-muted/50"
         >
           +
         </button>
         {showPicker && (
-          <div className="absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg border bg-popover p-1 shadow-md">
+          <div className="absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg border border-border bg-popover p-1 shadow-[0_4px_16px_rgba(0,0,0,0.3)]">
             {EMOJI_OPTIONS.map((emoji) => (
               <button
                 key={emoji}
@@ -183,7 +183,7 @@ function MessageItem({
 
   return (
     <div
-      className="group relative flex gap-3 px-4 py-2 hover:bg-muted/30"
+      className="group relative flex gap-3 px-4 py-2"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerCancel}
@@ -193,7 +193,7 @@ function MessageItem({
         <AvatarImage src={message.profile?.avatarUrl ?? undefined} />
         <AvatarFallback className="text-xs">{initials}</AvatarFallback>
       </Avatar>
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 rounded-xl bg-card border border-border p-3">
         <div className="flex items-baseline gap-2">
           <span className="text-sm font-semibold">{authorName}</span>
           <span className="text-xs text-muted-foreground">{formatTime(message.createdAt)}</span>
@@ -235,7 +235,7 @@ function MessageItem({
 
       {/* Floating toolbar - desktop hover + mobile long-press */}
       {showToolbar && !isEditing && (
-        <div className={`absolute -top-3 right-4 flex items-center gap-0.5 rounded-md border bg-background px-1 py-0.5 shadow-sm transition-opacity ${
+        <div className={`absolute -top-3 right-4 flex items-center gap-0.5 rounded-md border border-border bg-popover px-1 py-0.5 shadow-[0_2px_8px_rgba(0,0,0,0.3)] transition-opacity ${
           showMobileToolbar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
         }`}>
           {isOwn && (
@@ -350,9 +350,9 @@ export function ChatView({ channelId }: { channelId: string }) {
   return (
     <div className="flex h-full flex-col">
       {/* Channel header - hidden on mobile (mobile header in AppLayout) */}
-      <div className="hidden md:flex items-center gap-3 border-b px-4 py-3">
+      <div className="hidden md:flex items-center gap-3 border-b border-border px-4 py-3">
         <div>
-          <h2 className="text-lg font-semibold">#{channel?.name}</h2>
+          <h2 className="font-heading text-lg font-bold">#{channel?.name}</h2>
           {channel?.description && (
             <p className="text-sm text-muted-foreground">{channel.description}</p>
           )}
@@ -393,7 +393,7 @@ export function ChatView({ channelId }: { channelId: string }) {
       </ScrollArea>
 
       {/* Message input */}
-      <div className="border-t p-4">
+      <div className="border-t border-border p-4">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <Textarea
             placeholder={`Message #${channel?.name ?? '...'}`}
