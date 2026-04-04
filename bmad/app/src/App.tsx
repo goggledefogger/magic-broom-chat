@@ -66,10 +66,10 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AppLayout>
-                    <div className="flex h-full items-center justify-center text-muted-foreground">
+                    <div className="flex h-full items-center justify-center">
                       <div className="text-center space-y-2">
-                        <p className="text-2xl">Welcome to the workshop</p>
-                        <p className="text-sm">Select a channel to begin</p>
+                        <p className="font-heading text-2xl font-semibold text-foreground/60">Welcome to the workshop</p>
+                        <p className="text-sm text-muted-foreground/60">Select a channel to begin</p>
                       </div>
                     </div>
                   </AppLayout>

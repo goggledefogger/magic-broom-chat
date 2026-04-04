@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
 import {
   AlertDialog,
   AlertDialogContent,
@@ -62,8 +61,8 @@ function MessageReactions({ messageId, userId }: { messageId: string; userId: st
           onClick={() => toggleReaction.mutate({ userId, emoji: r.emoji, messageId })}
           className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs transition-colors ${
             r.userReacted
-              ? 'border-primary/50 bg-primary/10'
-              : 'border-border bg-muted/50 hover:bg-muted'
+              ? 'border-primary/40 bg-primary/10 text-primary'
+              : 'border-border/50 bg-muted/30 hover:bg-muted/50'
           }`}
         >
           <span>{r.emoji}</span>
@@ -73,12 +72,12 @@ function MessageReactions({ messageId, userId }: { messageId: string; userId: st
       <div className="relative">
         <button
           onClick={() => setShowPicker(!showPicker)}
-          className="inline-flex h-6 w-6 items-center justify-center rounded-full text-xs text-muted-foreground hover:bg-muted"
+          className="inline-flex h-6 w-6 items-center justify-center rounded-full text-xs text-muted-foreground hover:bg-muted/50 hover:text-foreground"
         >
           +
         </button>
         {showPicker && (
-          <div className="absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg border bg-popover p-1 shadow-md">
+          <div className="absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg border border-border/50 bg-popover p-1 shadow-lg">
             {EMOJI_OPTIONS.map((emoji) => (
               <button
                 key={emoji}
@@ -86,7 +85,7 @@ function MessageReactions({ messageId, userId }: { messageId: string; userId: st
                   toggleReaction.mutate({ userId, emoji, messageId })
                   setShowPicker(false)
                 }}
-                className="rounded p-1 text-sm hover:bg-muted"
+                className="rounded p-1 text-sm hover:bg-muted/50"
               >
                 {emoji}
               </button>
@@ -183,22 +182,22 @@ function MessageItem({
 
   return (
     <div
-      className="group relative flex gap-3 px-4 py-2 hover:bg-muted/30"
+      className="group relative flex gap-3 px-4 py-1.5 transition-colors hover:bg-muted/20"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerCancel}
       onPointerMove={handlePointerUp}
     >
-      <Avatar className="mt-0.5 h-8 w-8 flex-shrink-0">
+      <Avatar className="mt-0.5 h-8 w-8 flex-shrink-0 ring-1 ring-border/30">
         <AvatarImage src={message.profile?.avatarUrl ?? undefined} />
-        <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+        <AvatarFallback className="bg-muted text-xs text-muted-foreground">{initials}</AvatarFallback>
       </Avatar>
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-2">
-          <span className="text-sm font-semibold">{authorName}</span>
-          <span className="text-xs text-muted-foreground">{formatTime(message.createdAt)}</span>
+          <span className="text-sm font-semibold text-foreground">{authorName}</span>
+          <span className="text-[11px] text-muted-foreground/60">{formatTime(message.createdAt)}</span>
           {isEdited && (
-            <span className="text-xs text-muted-foreground/60">(edited)</span>
+            <span className="text-[11px] text-muted-foreground/40">(edited)</span>
           )}
         </div>
         {isEditing ? (
@@ -228,20 +227,20 @@ function MessageItem({
             </div>
           </div>
         ) : (
-          <p className="whitespace-pre-wrap text-sm">{message.content}</p>
+          <p className="whitespace-pre-wrap text-sm text-foreground/90">{message.content}</p>
         )}
         <MessageReactions messageId={message.id} userId={userId} />
       </div>
 
       {/* Floating toolbar - desktop hover + mobile long-press */}
       {showToolbar && !isEditing && (
-        <div className={`absolute -top-3 right-4 flex items-center gap-0.5 rounded-md border bg-background px-1 py-0.5 shadow-sm transition-opacity ${
+        <div className={`absolute -top-3 right-4 flex items-center gap-0.5 rounded-md border border-border/50 bg-card px-1 py-0.5 shadow-sm transition-opacity ${
           showMobileToolbar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
         }`}>
           {isOwn && (
             <button
               onClick={() => { startEditing(); setShowMobileToolbar(false) }}
-              className="rounded p-2.5 md:p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+              className="rounded p-2.5 md:p-1 text-muted-foreground hover:bg-muted/50 hover:text-foreground"
               title="Edit message"
             >
               <svg className="h-4 w-4 md:h-3.5 md:w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -350,11 +349,11 @@ export function ChatView({ channelId }: { channelId: string }) {
   return (
     <div className="flex h-full flex-col">
       {/* Channel header - hidden on mobile (mobile header in AppLayout) */}
-      <div className="hidden md:flex items-center gap-3 border-b px-4 py-3">
+      <div className="hidden md:flex items-center gap-3 border-b border-border/50 px-4 py-3">
         <div>
-          <h2 className="text-lg font-semibold">#{channel?.name}</h2>
+          <h2 className="font-heading text-lg font-semibold">#{channel?.name}</h2>
           {channel?.description && (
-            <p className="text-sm text-muted-foreground">{channel.description}</p>
+            <p className="text-xs text-muted-foreground">{channel.description}</p>
           )}
         </div>
       </div>
@@ -366,16 +365,16 @@ export function ChatView({ channelId }: { channelId: string }) {
             <p className="px-4 text-sm text-muted-foreground">Loading messages...</p>
           )}
           {messages?.length === 0 && (
-            <p className="px-4 text-sm text-muted-foreground">
-              No messages yet. Be the first to speak in this channel.
-            </p>
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <p className="text-muted-foreground/60 text-sm">
+                No messages yet. Be the first to speak in this channel.
+              </p>
+            </div>
           )}
           {groupedMessages.map((group) => (
             <div key={group.date}>
-              <div className="relative my-4 flex items-center px-4">
-                <Separator className="flex-1" />
-                <span className="px-3 text-xs text-muted-foreground">{group.date}</span>
-                <Separator className="flex-1" />
+              <div className="date-separator">
+                <span>{group.date}</span>
               </div>
               {group.messages.map((msg) => (
                 <MessageItem
@@ -393,14 +392,14 @@ export function ChatView({ channelId }: { channelId: string }) {
       </ScrollArea>
 
       {/* Message input */}
-      <div className="border-t p-4">
-        <form onSubmit={handleSubmit} className="flex gap-2">
+      <div className="border-t border-border/50 p-3">
+        <form onSubmit={handleSubmit} className="input-glow flex gap-2 rounded-lg border border-border/50 bg-muted/30 p-1">
           <Textarea
             placeholder={`Message #${channel?.name ?? '...'}`}
             value={content}
             onChange={(e) => setContent(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="min-h-[40px] max-h-[120px] resize-none"
+            className="min-h-[36px] max-h-[120px] resize-none border-0 bg-transparent text-sm shadow-none focus-visible:ring-0"
             rows={1}
           />
           <Button

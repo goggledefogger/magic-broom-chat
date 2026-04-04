@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuth } from '@/hooks/useAuth'
 import { handleSupabaseError } from '@/lib/errors'
 
@@ -30,7 +29,6 @@ export function SignupPage() {
       return
     }
 
-    // If email confirmation is required, the session will be null
     if (data?.session) {
       navigate('/channels')
     } else {
@@ -41,52 +39,61 @@ export function SignupPage() {
 
   if (confirmationSent) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Scroll Dispatched</CardTitle>
-            <CardDescription>
+      <div className="auth-bg flex min-h-dvh items-center justify-center p-4">
+        <div className="card-glow w-full max-w-sm rounded-lg border border-border/50 bg-card/80 backdrop-blur-sm">
+          <div className="p-6 text-center">
+            <h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground">
+              Scroll Dispatched
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground">
               A confirmation scroll has been sent to your email. Open it to complete your apprenticeship.
-            </CardDescription>
-          </CardHeader>
-          <CardFooter className="justify-center">
-            <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">
+            </p>
+          </div>
+          <div className="flex justify-center px-6 pb-6">
+            <Link to="/login" className="text-sm text-muted-foreground transition-colors hover:text-primary">
               Return to the workshop entrance
             </Link>
-          </CardFooter>
-        </Card>
+          </div>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Begin Your Apprenticeship</CardTitle>
-          <CardDescription>
+    <div className="auth-bg flex min-h-dvh items-center justify-center p-4">
+      <div className="card-glow w-full max-w-sm rounded-lg border border-border/50 bg-card/80 backdrop-blur-sm">
+        <div className="p-6 pb-2 text-center">
+          <h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground">
+            Begin Your Apprenticeship
+          </h1>
+          <p className="mt-1.5 text-sm text-muted-foreground">
             Join the workshop and learn the ways of the broom.
-          </CardDescription>
-        </CardHeader>
+          </p>
+        </div>
         <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
+          <div className="space-y-4 px-6 py-4">
             {error && (
-              <p className="rounded bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
                 {error}
               </p>
             )}
-            <div className="space-y-2">
-              <Label htmlFor="displayName">Display Name</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="displayName" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                Display Name
+              </Label>
               <Input
                 id="displayName"
                 type="text"
                 placeholder="What shall we call you?"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
+                className="bg-background/50 border-border/50 focus:border-primary/50"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                Email
+              </Label>
               <Input
                 id="email"
                 type="email"
@@ -94,10 +101,13 @@ export function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="bg-background/50 border-border/50 focus:border-primary/50"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="password" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                Password
+              </Label>
               <Input
                 id="password"
                 type="password"
@@ -106,19 +116,20 @@ export function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
+                className="bg-background/50 border-border/50 focus:border-primary/50"
               />
             </div>
-          </CardContent>
-          <CardFooter className="flex flex-col gap-3">
+          </div>
+          <div className="flex flex-col gap-3 px-6 pb-6">
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Inscribing your name...' : 'Join the Workshop'}
             </Button>
-            <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">
+            <Link to="/login" className="text-center text-sm text-muted-foreground transition-colors hover:text-primary">
               Already an apprentice? Sign in
             </Link>
-          </CardFooter>
+          </div>
         </form>
-      </Card>
+      </div>
     </div>
   )
 }

@@ -80,14 +80,14 @@ export function GalleryCardDetail() {
         {/* Back link */}
         <Link
           to={`/channels/${channelId}`}
-          className="mb-4 inline-block text-sm text-muted-foreground hover:text-foreground"
+          className="mb-4 inline-block text-sm text-muted-foreground transition-colors hover:text-primary"
         >
           &larr; Back to gallery
         </Link>
 
         {/* Card content */}
         {card.imageUrl && (
-          <div className="mb-4 overflow-hidden rounded-lg">
+          <div className="mb-4 overflow-hidden rounded-lg border border-border/30">
             <img
               src={card.imageUrl}
               alt={card.title}
@@ -96,15 +96,15 @@ export function GalleryCardDetail() {
           </div>
         )}
 
-        <h1 className="mb-2 text-2xl font-bold">{card.title}</h1>
+        <h1 className="font-heading mb-2 text-2xl font-bold">{card.title}</h1>
 
-        <p className="mb-2 text-sm text-muted-foreground">
+        <p className="mb-2 text-sm text-muted-foreground/70">
           By {card.profile?.displayName ?? 'Unknown'} &middot;{' '}
           {formatRelativeTime(card.createdAt)}
         </p>
 
         {card.description && (
-          <p className="mb-4 whitespace-pre-wrap text-sm">{card.description}</p>
+          <p className="mb-4 whitespace-pre-wrap text-sm text-foreground/90">{card.description}</p>
         )}
 
         {card.link && (
@@ -112,7 +112,7 @@ export function GalleryCardDetail() {
             href={card.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="mb-4 inline-block text-sm text-primary underline hover:text-primary/80"
+            className="mb-4 inline-block text-sm text-primary underline decoration-primary/30 hover:decoration-primary"
           >
             View linked resource &rarr;
           </a>
@@ -128,8 +128,8 @@ export function GalleryCardDetail() {
               }
               className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-sm transition-colors ${
                 r.userReacted
-                  ? 'border-primary/50 bg-primary/10'
-                  : 'border-border bg-muted/50 hover:bg-muted'
+                  ? 'border-primary/40 bg-primary/10 text-primary'
+                  : 'border-border/50 bg-muted/30 hover:bg-muted/50'
               }`}
             >
               <span>{r.emoji}</span>
@@ -139,12 +139,12 @@ export function GalleryCardDetail() {
           <div className="relative">
             <button
               onClick={() => setShowPicker(!showPicker)}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-sm text-muted-foreground hover:bg-muted"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-sm text-muted-foreground hover:bg-muted/50 hover:text-foreground"
             >
               +
             </button>
             {showPicker && (
-              <div className="absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg border bg-popover p-2 shadow-md">
+              <div className="absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg border border-border/50 bg-popover p-2 shadow-lg">
                 {EMOJI_OPTIONS.map((emoji) => (
                   <button
                     key={emoji}
@@ -154,7 +154,7 @@ export function GalleryCardDetail() {
                       }
                       setShowPicker(false)
                     }}
-                    className="rounded p-1 hover:bg-muted"
+                    className="rounded p-1 hover:bg-muted/50"
                   >
                     {emoji}
                   </button>
@@ -164,13 +164,13 @@ export function GalleryCardDetail() {
           </div>
         </div>
 
-        <Separator className="my-6" />
+        <Separator className="my-6 bg-border/30" />
 
         {/* Comments */}
-        <h2 className="mb-4 text-lg font-semibold">Comments</h2>
+        <h2 className="font-heading mb-4 text-lg font-semibold">Comments</h2>
 
         {comments?.length === 0 && (
-          <p className="mb-4 text-sm text-muted-foreground">No comments yet.</p>
+          <p className="mb-4 text-sm text-muted-foreground/60">No comments yet.</p>
         )}
 
         <div className="space-y-4">
@@ -185,18 +185,18 @@ export function GalleryCardDetail() {
 
             return (
               <div key={comment.id} className="flex gap-3">
-                <Avatar className="mt-0.5 h-7 w-7 flex-shrink-0">
+                <Avatar className="mt-0.5 h-7 w-7 flex-shrink-0 ring-1 ring-border/30">
                   <AvatarImage src={comment.profile?.avatarUrl ?? undefined} />
-                  <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+                  <AvatarFallback className="bg-muted text-xs text-muted-foreground">{initials}</AvatarFallback>
                 </Avatar>
                 <div>
                   <div className="flex items-baseline gap-2">
                     <span className="text-sm font-semibold">{authorName}</span>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-[11px] text-muted-foreground/60">
                       {formatRelativeTime(comment.createdAt)}
                     </span>
                   </div>
-                  <p className="whitespace-pre-wrap text-sm">{comment.content}</p>
+                  <p className="whitespace-pre-wrap text-sm text-foreground/90">{comment.content}</p>
                 </div>
               </div>
             )
@@ -204,12 +204,12 @@ export function GalleryCardDetail() {
         </div>
 
         {/* Comment input */}
-        <form onSubmit={handleComment} className="mt-6 flex gap-2">
+        <form onSubmit={handleComment} className="input-glow mt-6 flex gap-2 rounded-lg border border-border/50 bg-muted/30 p-1">
           <Textarea
             placeholder="Add a comment..."
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
-            className="min-h-[40px] resize-none"
+            className="min-h-[40px] resize-none border-0 bg-transparent text-sm shadow-none focus-visible:ring-0"
             rows={2}
           />
           <Button

@@ -63,11 +63,11 @@ export function GalleryView({ channelId }: { channelId: string }) {
   return (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between border-b px-4 py-3">
+      <div className="flex items-center justify-between border-b border-border/50 px-4 py-3">
         <div className="hidden md:block">
-          <h2 className="text-lg font-semibold">#{channel?.name}</h2>
+          <h2 className="font-heading text-lg font-semibold">#{channel?.name}</h2>
           {channel?.description && (
-            <p className="text-sm text-muted-foreground">{channel.description}</p>
+            <p className="text-xs text-muted-foreground">{channel.description}</p>
           )}
         </div>
         <span className="md:hidden text-sm font-medium text-muted-foreground">{channel?.description}</span>
@@ -75,15 +75,15 @@ export function GalleryView({ channelId }: { channelId: string }) {
         <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) resetForm() }}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create Gallery Card</DialogTitle>
+              <DialogTitle className="font-heading">Create Gallery Card</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleCreate} className="space-y-4">
               {error && (
-                <p className="rounded bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
                   {error}
                 </p>
               )}
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <Label htmlFor="card-title">Title</Label>
                 <Input
                   id="card-title"
@@ -93,7 +93,7 @@ export function GalleryView({ channelId }: { channelId: string }) {
                   required
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <Label htmlFor="card-desc">Description</Label>
                 <Textarea
                   id="card-desc"
@@ -103,7 +103,7 @@ export function GalleryView({ channelId }: { channelId: string }) {
                   rows={3}
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <Label htmlFor="card-link">Link (optional)</Label>
                 <Input
                   id="card-link"
@@ -113,7 +113,7 @@ export function GalleryView({ channelId }: { channelId: string }) {
                   onChange={(e) => setLink(e.target.value)}
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <Label htmlFor="card-image">Image URL (optional)</Label>
                 <Input
                   id="card-image"
@@ -137,15 +137,17 @@ export function GalleryView({ channelId }: { channelId: string }) {
           <p className="text-sm text-muted-foreground">Loading gallery...</p>
         )}
         {cards?.length === 0 && (
-          <p className="text-sm text-muted-foreground">
-            No cards yet. Create the first one!
-          </p>
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <p className="text-sm text-muted-foreground/60">
+              No cards yet. Create the first one!
+            </p>
+          </div>
         )}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {cards?.map((card) => (
             <Card
               key={card.id}
-              className="cursor-pointer transition-shadow hover:shadow-md"
+              className="card-hover-glow cursor-pointer border-border/50 bg-card/80"
               onClick={() => navigate(`/channels/${channelId}/card/${card.id}`)}
             >
               {card.imageUrl && (
@@ -158,7 +160,7 @@ export function GalleryView({ channelId }: { channelId: string }) {
                 </div>
               )}
               <CardHeader className={card.imageUrl ? 'pt-3' : undefined}>
-                <CardTitle className="text-base">{card.title}</CardTitle>
+                <CardTitle className="text-base font-semibold">{card.title}</CardTitle>
               </CardHeader>
               {card.description && (
                 <CardContent className="pt-0">
@@ -167,7 +169,7 @@ export function GalleryView({ channelId }: { channelId: string }) {
                   </p>
                 </CardContent>
               )}
-              <CardFooter className="pt-0 text-xs text-muted-foreground">
+              <CardFooter className="pt-0 text-xs text-muted-foreground/60">
                 {card.profile?.displayName ?? 'Unknown'} &middot;{' '}
                 {new Intl.DateTimeFormat('en-US', {
                   month: 'short',

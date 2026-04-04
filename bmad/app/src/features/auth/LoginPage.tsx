@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuth } from '@/hooks/useAuth'
 import { handleSupabaseError } from '@/lib/errors'
 
@@ -31,23 +30,27 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Enter the Workshop</CardTitle>
-          <CardDescription>
+    <div className="auth-bg flex min-h-dvh items-center justify-center p-4">
+      <div className="card-glow w-full max-w-sm rounded-lg border border-border/50 bg-card/80 backdrop-blur-sm">
+        <div className="p-6 pb-2 text-center">
+          <h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground">
+            Enter the Workshop
+          </h1>
+          <p className="mt-1.5 text-sm text-muted-foreground">
             The brooms await your command, apprentice.
-          </CardDescription>
-        </CardHeader>
+          </p>
+        </div>
         <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
+          <div className="space-y-4 px-6 py-4">
             {error && (
-              <p className="rounded bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
                 {error}
               </p>
             )}
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                Email
+              </Label>
               <Input
                 id="email"
                 type="email"
@@ -55,10 +58,13 @@ export function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="bg-background/50 border-border/50 focus:border-primary/50"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="password" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                Password
+              </Label>
               <Input
                 id="password"
                 type="password"
@@ -66,24 +72,25 @@ export function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className="bg-background/50 border-border/50 focus:border-primary/50"
               />
             </div>
-          </CardContent>
-          <CardFooter className="flex flex-col gap-3">
+          </div>
+          <div className="flex flex-col gap-3 px-6 pb-6">
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Opening the doors...' : 'Enter'}
             </Button>
-            <div className="flex gap-4 text-sm">
-              <Link to="/signup" className="text-muted-foreground hover:text-foreground">
+            <div className="flex justify-center gap-4 text-sm">
+              <Link to="/signup" className="text-muted-foreground transition-colors hover:text-primary">
                 New apprentice? Sign up
               </Link>
-              <Link to="/forgot-password" className="text-muted-foreground hover:text-foreground">
+              <Link to="/forgot-password" className="text-muted-foreground transition-colors hover:text-primary">
                 Forgot password?
               </Link>
             </div>
-          </CardFooter>
+          </div>
         </form>
-      </Card>
+      </div>
     </div>
   )
 }
