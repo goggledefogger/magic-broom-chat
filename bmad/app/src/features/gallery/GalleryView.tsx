@@ -63,9 +63,9 @@ export function GalleryView({ channelId }: { channelId: string }) {
   return (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between border-b px-4 py-3">
+      <div className="flex items-center justify-between border-b border-border px-4 py-3">
         <div className="hidden md:block">
-          <h2 className="text-lg font-semibold">#{channel?.name}</h2>
+          <h2 className="font-heading text-lg font-bold">#{channel?.name}</h2>
           {channel?.description && (
             <p className="text-sm text-muted-foreground">{channel.description}</p>
           )}
@@ -141,11 +141,12 @@ export function GalleryView({ channelId }: { channelId: string }) {
             No cards yet. Create the first one!
           </p>
         )}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {cards?.map((card) => (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {cards?.map((card, i) => (
             <Card
               key={card.id}
-              className="cursor-pointer transition-shadow hover:shadow-md"
+              className="animate-message-appear cursor-pointer transition-all hover:border-primary/30 hover:shadow-[0_0_20px_rgba(241,90,36,0.1)]"
+              style={{ animationDelay: `${i * 80}ms`, animationFillMode: 'backwards' }}
               onClick={() => navigate(`/channels/${channelId}/card/${card.id}`)}
             >
               {card.imageUrl && (
