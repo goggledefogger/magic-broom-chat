@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import {
@@ -70,9 +69,9 @@ function SidebarContent({
   return (
     <>
       <div className="flex items-center gap-2 p-4">
-        <h1 className="text-lg font-bold text-sidebar-primary">Magic Brooms</h1>
+        <h1 className="font-heading text-lg font-bold text-sidebar-foreground">Magic Brooms</h1>
       </div>
-      <Separator className="bg-sidebar-border" />
+      <div className="h-px bg-gradient-to-r from-primary to-transparent" />
 
       {/* Search */}
       <div className="p-3">
@@ -138,7 +137,7 @@ function SidebarContent({
                       to={`/channels/${ch.id}`}
                       className={`flex-1 rounded px-2 py-1.5 text-sm transition-colors ${
                         isActive
-                          ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
+                          ? 'border-l-3 border-l-primary bg-sidebar-accent text-sidebar-accent-foreground font-medium pl-3'
                           : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50'
                       } ${badgeCount > 0 ? 'font-bold' : ''}`}
                     >
@@ -147,7 +146,7 @@ function SidebarContent({
                       </span>
                       {ch.name}
                       {badgeCount > 0 && (
-                        <Badge variant="secondary" className="ml-1 h-4 min-w-4 justify-center px-1 text-[10px]">
+                        <Badge variant="default" className="ml-1 h-4 min-w-4 justify-center px-1 text-[10px]">
                           {badgeCount}
                         </Badge>
                       )}
@@ -169,10 +168,13 @@ function SidebarContent({
       </ScrollArea>
 
       {/* User section */}
-      <Separator className="bg-sidebar-border" />
-      <div className="flex items-center justify-between p-3">
-        <Link to="/profile" className="text-sm text-sidebar-foreground/80 hover:text-sidebar-foreground">
-          {profile?.displayName ?? user?.email ?? 'Apprentice'}
+      <div className="h-px bg-sidebar-border" />
+      <div className="flex items-center gap-3 p-3">
+        <Link to="/profile" className="flex items-center gap-2 flex-1 text-sm text-sidebar-foreground/80 hover:text-sidebar-foreground">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary text-xs font-medium text-secondary-foreground">
+            {(profile?.displayName ?? user?.email ?? '?').split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase()}
+          </div>
+          <span>{profile?.displayName ?? user?.email ?? 'Apprentice'}</span>
         </Link>
         <Button
           variant="ghost"
@@ -377,7 +379,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           >
             <MenuIcon className="h-5 w-5" />
           </Button>
-          <span className="flex-1 text-sm font-semibold truncate">
+          <span className="flex-1 font-heading text-sm font-semibold truncate">
             {currentChannel ? `#${currentChannel.name}` : 'Magic Brooms'}
           </span>
           <Link to="/profile" className="text-sm text-muted-foreground">
