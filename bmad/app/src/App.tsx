@@ -68,7 +68,7 @@ function App() {
                   <AppLayout>
                     <div className="flex h-full items-center justify-center text-muted-foreground">
                       <div className="text-center space-y-2">
-                        <p className="text-2xl">Welcome to the workshop</p>
+                        <p className="font-heading text-2xl">Welcome to the workshop</p>
                         <p className="text-sm">Select a channel to begin</p>
                       </div>
                     </div>

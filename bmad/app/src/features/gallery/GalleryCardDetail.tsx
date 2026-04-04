@@ -96,7 +96,7 @@ export function GalleryCardDetail() {
           </div>
         )}
 
-        <h1 className="mb-2 text-2xl font-bold">{card.title}</h1>
+        <h1 className="font-heading mb-2 text-2xl font-bold">{card.title}</h1>
 
         <p className="mb-2 text-sm text-muted-foreground">
           By {card.profile?.displayName ?? 'Unknown'} &middot;{' '}
@@ -112,7 +112,7 @@ export function GalleryCardDetail() {
             href={card.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="mb-4 inline-block text-sm text-primary underline hover:text-primary/80"
+            className="mb-4 inline-block text-sm text-accent underline hover:text-accent/80"
           >
             View linked resource &rarr;
           </a>
@@ -167,7 +167,7 @@ export function GalleryCardDetail() {
         <Separator className="my-6" />
 
         {/* Comments */}
-        <h2 className="mb-4 text-lg font-semibold">Comments</h2>
+        <h2 className="font-heading mb-4 text-lg font-semibold">Comments</h2>
 
         {comments?.length === 0 && (
           <p className="mb-4 text-sm text-muted-foreground">No comments yet.</p>
@@ -191,7 +191,7 @@ export function GalleryCardDetail() {
                 </Avatar>
                 <div>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-sm font-semibold">{authorName}</span>
+                    <span className="text-sm font-semibold text-primary">{authorName}</span>
                     <span className="text-xs text-muted-foreground">
                       {formatRelativeTime(comment.createdAt)}
                     </span>

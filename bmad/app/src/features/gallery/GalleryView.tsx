@@ -65,7 +65,7 @@ export function GalleryView({ channelId }: { channelId: string }) {
       {/* Header */}
       <div className="flex items-center justify-between border-b px-4 py-3">
         <div className="hidden md:block">
-          <h2 className="text-lg font-semibold">#{channel?.name}</h2>
+          <h2 className="font-heading text-lg font-semibold">#{channel?.name}</h2>
           {channel?.description && (
             <p className="text-sm text-muted-foreground">{channel.description}</p>
           )}
@@ -145,7 +145,7 @@ export function GalleryView({ channelId }: { channelId: string }) {
           {cards?.map((card) => (
             <Card
               key={card.id}
-              className="cursor-pointer transition-shadow hover:shadow-md"
+              className="cursor-pointer transition-all hover:border-foreground/10 hover:-translate-y-0.5"
               onClick={() => navigate(`/channels/${channelId}/card/${card.id}`)}
             >
               {card.imageUrl && (
@@ -158,7 +158,7 @@ export function GalleryView({ channelId }: { channelId: string }) {
                 </div>
               )}
               <CardHeader className={card.imageUrl ? 'pt-3' : undefined}>
-                <CardTitle className="text-base">{card.title}</CardTitle>
+                <CardTitle className="font-heading text-base">{card.title}</CardTitle>
               </CardHeader>
               {card.description && (
                 <CardContent className="pt-0">

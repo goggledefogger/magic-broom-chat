@@ -104,7 +104,7 @@ export function ProfilePage() {
 
   return (
     <div className="flex h-full items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md border-t-4 border-t-primary">
         <CardHeader className="text-center">
           <div className="flex flex-col items-center gap-2">
             <button
@@ -149,7 +149,7 @@ export function ProfilePage() {
               </button>
             )}
           </div>
-          <CardTitle className="text-2xl">Your Profile</CardTitle>
+          <CardTitle className="font-heading text-2xl">Your Profile</CardTitle>
           <CardDescription>{user?.email}</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
@@ -166,7 +166,7 @@ export function ProfilePage() {
             </div>
             <div className="space-y-2">
               <Label className="text-muted-foreground">Role</Label>
-              <p className="text-sm capitalize">{profile?.role ?? 'student'}</p>
+              <p className="inline-block rounded-full bg-secondary/20 px-3 py-0.5 text-sm capitalize text-secondary">{profile?.role ?? 'student'}</p>
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-3">
@@ -183,7 +183,7 @@ export function ProfilePage() {
             </Button>
             <Link
               to="/channels"
-              className="text-sm text-muted-foreground hover:text-foreground"
+              className="text-sm text-accent hover:text-accent/80"
             >
               Back to channels
             </Link>

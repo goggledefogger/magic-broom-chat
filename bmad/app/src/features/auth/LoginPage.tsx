@@ -32,9 +32,9 @@ export function LoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md border-t-4 border-t-primary">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Enter the Workshop</CardTitle>
+          <CardTitle className="font-heading text-2xl">Enter the Workshop</CardTitle>
           <CardDescription>
             The brooms await your command, apprentice.
           </CardDescription>
@@ -74,10 +74,10 @@ export function LoginPage() {
               {loading ? 'Opening the doors...' : 'Enter'}
             </Button>
             <div className="flex gap-4 text-sm">
-              <Link to="/signup" className="text-muted-foreground hover:text-foreground">
+              <Link to="/signup" className="text-accent hover:text-accent/80">
                 New apprentice? Sign up
               </Link>
-              <Link to="/forgot-password" className="text-muted-foreground hover:text-foreground">
+              <Link to="/forgot-password" className="text-accent hover:text-accent/80">
                 Forgot password?
               </Link>
             </div>

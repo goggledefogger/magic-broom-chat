@@ -33,16 +33,16 @@ export function ForgotPasswordPage() {
   if (sent) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background p-4">
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md border-t-4 border-t-primary">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Recovery Scroll Sent</CardTitle>
+            <CardTitle className="font-heading text-2xl">Recovery Scroll Sent</CardTitle>
             <CardDescription>
               Check your email for a link to reset your incantation.
               The magic may take a moment to arrive.
             </CardDescription>
           </CardHeader>
           <CardFooter className="justify-center">
-            <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">
+            <Link to="/login" className="text-sm text-accent hover:text-accent/80">
               Return to the workshop entrance
             </Link>
           </CardFooter>
@@ -53,9 +53,9 @@ export function ForgotPasswordPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md border-t-4 border-t-primary">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Forgot Your Incantation?</CardTitle>
+          <CardTitle className="font-heading text-2xl">Forgot Your Incantation?</CardTitle>
           <CardDescription>
             Enter your email and we will send a recovery scroll.
           </CardDescription>
@@ -83,7 +83,7 @@ export function ForgotPasswordPage() {
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Preparing the scroll...' : 'Send Recovery Scroll'}
             </Button>
-            <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">
+            <Link to="/login" className="text-sm text-accent hover:text-accent/80">
               Back to the workshop entrance
             </Link>
           </CardFooter>

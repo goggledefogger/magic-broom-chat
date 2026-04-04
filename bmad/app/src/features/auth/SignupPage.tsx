@@ -42,15 +42,15 @@ export function SignupPage() {
   if (confirmationSent) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background p-4">
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md border-t-4 border-t-primary">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Scroll Dispatched</CardTitle>
+            <CardTitle className="font-heading text-2xl">Scroll Dispatched</CardTitle>
             <CardDescription>
               A confirmation scroll has been sent to your email. Open it to complete your apprenticeship.
             </CardDescription>
           </CardHeader>
           <CardFooter className="justify-center">
-            <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">
+            <Link to="/login" className="text-sm text-accent hover:text-accent/80">
               Return to the workshop entrance
             </Link>
           </CardFooter>
@@ -61,9 +61,9 @@ export function SignupPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md border-t-4 border-t-primary">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Begin Your Apprenticeship</CardTitle>
+          <CardTitle className="font-heading text-2xl">Begin Your Apprenticeship</CardTitle>
           <CardDescription>
             Join the workshop and learn the ways of the broom.
           </CardDescription>
@@ -113,7 +113,7 @@ export function SignupPage() {
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Inscribing your name...' : 'Join the Workshop'}
             </Button>
-            <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">
+            <Link to="/login" className="text-sm text-accent hover:text-accent/80">
               Already an apprentice? Sign in
             </Link>
           </CardFooter>

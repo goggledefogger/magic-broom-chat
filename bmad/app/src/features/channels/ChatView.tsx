@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
 import {
   AlertDialog,
   AlertDialogContent,
@@ -183,7 +182,7 @@ function MessageItem({
 
   return (
     <div
-      className="group relative flex gap-3 px-4 py-2 hover:bg-muted/30"
+      className={`group relative flex gap-3 px-4 py-2 hover:bg-muted/30 ${isOwn ? 'bg-primary/[0.04]' : ''}`}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerCancel}
@@ -195,7 +194,7 @@ function MessageItem({
       </Avatar>
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-2">
-          <span className="text-sm font-semibold">{authorName}</span>
+          <span className="text-sm font-semibold text-primary">{authorName}</span>
           <span className="text-xs text-muted-foreground">{formatTime(message.createdAt)}</span>
           {isEdited && (
             <span className="text-xs text-muted-foreground/60">(edited)</span>
@@ -352,7 +351,7 @@ export function ChatView({ channelId }: { channelId: string }) {
       {/* Channel header - hidden on mobile (mobile header in AppLayout) */}
       <div className="hidden md:flex items-center gap-3 border-b px-4 py-3">
         <div>
-          <h2 className="text-lg font-semibold">#{channel?.name}</h2>
+          <h2 className="font-heading text-lg font-semibold">#{channel?.name}</h2>
           {channel?.description && (
             <p className="text-sm text-muted-foreground">{channel.description}</p>
           )}
@@ -373,9 +372,9 @@ export function ChatView({ channelId }: { channelId: string }) {
           {groupedMessages.map((group) => (
             <div key={group.date}>
               <div className="relative my-4 flex items-center px-4">
-                <Separator className="flex-1" />
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent to-border" />
                 <span className="px-3 text-xs text-muted-foreground">{group.date}</span>
-                <Separator className="flex-1" />
+                <div className="h-px flex-1 bg-gradient-to-l from-transparent to-border" />
               </div>
               {group.messages.map((msg) => (
                 <MessageItem
@@ -400,7 +399,7 @@ export function ChatView({ channelId }: { channelId: string }) {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="min-h-[40px] max-h-[120px] resize-none"
+            className="min-h-[40px] max-h-[120px] resize-none focus-visible:ring-primary/20"
             rows={1}
           />
           <Button
