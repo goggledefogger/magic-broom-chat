@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import {
@@ -69,13 +68,23 @@ function SidebarContent({
 }) {
   return (
     <>
-      <div className="flex items-center gap-2 p-4">
-        <h1 className="text-lg font-bold text-sidebar-primary">Magic Brooms</h1>
+      {/* Floating particles */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="particle w-[3px] h-[3px] bg-accent/40 shadow-[0_0_6px_rgba(45,163,203,0.3)] top-[15%] right-[12%]" style={{ animationDelay: '0s', animationDuration: '7s' }} />
+        <div className="particle w-[2px] h-[2px] bg-primary/30 shadow-[0_0_4px_rgba(241,90,36,0.3)] top-[45%] right-[25%]" style={{ animationDelay: '2.5s', animationDuration: '5s' }} />
+        <div className="particle w-[2px] h-[2px] bg-secondary/40 shadow-[0_0_5px_rgba(84,84,142,0.4)] top-[75%] right-[8%]" style={{ animationDelay: '4s', animationDuration: '8s' }} />
       </div>
-      <Separator className="bg-sidebar-border" />
+
+      {/* Header */}
+      <div className="relative z-10 p-4">
+        <h1 className="font-heading text-lg font-bold bg-gradient-to-r from-primary to-[#ff7849] bg-clip-text text-transparent">
+          Magic Brooms
+        </h1>
+        <p className="text-[10px] text-accent/50 tracking-[0.2em] uppercase">The Workshop</p>
+      </div>
 
       {/* Search */}
-      <div className="p-3">
+      <div className="relative z-10 px-3 pb-3">
         <Input
           placeholder="Search the workshop..."
           value={searchQuery}
@@ -83,7 +92,7 @@ function SidebarContent({
             setSearchQuery(e.target.value)
             setShowSearch(e.target.value.length > 0)
           }}
-          className="bg-sidebar-accent/50 border-sidebar-border text-sidebar-foreground placeholder:text-sidebar-foreground/50 h-8 text-sm"
+          className="bg-sidebar-accent/30 border-sidebar-border text-sidebar-foreground placeholder:text-sidebar-foreground/40 h-8 text-sm"
         />
       </div>
 
@@ -95,9 +104,9 @@ function SidebarContent({
               <button
                 key={`${r.type}-${r.id}`}
                 onClick={() => onSearchResultClick(r)}
-                className="w-full rounded p-2 text-left text-sm hover:bg-sidebar-accent"
+                className="w-full rounded-lg p-2 text-left text-sm hover:bg-sidebar-accent/50 transition-colors"
               >
-                <span className="text-xs text-sidebar-foreground/60">
+                <span className="text-xs text-sidebar-foreground/40">
                   {r.type === 'card' ? 'Card' : 'Message'} in #{r.channelName}
                 </span>
                 <p className="truncate text-sidebar-foreground">
@@ -110,13 +119,13 @@ function SidebarContent({
       )}
 
       {/* Channels */}
-      <ScrollArea className="flex-1">
+      <ScrollArea className="relative z-10 flex-1">
         <div className="p-3">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-accent/50">
               Channels
             </span>
-            <Button variant="ghost" size="sm" className="h-5 w-5 p-0 text-sidebar-foreground/60 hover:text-sidebar-foreground" onClick={onCreateChannel}>
+            <Button variant="ghost" size="sm" className="h-5 w-5 p-0 text-accent/60 hover:text-accent" onClick={onCreateChannel}>
               +
             </Button>
           </div>
@@ -136,18 +145,18 @@ function SidebarContent({
                   {isMember ? (
                     <Link
                       to={`/channels/${ch.id}`}
-                      className={`flex-1 rounded px-2 py-1.5 text-sm transition-colors ${
+                      className={`flex-1 rounded-lg px-2 py-1.5 text-sm transition-colors ${
                         isActive
-                          ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
-                          : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50'
+                          ? 'bg-sidebar-accent border-l-[3px] border-l-primary text-sidebar-accent-foreground font-medium'
+                          : 'text-sidebar-foreground/60 hover:bg-sidebar-accent/30'
                       } ${badgeCount > 0 ? 'font-bold' : ''}`}
                     >
-                      <span className="text-sidebar-foreground/40 mr-1">
+                      <span className="text-sidebar-foreground/30 mr-1">
                         {ch.type === 'gallery' ? '🖼' : '#'}
                       </span>
                       {ch.name}
                       {badgeCount > 0 && (
-                        <Badge variant="secondary" className="ml-1 h-4 min-w-4 justify-center px-1 text-[10px]">
+                        <Badge className="ml-1 h-4 min-w-4 justify-center px-1 text-[10px]">
                           {badgeCount}
                         </Badge>
                       )}
@@ -155,7 +164,7 @@ function SidebarContent({
                   ) : (
                     <button
                       onClick={() => onJoinChannel(ch.id)}
-                      className="flex-1 rounded px-2 py-1.5 text-left text-sm text-sidebar-foreground/40 hover:text-sidebar-foreground/60 italic"
+                      className="flex-1 rounded-lg px-2 py-1.5 text-left text-sm text-sidebar-foreground/30 hover:text-sidebar-foreground/50 italic transition-colors"
                     >
                       <span className="mr-1">{ch.type === 'gallery' ? '🖼' : '#'}</span>
                       {ch.name}
@@ -169,19 +178,23 @@ function SidebarContent({
       </ScrollArea>
 
       {/* User section */}
-      <Separator className="bg-sidebar-border" />
-      <div className="flex items-center justify-between p-3">
-        <Link to="/profile" className="text-sm text-sidebar-foreground/80 hover:text-sidebar-foreground">
-          {profile?.displayName ?? user?.email ?? 'Apprentice'}
-        </Link>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onSignOut}
-          className="h-6 text-xs text-sidebar-foreground/60 hover:text-sidebar-foreground"
-        >
-          Logout
-        </Button>
+      <div className="relative z-10 border-t border-sidebar-border p-3">
+        <div className="flex items-center justify-between">
+          <Link to="/profile" className="flex items-center gap-2 text-sm text-sidebar-foreground/80 hover:text-sidebar-foreground transition-colors">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-secondary to-accent text-[10px] text-white">
+              {(profile?.displayName ?? user?.email ?? '?').charAt(0).toUpperCase()}
+            </div>
+            <span>{profile?.displayName ?? user?.email ?? 'Apprentice'}</span>
+          </Link>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onSignOut}
+            className="h-6 text-xs text-sidebar-foreground/40 hover:text-sidebar-foreground"
+          >
+            Logout
+          </Button>
+        </div>
       </div>
     </>
   )
@@ -315,7 +328,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex h-dvh bg-background">
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-64 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
+      <aside className="hidden md:flex w-64 flex-col border-r border-sidebar-border bg-gradient-to-b from-[#16163f] to-[#0a0a25] text-sidebar-foreground relative">
         <SidebarContent {...sidebarProps} />
       </aside>
 
@@ -368,7 +381,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Mobile header */}
-        <div className="flex md:hidden items-center gap-3 border-b px-3 py-2 bg-background">
+        <div className="flex md:hidden items-center gap-3 border-b border-border px-3 py-2 bg-[#12122e]">
           <Button
             variant="ghost"
             size="sm"
@@ -380,7 +393,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <span className="flex-1 text-sm font-semibold truncate">
             {currentChannel ? `#${currentChannel.name}` : 'Magic Brooms'}
           </span>
-          <Link to="/profile" className="text-sm text-muted-foreground">
+          <Link to="/profile" className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-secondary to-accent text-xs text-white">
             {profile?.displayName?.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() ?? '?'}
           </Link>
         </div>
