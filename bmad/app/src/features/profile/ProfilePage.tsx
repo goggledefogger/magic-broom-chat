@@ -111,7 +111,7 @@ export function ProfilePage() {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading}
-              className="group relative rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="group relative rounded-full p-[3px] bg-gradient-to-br from-[#54548E] to-[#2DA3CB] focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <Avatar className="h-20 w-20">
                 <AvatarImage src={profile?.avatarUrl ?? undefined} />
@@ -149,7 +149,7 @@ export function ProfilePage() {
               </button>
             )}
           </div>
-          <CardTitle className="text-2xl">Your Profile</CardTitle>
+          <CardTitle className="font-heading text-2xl">Your Profile</CardTitle>
           <CardDescription>{user?.email}</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
@@ -166,7 +166,7 @@ export function ProfilePage() {
             </div>
             <div className="space-y-2">
               <Label className="text-muted-foreground">Role</Label>
-              <p className="text-sm capitalize">{profile?.role ?? 'student'}</p>
+              <p className="text-sm capitalize text-accent">{profile?.role ?? 'student'}</p>
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-3">
@@ -183,7 +183,7 @@ export function ProfilePage() {
             </Button>
             <Link
               to="/channels"
-              className="text-sm text-muted-foreground hover:text-foreground"
+              className="text-sm text-accent hover:text-accent/80"
             >
               Back to channels
             </Link>
