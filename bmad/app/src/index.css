@@ -2,13 +2,16 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
-@import "@fontsource-variable/source-serif-4";
+@import "@fontsource/lato/400.css";
+@import "@fontsource/lato/700.css";
+@import "@fontsource/cormorant/400.css";
+@import "@fontsource/cormorant/600.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-heading: 'Source Serif 4 Variable', Georgia, serif;
-    --font-sans: 'Geist Variable', sans-serif;
+    --font-heading: 'Cormorant', Georgia, serif;
+    --font-sans: 'Geist Variable', 'Lato', sans-serif;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -47,44 +50,78 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
-    --color-glow: var(--glow);
 }
 
-/* Midnight Workshop Theme — dark, warm, atmospheric */
+/*
+ * A Portland Career brand alignment
+ * Primary: indigo #54548E (headings, nav, sidebar)
+ * Accent:  orange #F2682A (CTAs, buttons, highlights)
+ * Bg:      lavender #F6F6FD / white
+ * Text:    charcoal #343740
+ */
 :root {
-    --background: oklch(0.12 0.02 270);
-    --foreground: oklch(0.92 0.01 80);
-    --card: oklch(0.16 0.02 270);
-    --card-foreground: oklch(0.92 0.01 80);
-    --popover: oklch(0.16 0.02 270);
-    --popover-foreground: oklch(0.92 0.01 80);
-    --primary: oklch(0.72 0.16 55);
-    --primary-foreground: oklch(0.12 0.02 270);
-    --secondary: oklch(0.20 0.03 270);
-    --secondary-foreground: oklch(0.88 0.02 80);
-    --muted: oklch(0.18 0.02 270);
-    --muted-foreground: oklch(0.60 0.03 80);
-    --accent: oklch(0.72 0.16 55);
-    --accent-foreground: oklch(0.12 0.02 270);
-    --destructive: oklch(0.65 0.22 25);
-    --border: oklch(0.22 0.03 270);
-    --input: oklch(0.20 0.03 270);
-    --ring: oklch(0.72 0.16 55);
-    --glow: oklch(0.72 0.16 55 / 0.15);
-    --chart-1: oklch(0.72 0.16 55);
-    --chart-2: oklch(0.55 0.12 280);
+    --background: oklch(0.975 0.005 280);
+    --foreground: oklch(0.25 0.015 260);
+    --card: oklch(1.0 0 0);
+    --card-foreground: oklch(0.25 0.015 260);
+    --popover: oklch(1.0 0 0);
+    --popover-foreground: oklch(0.25 0.015 260);
+    --primary: oklch(0.70 0.18 45);
+    --primary-foreground: oklch(1.0 0 0);
+    --secondary: oklch(0.94 0.01 280);
+    --secondary-foreground: oklch(0.40 0.06 280);
+    --muted: oklch(0.95 0.005 280);
+    --muted-foreground: oklch(0.50 0.02 260);
+    --accent: oklch(0.70 0.18 45);
+    --accent-foreground: oklch(1.0 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.90 0.01 280);
+    --input: oklch(0.90 0.01 280);
+    --ring: oklch(0.45 0.08 280);
+    --chart-1: oklch(0.70 0.18 45);
+    --chart-2: oklch(0.45 0.08 280);
     --chart-3: oklch(0.6 0.15 160);
     --chart-4: oklch(0.5 0.1 320);
     --chart-5: oklch(0.65 0.12 80);
-    --radius: 0.5rem;
-    --sidebar: oklch(0.10 0.02 270);
-    --sidebar-foreground: oklch(0.88 0.01 80);
-    --sidebar-primary: oklch(0.72 0.16 55);
-    --sidebar-primary-foreground: oklch(0.10 0.02 270);
+    --radius: 0.375rem;
+    /* Sidebar uses APC indigo */
+    --sidebar: oklch(0.40 0.08 280);
+    --sidebar-foreground: oklch(0.95 0.005 280);
+    --sidebar-primary: oklch(0.70 0.18 45);
+    --sidebar-primary-foreground: oklch(1.0 0 0);
+    --sidebar-accent: oklch(0.35 0.07 280);
+    --sidebar-accent-foreground: oklch(0.95 0.005 280);
+    --sidebar-border: oklch(0.35 0.06 280);
+    --sidebar-ring: oklch(0.70 0.18 45);
+}
+
+.dark {
+    --background: oklch(0.15 0.02 270);
+    --foreground: oklch(0.92 0.01 80);
+    --card: oklch(0.18 0.02 270);
+    --card-foreground: oklch(0.92 0.01 80);
+    --popover: oklch(0.18 0.02 270);
+    --popover-foreground: oklch(0.92 0.01 80);
+    --primary: oklch(0.72 0.18 45);
+    --primary-foreground: oklch(0.15 0.02 270);
+    --secondary: oklch(0.22 0.03 270);
+    --secondary-foreground: oklch(0.88 0.01 80);
+    --muted: oklch(0.22 0.02 270);
+    --muted-foreground: oklch(0.60 0.02 80);
+    --accent: oklch(0.72 0.18 45);
+    --accent-foreground: oklch(0.15 0.02 270);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(0.25 0.03 270);
+    --input: oklch(0.25 0.03 270);
+    --ring: oklch(0.72 0.18 45);
+    --sidebar: oklch(0.12 0.02 270);
+    --sidebar-foreground: oklch(0.92 0.01 80);
+    --sidebar-primary: oklch(0.72 0.18 45);
+    --sidebar-primary-foreground: oklch(1.0 0 0);
     --sidebar-accent: oklch(0.18 0.03 270);
-    --sidebar-accent-foreground: oklch(0.88 0.01 80);
+    --sidebar-accent-foreground: oklch(0.92 0.01 80);
     --sidebar-border: oklch(0.20 0.03 270);
-    --sidebar-ring: oklch(0.72 0.16 55);
+    --sidebar-ring: oklch(0.72 0.18 45);
 }
 
 @layer base {
@@ -96,65 +133,58 @@
   }
   html {
     @apply font-sans;
-    color-scheme: dark;
   }
 }
 
-/* Display headings */
+/* Display headings — Cormorant serif (matches APC brand accent font) */
 .font-heading {
   font-family: var(--font-heading);
 }
 
-/* Atmospheric background for auth pages */
+/* Auth page background — subtle lavender with indigo tint */
 .auth-bg {
   background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, oklch(0.25 0.08 55 / 0.3), transparent),
-    radial-gradient(ellipse 60% 40% at 80% 100%, oklch(0.20 0.06 280 / 0.3), transparent),
-    oklch(0.10 0.02 270);
+    radial-gradient(ellipse 80% 50% at 50% -20%, oklch(0.45 0.08 280 / 0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 110%, oklch(0.70 0.18 45 / 0.06), transparent),
+    oklch(0.975 0.005 280);
 }
 
-/* Subtle card glow */
-.card-glow {
+/* Card with subtle shadow */
+.card-elevated {
   box-shadow:
-    0 0 0 1px oklch(0.72 0.16 55 / 0.08),
-    0 4px 24px oklch(0.72 0.16 55 / 0.06),
-    0 1px 3px oklch(0 0 0 / 0.3);
+    0 1px 3px oklch(0 0 0 / 0.06),
+    0 4px 16px oklch(0.40 0.08 280 / 0.06);
 }
 
-/* Warm hover glow for interactive cards */
-.card-hover-glow {
+/* Card hover for gallery */
+.card-hover-lift {
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
-.card-hover-glow:hover {
+.card-hover-lift:hover {
   box-shadow:
-    0 0 0 1px oklch(0.72 0.16 55 / 0.15),
-    0 8px 32px oklch(0.72 0.16 55 / 0.1),
-    0 2px 8px oklch(0 0 0 / 0.3);
-  transform: translateY(-1px);
+    0 2px 8px oklch(0 0 0 / 0.08),
+    0 8px 24px oklch(0.40 0.08 280 / 0.08);
+  transform: translateY(-2px);
 }
 
-/* Message input focus glow */
-.input-glow:focus-within {
-  box-shadow: 0 0 0 1px oklch(0.72 0.16 55 / 0.3), 0 0 12px oklch(0.72 0.16 55 / 0.08);
+/* Input focus with brand ring */
+.input-focus:focus-within {
+  box-shadow: 0 0 0 2px oklch(0.70 0.18 45 / 0.2);
 }
 
-/* Channel join animation — warm magical shimmer */
+/* Channel join animation */
 @keyframes channel-join {
   0% {
     background-color: transparent;
-    box-shadow: none;
   }
   20% {
-    background-color: oklch(0.72 0.16 55 / 0.15);
-    box-shadow: 0 0 8px oklch(0.72 0.16 55 / 0.3);
+    background-color: oklch(0.70 0.18 45 / 0.12);
   }
   50% {
-    background-color: oklch(0.72 0.16 55 / 0.08);
-    box-shadow: 0 0 12px oklch(0.72 0.16 55 / 0.15);
+    background-color: oklch(0.70 0.18 45 / 0.06);
   }
   100% {
     background-color: transparent;
-    box-shadow: none;
   }
 }
 
@@ -163,25 +193,25 @@
   border-radius: var(--radius-sm);
 }
 
-/* Date separator line */
+/* Date separator */
 .date-separator {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   padding: 0 1rem;
-  margin: 1.5rem 0;
+  margin: 1.25rem 0;
 }
 .date-separator::before,
 .date-separator::after {
   content: '';
   flex: 1;
   height: 1px;
-  background: oklch(0.72 0.16 55 / 0.12);
+  background: oklch(0.90 0.01 280);
 }
 .date-separator span {
   font-size: 0.7rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: oklch(0.72 0.16 55 / 0.5);
+  color: oklch(0.45 0.08 280 / 0.6);
 }

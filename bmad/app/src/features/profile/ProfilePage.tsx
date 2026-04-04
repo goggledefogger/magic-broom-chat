@@ -103,7 +103,7 @@ export function ProfilePage() {
 
   return (
     <div className="flex h-full items-center justify-center p-4">
-      <div className="card-glow w-full max-w-sm rounded-lg border border-border/50 bg-card/80">
+      <div className="card-elevated w-full max-w-sm rounded border border-border bg-card">
         <div className="flex flex-col items-center gap-2 px-6 pt-6 pb-2 text-center">
           <button
             type="button"
@@ -146,7 +146,7 @@ export function ProfilePage() {
               Remove photo
             </button>
           )}
-          <h1 className="font-heading text-2xl font-semibold text-foreground">Your Profile</h1>
+          <h1 className="font-heading text-3xl font-semibold text-[oklch(0.40_0.08_280)]">Your Profile</h1>
           <p className="text-sm text-muted-foreground">{user?.email}</p>
         </div>
         <form onSubmit={handleSubmit}>

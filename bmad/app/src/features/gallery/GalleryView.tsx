@@ -147,7 +147,7 @@ export function GalleryView({ channelId }: { channelId: string }) {
           {cards?.map((card) => (
             <Card
               key={card.id}
-              className="card-hover-glow cursor-pointer border-border/50 bg-card/80"
+              className="card-hover-lift cursor-pointer border-border bg-card"
               onClick={() => navigate(`/channels/${channelId}/card/${card.id}`)}
             >
               {card.imageUrl && (

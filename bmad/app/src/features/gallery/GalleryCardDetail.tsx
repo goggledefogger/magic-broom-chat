@@ -129,7 +129,7 @@ export function GalleryCardDetail() {
               className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-sm transition-colors ${
                 r.userReacted
                   ? 'border-primary/40 bg-primary/10 text-primary'
-                  : 'border-border/50 bg-muted/30 hover:bg-muted/50'
+                  : 'border-border bg-muted/50 hover:bg-muted/50'
               }`}
             >
               <span>{r.emoji}</span>
@@ -144,7 +144,7 @@ export function GalleryCardDetail() {
               +
             </button>
             {showPicker && (
-              <div className="absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg border border-border/50 bg-popover p-2 shadow-lg">
+              <div className="absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg border border-border bg-popover p-2 shadow-lg">
                 {EMOJI_OPTIONS.map((emoji) => (
                   <button
                     key={emoji}
@@ -204,7 +204,7 @@ export function GalleryCardDetail() {
         </div>
 
         {/* Comment input */}
-        <form onSubmit={handleComment} className="input-glow mt-6 flex gap-2 rounded-lg border border-border/50 bg-muted/30 p-1">
+        <form onSubmit={handleComment} className="input-focus mt-6 flex gap-2 rounded-lg border border-border bg-muted/50 p-1">
           <Textarea
             placeholder="Add a comment..."
             value={commentText}

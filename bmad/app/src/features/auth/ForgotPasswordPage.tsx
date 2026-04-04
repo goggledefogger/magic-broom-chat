@@ -32,9 +32,9 @@ export function ForgotPasswordPage() {
   if (sent) {
     return (
       <div className="auth-bg flex min-h-dvh items-center justify-center p-4">
-        <div className="card-glow w-full max-w-sm rounded-lg border border-border/50 bg-card/80 backdrop-blur-sm">
+        <div className="card-elevated w-full max-w-sm rounded border border-border bg-card">
           <div className="p-6 text-center">
-            <h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground">
+            <h1 className="font-heading text-4xl font-semibold text-[oklch(0.40_0.08_280)]">
               Recovery Scroll Sent
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -54,9 +54,9 @@ export function ForgotPasswordPage() {
 
   return (
     <div className="auth-bg flex min-h-dvh items-center justify-center p-4">
-      <div className="card-glow w-full max-w-sm rounded-lg border border-border/50 bg-card/80 backdrop-blur-sm">
+      <div className="card-elevated w-full max-w-sm rounded border border-border bg-card">
         <div className="p-6 pb-2 text-center">
-          <h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground">
+          <h1 className="font-heading text-4xl font-semibold text-[oklch(0.40_0.08_280)]">
             Forgot Your Incantation?
           </h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
@@ -66,12 +66,12 @@ export function ForgotPasswordPage() {
         <form onSubmit={handleSubmit}>
           <div className="space-y-4 px-6 py-4">
             {error && (
-              <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              <p className="rounded bg-destructive/10 px-3 py-2 text-sm text-destructive">
                 {error}
               </p>
             )}
             <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Email
               </Label>
               <Input
@@ -81,7 +81,6 @@ export function ForgotPasswordPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="bg-background/50 border-border/50 focus:border-primary/50"
               />
             </div>
           </div>

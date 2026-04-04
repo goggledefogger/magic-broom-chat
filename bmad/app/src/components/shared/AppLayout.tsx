@@ -317,7 +317,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex h-dvh bg-background">
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-60 flex-col bg-sidebar text-sidebar-foreground">
+      <aside className="hidden md:flex w-60 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
         <SidebarContent {...sidebarProps} />
       </aside>
 
@@ -370,7 +370,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Mobile header */}
-        <div className="flex md:hidden items-center gap-3 border-b border-border/50 px-3 py-2 bg-background">
+        <div className="flex md:hidden items-center gap-3 border-b border-border px-3 py-2 bg-background">
           <Button
             variant="ghost"
             size="sm"

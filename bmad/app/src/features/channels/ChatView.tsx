@@ -62,7 +62,7 @@ function MessageReactions({ messageId, userId }: { messageId: string; userId: st
           className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs transition-colors ${
             r.userReacted
               ? 'border-primary/40 bg-primary/10 text-primary'
-              : 'border-border/50 bg-muted/30 hover:bg-muted/50'
+              : 'border-border bg-muted/50 hover:bg-muted/50'
           }`}
         >
           <span>{r.emoji}</span>
@@ -77,7 +77,7 @@ function MessageReactions({ messageId, userId }: { messageId: string; userId: st
           +
         </button>
         {showPicker && (
-          <div className="absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg border border-border/50 bg-popover p-1 shadow-lg">
+          <div className="absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg border border-border bg-popover p-1 shadow-lg">
             {EMOJI_OPTIONS.map((emoji) => (
               <button
                 key={emoji}
@@ -234,7 +234,7 @@ function MessageItem({
 
       {/* Floating toolbar - desktop hover + mobile long-press */}
       {showToolbar && !isEditing && (
-        <div className={`absolute -top-3 right-4 flex items-center gap-0.5 rounded-md border border-border/50 bg-card px-1 py-0.5 shadow-sm transition-opacity ${
+        <div className={`absolute -top-3 right-4 flex items-center gap-0.5 rounded-md border border-border bg-card px-1 py-0.5 shadow-sm transition-opacity ${
           showMobileToolbar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
         }`}>
           {isOwn && (
@@ -349,7 +349,7 @@ export function ChatView({ channelId }: { channelId: string }) {
   return (
     <div className="flex h-full flex-col">
       {/* Channel header - hidden on mobile (mobile header in AppLayout) */}
-      <div className="hidden md:flex items-center gap-3 border-b border-border/50 px-4 py-3">
+      <div className="hidden md:flex items-center gap-3 border-b border-border px-4 py-3">
         <div>
           <h2 className="font-heading text-lg font-semibold">#{channel?.name}</h2>
           {channel?.description && (
@@ -392,8 +392,8 @@ export function ChatView({ channelId }: { channelId: string }) {
       </ScrollArea>
 
       {/* Message input */}
-      <div className="border-t border-border/50 p-3">
-        <form onSubmit={handleSubmit} className="input-glow flex gap-2 rounded-lg border border-border/50 bg-muted/30 p-1">
+      <div className="border-t border-border p-3">
+        <form onSubmit={handleSubmit} className="input-focus flex gap-2 rounded-lg border border-border bg-muted/50 p-1">
           <Textarea
             placeholder={`Message #${channel?.name ?? '...'}`}
             value={content}
