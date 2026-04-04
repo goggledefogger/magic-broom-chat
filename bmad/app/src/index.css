@@ -6,7 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-heading: var(--font-sans);
+    --font-heading: 'Merriweather', Georgia, serif;
     --font-sans: 'Geist Variable', sans-serif;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
@@ -48,74 +48,74 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Sorcerer's Apprentice Theme — adult, mystical, minimalist */
+/* Enchanted Workshop Theme — APC-aligned, dark-mode-first */
 :root {
-    --background: oklch(0.97 0.005 280);
-    --foreground: oklch(0.15 0.02 280);
-    --card: oklch(0.98 0.003 280);
-    --card-foreground: oklch(0.15 0.02 280);
-    --popover: oklch(0.98 0.003 280);
-    --popover-foreground: oklch(0.15 0.02 280);
-    --primary: oklch(0.35 0.12 280);
-    --primary-foreground: oklch(0.98 0.005 280);
-    --secondary: oklch(0.92 0.02 280);
-    --secondary-foreground: oklch(0.25 0.05 280);
-    --muted: oklch(0.93 0.01 280);
-    --muted-foreground: oklch(0.5 0.03 280);
-    --accent: oklch(0.55 0.18 35);
-    --accent-foreground: oklch(0.98 0.005 280);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.88 0.02 280);
-    --input: oklch(0.88 0.02 280);
-    --ring: oklch(0.45 0.12 280);
-    --chart-1: oklch(0.55 0.18 35);
-    --chart-2: oklch(0.45 0.12 280);
-    --chart-3: oklch(0.6 0.15 160);
-    --chart-4: oklch(0.5 0.1 320);
-    --chart-5: oklch(0.65 0.12 80);
+    --background: #f8f9fa;
+    --foreground: #16163f;
+    --card: #ffffff;
+    --card-foreground: #16163f;
+    --popover: #ffffff;
+    --popover-foreground: #16163f;
+    --primary: #f15a24;
+    --primary-foreground: #ffffff;
+    --secondary: #54548E;
+    --secondary-foreground: #ffffff;
+    --muted: #eef0f4;
+    --muted-foreground: #64648a;
+    --accent: #2DA3CB;
+    --accent-foreground: #ffffff;
+    --destructive: #ef4444;
+    --border: rgba(84, 84, 142, 0.15);
+    --input: rgba(84, 84, 142, 0.15);
+    --ring: rgba(241, 90, 36, 0.4);
+    --chart-1: #f15a24;
+    --chart-2: #54548E;
+    --chart-3: #2DA3CB;
+    --chart-4: #ff7849;
+    --chart-5: #7a7ab8;
     --radius: 0.625rem;
-    --sidebar: oklch(0.18 0.04 280);
-    --sidebar-foreground: oklch(0.9 0.01 280);
-    --sidebar-primary: oklch(0.55 0.18 35);
-    --sidebar-primary-foreground: oklch(0.98 0.005 280);
-    --sidebar-accent: oklch(0.25 0.05 280);
-    --sidebar-accent-foreground: oklch(0.9 0.01 280);
-    --sidebar-border: oklch(0.25 0.04 280);
-    --sidebar-ring: oklch(0.45 0.12 280);
+    --sidebar: #16163f;
+    --sidebar-foreground: rgba(255, 255, 255, 0.9);
+    --sidebar-primary: #f15a24;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: rgba(241, 90, 36, 0.15);
+    --sidebar-accent-foreground: rgba(255, 255, 255, 0.95);
+    --sidebar-border: rgba(84, 84, 142, 0.2);
+    --sidebar-ring: rgba(241, 90, 36, 0.4);
 }
 
 .dark {
-    --background: oklch(0.13 0.02 280);
-    --foreground: oklch(0.93 0.01 280);
-    --card: oklch(0.18 0.03 280);
-    --card-foreground: oklch(0.93 0.01 280);
-    --popover: oklch(0.18 0.03 280);
-    --popover-foreground: oklch(0.93 0.01 280);
-    --primary: oklch(0.55 0.18 35);
-    --primary-foreground: oklch(0.13 0.02 280);
-    --secondary: oklch(0.22 0.04 280);
-    --secondary-foreground: oklch(0.9 0.01 280);
-    --muted: oklch(0.22 0.03 280);
-    --muted-foreground: oklch(0.65 0.02 280);
-    --accent: oklch(0.55 0.18 35);
-    --accent-foreground: oklch(0.13 0.02 280);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(0.25 0.03 280);
-    --input: oklch(0.25 0.04 280);
-    --ring: oklch(0.55 0.15 35);
-    --chart-1: oklch(0.55 0.18 35);
-    --chart-2: oklch(0.55 0.12 280);
-    --chart-3: oklch(0.6 0.15 160);
-    --chart-4: oklch(0.5 0.1 320);
-    --chart-5: oklch(0.65 0.12 80);
-    --sidebar: oklch(0.12 0.03 280);
-    --sidebar-foreground: oklch(0.9 0.01 280);
-    --sidebar-primary: oklch(0.55 0.18 35);
-    --sidebar-primary-foreground: oklch(0.98 0.005 280);
-    --sidebar-accent: oklch(0.2 0.04 280);
-    --sidebar-accent-foreground: oklch(0.9 0.01 280);
-    --sidebar-border: oklch(0.2 0.03 280);
-    --sidebar-ring: oklch(0.55 0.15 35);
+    --background: #0d0d2b;
+    --foreground: rgba(255, 255, 255, 0.9);
+    --card: rgba(84, 84, 142, 0.10);
+    --card-foreground: rgba(255, 255, 255, 0.9);
+    --popover: rgba(22, 22, 63, 0.95);
+    --popover-foreground: rgba(255, 255, 255, 0.9);
+    --primary: #f15a24;
+    --primary-foreground: #ffffff;
+    --secondary: rgba(84, 84, 142, 0.25);
+    --secondary-foreground: rgba(255, 255, 255, 0.9);
+    --muted: rgba(84, 84, 142, 0.15);
+    --muted-foreground: rgba(255, 255, 255, 0.5);
+    --accent: #2DA3CB;
+    --accent-foreground: #ffffff;
+    --destructive: #ef4444;
+    --border: rgba(84, 84, 142, 0.15);
+    --input: rgba(84, 84, 142, 0.25);
+    --ring: rgba(241, 90, 36, 0.4);
+    --chart-1: #f15a24;
+    --chart-2: #54548E;
+    --chart-3: #2DA3CB;
+    --chart-4: #ff7849;
+    --chart-5: #7a7ab8;
+    --sidebar: #16163f;
+    --sidebar-foreground: rgba(255, 255, 255, 0.9);
+    --sidebar-primary: #f15a24;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: rgba(241, 90, 36, 0.15);
+    --sidebar-accent-foreground: rgba(255, 255, 255, 0.95);
+    --sidebar-border: rgba(84, 84, 142, 0.2);
+    --sidebar-ring: rgba(241, 90, 36, 0.4);
 }
 
 @layer base {
@@ -130,19 +130,38 @@
   }
 }
 
-/* Channel join animation — subtle magical shimmer */
+/* Floating particle animation */
+@keyframes particle-float {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.4; }
+  33% { transform: translateY(-15px) translateX(4px); opacity: 0.7; }
+  66% { transform: translateY(-8px) translateX(-3px); opacity: 0.5; }
+}
+
+/* Ember glow pulse */
+@keyframes ember-glow {
+  0%, 100% { box-shadow: 0 0 6px rgba(241, 90, 36, 0.2); }
+  50% { box-shadow: 0 0 14px rgba(241, 90, 36, 0.45); }
+}
+
+/* Message appear animation */
+@keyframes message-appear {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Channel join animation — updated for APC colors */
 @keyframes channel-join {
   0% {
     background-color: transparent;
     box-shadow: none;
   }
   20% {
-    background-color: oklch(0.55 0.18 35 / 0.15);
-    box-shadow: 0 0 8px oklch(0.55 0.18 35 / 0.3);
+    background-color: rgba(241, 90, 36, 0.15);
+    box-shadow: 0 0 8px rgba(241, 90, 36, 0.3);
   }
   50% {
-    background-color: oklch(0.45 0.12 280 / 0.1);
-    box-shadow: 0 0 12px oklch(0.45 0.12 280 / 0.2);
+    background-color: rgba(84, 84, 142, 0.1);
+    box-shadow: 0 0 12px rgba(84, 84, 142, 0.2);
   }
   100% {
     background-color: transparent;
@@ -153,4 +172,27 @@
 .animate-channel-join {
   animation: channel-join 1.2s ease-out;
   border-radius: var(--radius-sm);
+}
+
+.animate-ember-glow {
+  animation: ember-glow 2s ease-in-out infinite;
+}
+
+.animate-message-appear {
+  animation: message-appear 300ms ease-out;
+}
+
+/* Particle dot utility */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-float 6s ease-in-out infinite;
+}
+
+/* Glass panel utility */
+.glass-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
 }
