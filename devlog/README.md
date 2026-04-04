@@ -55,3 +55,4 @@ Educational course on AI-assisted software development. Each version builds the 
 - [2026-03-31 — Zulip Data Migration & Badge Bug Fix](./bmad-007-zulip-migration-and-badge-fix.md)
 - [2026-04-01 — UX Polish: Join Flow & First-Time Experience](./bmad-008-ux-polish-join-flow.md)
 - [2026-04-02 — Profile Image Feature & Architecture Fixes](./bmad-009-profile-image-and-architecture-fixes.md)
+- [2026-04-04 — Midnight Workshop Redesign (design-variant-gstack)](./bmad-010-midnight-workshop-redesign.md)
