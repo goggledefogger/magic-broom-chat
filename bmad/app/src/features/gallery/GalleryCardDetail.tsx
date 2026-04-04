@@ -3,7 +3,6 @@ import { Link, useParams } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useAuth } from '@/hooks/useAuth'
 import { useGalleryCard, useCardComments, useCreateCardComment } from '@/hooks/useGalleryCards'
@@ -80,14 +79,14 @@ export function GalleryCardDetail() {
         {/* Back link */}
         <Link
           to={`/channels/${channelId}`}
-          className="mb-4 inline-block text-sm text-muted-foreground hover:text-foreground"
+          className="mb-4 inline-block text-sm text-amber-accent hover:underline"
         >
           &larr; Back to gallery
         </Link>
 
         {/* Card content */}
         {card.imageUrl && (
-          <div className="mb-4 overflow-hidden rounded-lg">
+          <div className="mb-4 overflow-hidden rounded-xl ring-1 ring-[#3f494315]">
             <img
               src={card.imageUrl}
               alt={card.title}
@@ -96,7 +95,7 @@ export function GalleryCardDetail() {
           </div>
         )}
 
-        <h1 className="mb-2 text-2xl font-bold">{card.title}</h1>
+        <h1 className="mb-2 font-heading text-2xl font-bold text-foreground">{card.title}</h1>
 
         <p className="mb-2 text-sm text-muted-foreground">
           By {card.profile?.displayName ?? 'Unknown'} &middot;{' '}
@@ -104,7 +103,7 @@ export function GalleryCardDetail() {
         </p>
 
         {card.description && (
-          <p className="mb-4 whitespace-pre-wrap text-sm">{card.description}</p>
+          <p className="mb-4 whitespace-pre-wrap text-sm text-foreground/90">{card.description}</p>
         )}
 
         {card.link && (
@@ -112,7 +111,7 @@ export function GalleryCardDetail() {
             href={card.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="mb-4 inline-block text-sm text-primary underline hover:text-primary/80"
+            className="mb-4 inline-block text-sm text-primary hover:text-primary/80 underline"
           >
             View linked resource &rarr;
           </a>
@@ -126,10 +125,10 @@ export function GalleryCardDetail() {
               onClick={() =>
                 user && cardId && toggleReaction.mutate({ userId: user.id, emoji: r.emoji, cardId })
               }
-              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-sm transition-colors ${
+              className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm transition-all ${
                 r.userReacted
-                  ? 'border-primary/50 bg-primary/10'
-                  : 'border-border bg-muted/50 hover:bg-muted'
+                  ? 'bg-primary/15 text-primary'
+                  : 'bg-[#1e2d24] text-muted-foreground hover:bg-[#29382f]'
               }`}
             >
               <span>{r.emoji}</span>
@@ -139,12 +138,12 @@ export function GalleryCardDetail() {
           <div className="relative">
             <button
               onClick={() => setShowPicker(!showPicker)}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-sm text-muted-foreground hover:bg-muted"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-sm text-muted-foreground hover:bg-[#1e2d24] hover:text-primary"
             >
               +
             </button>
             {showPicker && (
-              <div className="absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg border bg-popover p-2 shadow-md">
+              <div className="glass-card absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg p-2 shadow-lg">
                 {EMOJI_OPTIONS.map((emoji) => (
                   <button
                     key={emoji}
@@ -154,7 +153,7 @@ export function GalleryCardDetail() {
                       }
                       setShowPicker(false)
                     }}
-                    className="rounded p-1 hover:bg-muted"
+                    className="rounded-lg p-1 hover:bg-[#1e2d24] transition-colors"
                   >
                     {emoji}
                   </button>
@@ -164,10 +163,10 @@ export function GalleryCardDetail() {
           </div>
         </div>
 
-        <Separator className="my-6" />
+        <div className="my-6 h-px bg-[#3f494326]" />
 
         {/* Comments */}
-        <h2 className="mb-4 text-lg font-semibold">Comments</h2>
+        <h2 className="mb-4 font-heading text-lg font-semibold text-gold">Comments</h2>
 
         {comments?.length === 0 && (
           <p className="mb-4 text-sm text-muted-foreground">No comments yet.</p>
@@ -185,9 +184,9 @@ export function GalleryCardDetail() {
 
             return (
               <div key={comment.id} className="flex gap-3">
-                <Avatar className="mt-0.5 h-7 w-7 flex-shrink-0">
+                <Avatar className="mt-0.5 h-7 w-7 flex-shrink-0 ring-1 ring-[#3f494326]">
                   <AvatarImage src={comment.profile?.avatarUrl ?? undefined} />
-                  <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+                  <AvatarFallback className="text-xs bg-[#1e2d24] text-primary">{initials}</AvatarFallback>
                 </Avatar>
                 <div>
                   <div className="flex items-baseline gap-2">
@@ -196,7 +195,7 @@ export function GalleryCardDetail() {
                       {formatRelativeTime(comment.createdAt)}
                     </span>
                   </div>
-                  <p className="whitespace-pre-wrap text-sm">{comment.content}</p>
+                  <p className="whitespace-pre-wrap text-sm text-foreground/90">{comment.content}</p>
                 </div>
               </div>
             )
@@ -209,14 +208,14 @@ export function GalleryCardDetail() {
             placeholder="Add a comment..."
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
-            className="min-h-[40px] resize-none"
+            className="min-h-[40px] resize-none border-0 bg-[#041109] rounded-xl"
             rows={2}
           />
           <Button
             type="submit"
             size="sm"
             disabled={!commentText.trim() || createComment.isPending}
-            className="self-end"
+            className="btn-emerald self-end rounded-xl border-0"
           >
             Post
           </Button>

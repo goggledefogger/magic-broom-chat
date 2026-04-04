@@ -63,67 +63,79 @@ export function GalleryView({ channelId }: { channelId: string }) {
   return (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between border-b px-4 py-3">
+      <div className="flex items-center justify-between px-4 py-3 bg-muted/30">
         <div className="hidden md:block">
-          <h2 className="text-lg font-semibold">#{channel?.name}</h2>
+          <h2 className="font-heading text-lg font-semibold">
+            <span className="text-primary font-mono">#</span>{channel?.name}
+          </h2>
           {channel?.description && (
             <p className="text-sm text-muted-foreground">{channel.description}</p>
           )}
         </div>
         <span className="md:hidden text-sm font-medium text-muted-foreground">{channel?.description}</span>
-        <Button size="sm" onClick={() => setOpen(true)}>New Card</Button>
+        <Button
+          size="sm"
+          onClick={() => setOpen(true)}
+          className="bg-accent text-accent-foreground hover:bg-accent/90 rounded-lg font-heading text-xs"
+        >
+          + New Card
+        </Button>
         <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) resetForm() }}>
-          <DialogContent>
+          <DialogContent className="glass-card border-[#3f494326]">
             <DialogHeader>
-              <DialogTitle>Create Gallery Card</DialogTitle>
+              <DialogTitle className="font-heading text-gold">Create Gallery Card</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleCreate} className="space-y-4">
               {error && (
-                <p className="rounded bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
                   {error}
                 </p>
               )}
               <div className="space-y-2">
-                <Label htmlFor="card-title">Title</Label>
+                <Label htmlFor="card-title" className="text-muted-foreground text-xs uppercase tracking-wider">Title</Label>
                 <Input
                   id="card-title"
                   placeholder="Card title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
+                  className="border-0 bg-[#041109]"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="card-desc">Description</Label>
+                <Label htmlFor="card-desc" className="text-muted-foreground text-xs uppercase tracking-wider">Description</Label>
                 <Textarea
                   id="card-desc"
                   placeholder="Describe your creation..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
+                  className="border-0 bg-[#041109]"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="card-link">Link (optional)</Label>
+                <Label htmlFor="card-link" className="text-muted-foreground text-xs uppercase tracking-wider">Link (optional)</Label>
                 <Input
                   id="card-link"
                   type="url"
                   placeholder="https://..."
                   value={link}
                   onChange={(e) => setLink(e.target.value)}
+                  className="border-0 bg-[#041109]"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="card-image">Image URL (optional)</Label>
+                <Label htmlFor="card-image" className="text-muted-foreground text-xs uppercase tracking-wider">Image URL (optional)</Label>
                 <Input
                   id="card-image"
                   type="url"
                   placeholder="https://example.com/image.png"
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
+                  className="border-0 bg-[#041109]"
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={!title.trim() || createCard.isPending}>
+              <Button type="submit" className="btn-emerald w-full border-0 font-heading" disabled={!title.trim() || createCard.isPending}>
                 {createCard.isPending ? 'Creating...' : 'Create Card'}
               </Button>
             </form>
@@ -137,15 +149,16 @@ export function GalleryView({ channelId }: { channelId: string }) {
           <p className="text-sm text-muted-foreground">Loading gallery...</p>
         )}
         {cards?.length === 0 && (
-          <p className="text-sm text-muted-foreground">
-            No cards yet. Create the first one!
-          </p>
+          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+            <span className="text-3xl mb-2">&#x1F5BC;</span>
+            <p className="text-sm">No cards yet. Create the first one!</p>
+          </div>
         )}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {cards?.map((card) => (
             <Card
               key={card.id}
-              className="cursor-pointer transition-shadow hover:shadow-md"
+              className="cursor-pointer hover-glow bg-card border-0 ring-1 ring-[#3f494315]"
               onClick={() => navigate(`/channels/${channelId}/card/${card.id}`)}
             >
               {card.imageUrl && (
@@ -158,7 +171,7 @@ export function GalleryView({ channelId }: { channelId: string }) {
                 </div>
               )}
               <CardHeader className={card.imageUrl ? 'pt-3' : undefined}>
-                <CardTitle className="text-base">{card.title}</CardTitle>
+                <CardTitle className="font-heading text-base text-foreground">{card.title}</CardTitle>
               </CardHeader>
               {card.description && (
                 <CardContent className="pt-0">

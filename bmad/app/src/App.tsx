@@ -67,8 +67,9 @@ function App() {
                 <ProtectedRoute>
                   <AppLayout>
                     <div className="flex h-full items-center justify-center text-muted-foreground">
-                      <div className="text-center space-y-2">
-                        <p className="text-2xl">Welcome to the workshop</p>
+                      <div className="text-center space-y-3">
+                        <span className="text-4xl">&#x2728;</span>
+                        <p className="font-heading text-2xl text-gold">Welcome to the workshop</p>
                         <p className="text-sm">Select a channel to begin</p>
                       </div>
                     </div>

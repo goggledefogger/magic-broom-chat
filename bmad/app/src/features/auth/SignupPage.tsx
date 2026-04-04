@@ -41,16 +41,17 @@ export function SignupPage() {
 
   if (confirmationSent) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background p-4">
-        <Card className="w-full max-w-md">
+      <div className="auth-bg flex min-h-screen items-center justify-center p-4">
+        <Card className="glass-card w-full max-w-md border-0">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Scroll Dispatched</CardTitle>
-            <CardDescription>
+            <div className="mb-2 text-3xl">&#x1F4DC;</div>
+            <CardTitle className="font-heading text-gold text-2xl tracking-tight">Scroll Dispatched</CardTitle>
+            <CardDescription className="text-muted-foreground">
               A confirmation scroll has been sent to your email. Open it to complete your apprenticeship.
             </CardDescription>
           </CardHeader>
           <CardFooter className="justify-center">
-            <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">
+            <Link to="/login" className="text-sm text-amber-accent hover:underline">
               Return to the workshop entrance
             </Link>
           </CardFooter>
@@ -60,33 +61,35 @@ export function SignupPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
+    <div className="auth-bg flex min-h-screen items-center justify-center p-4">
+      <Card className="glass-card w-full max-w-md border-0">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Begin Your Apprenticeship</CardTitle>
-          <CardDescription>
+          <div className="mb-2 text-3xl">&#x2728;</div>
+          <CardTitle className="font-heading text-gold text-2xl tracking-tight">Begin Your Apprenticeship</CardTitle>
+          <CardDescription className="text-muted-foreground">
             Join the workshop and learn the ways of the broom.
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             {error && (
-              <p className="rounded bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
                 {error}
               </p>
             )}
             <div className="space-y-2">
-              <Label htmlFor="displayName">Display Name</Label>
+              <Label htmlFor="displayName" className="text-muted-foreground text-xs uppercase tracking-wider">Display Name</Label>
               <Input
                 id="displayName"
                 type="text"
                 placeholder="What shall we call you?"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
+                className="border-0 bg-[#041109] focus-visible:ring-primary"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-muted-foreground text-xs uppercase tracking-wider">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -94,10 +97,11 @@ export function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="border-0 bg-[#041109] focus-visible:ring-primary"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-muted-foreground text-xs uppercase tracking-wider">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -106,14 +110,15 @@ export function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
+                className="border-0 bg-[#041109] focus-visible:ring-primary"
               />
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col gap-3">
-            <Button type="submit" className="w-full" disabled={loading}>
+          <CardFooter className="flex flex-col gap-4">
+            <Button type="submit" className="btn-emerald w-full rounded-xl border-0 font-heading font-semibold" disabled={loading}>
               {loading ? 'Inscribing your name...' : 'Join the Workshop'}
             </Button>
-            <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">
+            <Link to="/login" className="text-sm text-amber-accent hover:underline">
               Already an apprentice? Sign in
             </Link>
           </CardFooter>

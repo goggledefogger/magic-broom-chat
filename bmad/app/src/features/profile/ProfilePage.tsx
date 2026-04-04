@@ -103,23 +103,23 @@ export function ProfilePage() {
   }
 
   return (
-    <div className="flex h-full items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="auth-bg flex h-full items-center justify-center p-4">
+      <Card className="glass-card w-full max-w-md border-0">
         <CardHeader className="text-center">
           <div className="flex flex-col items-center gap-2">
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading}
-              className="group relative rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="group relative rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
-              <Avatar className="h-20 w-20">
+              <Avatar className="h-20 w-20 ring-2 ring-primary/30">
                 <AvatarImage src={profile?.avatarUrl ?? undefined} />
-                <AvatarFallback className="text-lg">{initials}</AvatarFallback>
+                <AvatarFallback className="text-lg bg-[#1e2d24] text-primary">{initials}</AvatarFallback>
               </Avatar>
               <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/0 transition-colors group-hover:bg-black/40">
                 {isUploading ? (
-                  <svg className="h-6 w-6 animate-spin text-white" viewBox="0 0 24 24" fill="none">
+                  <svg className="h-6 w-6 animate-spin text-primary" viewBox="0 0 24 24" fill="none">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
@@ -143,36 +143,41 @@ export function ProfilePage() {
                 type="button"
                 onClick={handleRemoveAvatar}
                 disabled={isUploading}
-                className="text-xs text-muted-foreground hover:text-destructive transition-colors"
+                className="text-xs text-amber-accent hover:text-destructive transition-colors"
               >
                 Remove photo
               </button>
             )}
           </div>
-          <CardTitle className="text-2xl">Your Profile</CardTitle>
-          <CardDescription>{user?.email}</CardDescription>
+          <CardTitle className="font-heading text-gold text-2xl tracking-tight">Your Profile</CardTitle>
+          <CardDescription className="text-muted-foreground">{user?.email}</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="displayName">Display Name</Label>
+              <Label htmlFor="displayName" className="text-muted-foreground text-xs uppercase tracking-wider">Display Name</Label>
               <Input
                 id="displayName"
                 type="text"
                 placeholder="What shall we call you?"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
+                className="border-0 bg-[#041109] focus-visible:ring-primary"
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-muted-foreground">Role</Label>
-              <p className="text-sm capitalize">{profile?.role ?? 'student'}</p>
+              <Label className="text-muted-foreground text-xs uppercase tracking-wider">Role</Label>
+              <p className="text-sm capitalize">
+                <span className="inline-flex items-center rounded-full bg-[#e7c268]/15 px-2 py-0.5 text-xs font-medium text-[#e7c268]">
+                  {profile?.role ?? 'student'}
+                </span>
+              </p>
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-3">
             <Button
               type="submit"
-              className="w-full"
+              className="btn-emerald w-full rounded-xl border-0 font-heading font-semibold"
               disabled={updateProfile.isPending}
             >
               {updateProfile.isPending
@@ -183,7 +188,7 @@ export function ProfilePage() {
             </Button>
             <Link
               to="/channels"
-              className="text-sm text-muted-foreground hover:text-foreground"
+              className="text-sm text-amber-accent hover:underline"
             >
               Back to channels
             </Link>

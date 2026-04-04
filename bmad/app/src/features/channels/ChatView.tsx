@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
 import {
   AlertDialog,
   AlertDialogContent,
@@ -60,10 +59,10 @@ function MessageReactions({ messageId, userId }: { messageId: string; userId: st
         <button
           key={r.emoji}
           onClick={() => toggleReaction.mutate({ userId, emoji: r.emoji, messageId })}
-          className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs transition-colors ${
+          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs transition-all ${
             r.userReacted
-              ? 'border-primary/50 bg-primary/10'
-              : 'border-border bg-muted/50 hover:bg-muted'
+              ? 'bg-primary/15 text-primary'
+              : 'bg-[#1e2d24] text-muted-foreground hover:bg-[#29382f]'
           }`}
         >
           <span>{r.emoji}</span>
@@ -73,12 +72,12 @@ function MessageReactions({ messageId, userId }: { messageId: string; userId: st
       <div className="relative">
         <button
           onClick={() => setShowPicker(!showPicker)}
-          className="inline-flex h-6 w-6 items-center justify-center rounded-full text-xs text-muted-foreground hover:bg-muted"
+          className="inline-flex h-6 w-6 items-center justify-center rounded-full text-xs text-muted-foreground hover:bg-[#1e2d24] hover:text-primary"
         >
           +
         </button>
         {showPicker && (
-          <div className="absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg border bg-popover p-1 shadow-md">
+          <div className="glass-card absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg p-1 shadow-lg">
             {EMOJI_OPTIONS.map((emoji) => (
               <button
                 key={emoji}
@@ -86,7 +85,7 @@ function MessageReactions({ messageId, userId }: { messageId: string; userId: st
                   toggleReaction.mutate({ userId, emoji, messageId })
                   setShowPicker(false)
                 }}
-                className="rounded p-1 text-sm hover:bg-muted"
+                className="rounded-lg p-1 text-sm hover:bg-[#1e2d24] transition-colors"
               >
                 {emoji}
               </button>
@@ -183,22 +182,22 @@ function MessageItem({
 
   return (
     <div
-      className="group relative flex gap-3 px-4 py-2 hover:bg-muted/30"
+      className="group relative flex gap-3 px-4 py-2 hover:bg-[#101f16]/50 transition-colors rounded-lg mx-1"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerCancel}
       onPointerMove={handlePointerUp}
     >
-      <Avatar className="mt-0.5 h-8 w-8 flex-shrink-0">
+      <Avatar className="mt-0.5 h-8 w-8 flex-shrink-0 ring-1 ring-[#3f494326]">
         <AvatarImage src={message.profile?.avatarUrl ?? undefined} />
-        <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+        <AvatarFallback className="text-xs bg-[#1e2d24] text-primary">{initials}</AvatarFallback>
       </Avatar>
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-2">
-          <span className="text-sm font-semibold">{authorName}</span>
+          <span className="text-sm font-semibold text-foreground">{authorName}</span>
           <span className="text-xs text-muted-foreground">{formatTime(message.createdAt)}</span>
           {isEdited && (
-            <span className="text-xs text-muted-foreground/60">(edited)</span>
+            <span className="text-xs text-muted-foreground/50">(edited)</span>
           )}
         </div>
         {isEditing ? (
@@ -208,7 +207,7 @@ function MessageItem({
               value={editContent}
               onChange={(e) => setEditContent(e.target.value)}
               onKeyDown={handleEditKeyDown}
-              className="min-h-[40px] max-h-[120px] resize-none text-sm"
+              className="min-h-[40px] max-h-[120px] resize-none text-sm border-0 bg-[#041109]"
               rows={1}
             />
             <div className="mt-1 flex gap-2">
@@ -228,20 +227,20 @@ function MessageItem({
             </div>
           </div>
         ) : (
-          <p className="whitespace-pre-wrap text-sm">{message.content}</p>
+          <p className="whitespace-pre-wrap text-sm text-foreground/90">{message.content}</p>
         )}
         <MessageReactions messageId={message.id} userId={userId} />
       </div>
 
       {/* Floating toolbar - desktop hover + mobile long-press */}
       {showToolbar && !isEditing && (
-        <div className={`absolute -top-3 right-4 flex items-center gap-0.5 rounded-md border bg-background px-1 py-0.5 shadow-sm transition-opacity ${
+        <div className={`absolute -top-3 right-4 flex items-center gap-0.5 glass-card rounded-lg px-1 py-0.5 shadow-lg transition-opacity ${
           showMobileToolbar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
         }`}>
           {isOwn && (
             <button
               onClick={() => { startEditing(); setShowMobileToolbar(false) }}
-              className="rounded p-2.5 md:p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+              className="rounded-lg p-2.5 md:p-1 text-muted-foreground hover:text-primary hover:bg-[#1e2d24] transition-colors"
               title="Edit message"
             >
               <svg className="h-4 w-4 md:h-3.5 md:w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -253,7 +252,7 @@ function MessageItem({
           {isInstructor && (
             <button
               onClick={() => { setShowDeleteConfirm(true); setShowMobileToolbar(false) }}
-              className="rounded p-2.5 md:p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+              className="rounded-lg p-2.5 md:p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
               title="Delete message"
             >
               <svg className="h-4 w-4 md:h-3.5 md:w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -273,9 +272,9 @@ function MessageItem({
 
       {/* Delete confirmation dialog */}
       <AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
-        <AlertDialogContent>
+        <AlertDialogContent className="glass-card border-[#3f494326]">
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete message?</AlertDialogTitle>
+            <AlertDialogTitle className="font-heading">Delete message?</AlertDialogTitle>
             <AlertDialogDescription>
               This can't be undone.
             </AlertDialogDescription>
@@ -287,6 +286,7 @@ function MessageItem({
                 deleteMessage.mutate({ messageId: message.id, channelId })
                 setShowDeleteConfirm(false)
               }}
+              className="bg-destructive/20 text-destructive hover:bg-destructive/30"
             >
               Delete
             </AlertDialogAction>
@@ -350,9 +350,11 @@ export function ChatView({ channelId }: { channelId: string }) {
   return (
     <div className="flex h-full flex-col">
       {/* Channel header - hidden on mobile (mobile header in AppLayout) */}
-      <div className="hidden md:flex items-center gap-3 border-b px-4 py-3">
+      <div className="hidden md:flex items-center gap-3 px-4 py-3 bg-muted/30">
         <div>
-          <h2 className="text-lg font-semibold">#{channel?.name}</h2>
+          <h2 className="font-heading text-lg font-semibold">
+            <span className="text-primary font-mono">#</span>{channel?.name}
+          </h2>
           {channel?.description && (
             <p className="text-sm text-muted-foreground">{channel.description}</p>
           )}
@@ -366,16 +368,17 @@ export function ChatView({ channelId }: { channelId: string }) {
             <p className="px-4 text-sm text-muted-foreground">Loading messages...</p>
           )}
           {messages?.length === 0 && (
-            <p className="px-4 text-sm text-muted-foreground">
-              No messages yet. Be the first to speak in this channel.
-            </p>
+            <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+              <span className="text-3xl mb-2">&#x2728;</span>
+              <p className="text-sm">No messages yet. Be the first to speak in this channel.</p>
+            </div>
           )}
           {groupedMessages.map((group) => (
             <div key={group.date}>
               <div className="relative my-4 flex items-center px-4">
-                <Separator className="flex-1" />
-                <span className="px-3 text-xs text-muted-foreground">{group.date}</span>
-                <Separator className="flex-1" />
+                <div className="flex-1 h-px bg-[#3f494326]" />
+                <span className="px-3 text-xs text-muted-foreground font-medium">{group.date}</span>
+                <div className="flex-1 h-px bg-[#3f494326]" />
               </div>
               {group.messages.map((msg) => (
                 <MessageItem
@@ -393,21 +396,21 @@ export function ChatView({ channelId }: { channelId: string }) {
       </ScrollArea>
 
       {/* Message input */}
-      <div className="border-t p-4">
+      <div className="p-4 bg-muted/20">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <Textarea
             placeholder={`Message #${channel?.name ?? '...'}`}
             value={content}
             onChange={(e) => setContent(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="min-h-[40px] max-h-[120px] resize-none"
+            className="min-h-[40px] max-h-[120px] resize-none border-0 bg-[#041109] rounded-xl focus-visible:ring-primary"
             rows={1}
           />
           <Button
             type="submit"
             size="sm"
             disabled={!content.trim() || sendMessage.isPending}
-            className="self-end"
+            className="btn-emerald self-end rounded-xl border-0 px-4"
           >
             Send
           </Button>

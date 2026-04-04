@@ -1,13 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Sora:wght@100..800&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
+    --font-heading: 'Sora', sans-serif;
+    --font-sans: 'DM Sans', sans-serif;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -48,74 +48,97 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Sorcerer's Apprentice Theme — adult, mystical, minimalist */
+/* ═══════════════════════════════════════════
+   Enchanted Apothecary Theme
+   Generated from Stitch MCP design system
+   Deep forest greens + warm amber accents
+   ═══════════════════════════════════════════ */
+
 :root {
-    --background: oklch(0.97 0.005 280);
-    --foreground: oklch(0.15 0.02 280);
-    --card: oklch(0.98 0.003 280);
-    --card-foreground: oklch(0.15 0.02 280);
-    --popover: oklch(0.98 0.003 280);
-    --popover-foreground: oklch(0.15 0.02 280);
-    --primary: oklch(0.35 0.12 280);
-    --primary-foreground: oklch(0.98 0.005 280);
-    --secondary: oklch(0.92 0.02 280);
-    --secondary-foreground: oklch(0.25 0.05 280);
-    --muted: oklch(0.93 0.01 280);
-    --muted-foreground: oklch(0.5 0.03 280);
-    --accent: oklch(0.55 0.18 35);
-    --accent-foreground: oklch(0.98 0.005 280);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.88 0.02 280);
-    --input: oklch(0.88 0.02 280);
-    --ring: oklch(0.45 0.12 280);
-    --chart-1: oklch(0.55 0.18 35);
-    --chart-2: oklch(0.45 0.12 280);
-    --chart-3: oklch(0.6 0.15 160);
-    --chart-4: oklch(0.5 0.1 320);
-    --chart-5: oklch(0.65 0.12 80);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.18 0.04 280);
-    --sidebar-foreground: oklch(0.9 0.01 280);
-    --sidebar-primary: oklch(0.55 0.18 35);
-    --sidebar-primary-foreground: oklch(0.98 0.005 280);
-    --sidebar-accent: oklch(0.25 0.05 280);
-    --sidebar-accent-foreground: oklch(0.9 0.01 280);
-    --sidebar-border: oklch(0.25 0.04 280);
-    --sidebar-ring: oklch(0.45 0.12 280);
+    /* Surface hierarchy — tonal layering, not borders */
+    --background: #08160e;        /* surface — the void of the forest */
+    --foreground: #d5e7d9;        /* on-surface — soft sage white */
+    --card: #1e2d24;              /* surface-container-high — elevated */
+    --card-foreground: #d5e7d9;
+    --popover: #29382f;           /* surface-container-highest — floating glass */
+    --popover-foreground: #d5e7d9;
+
+    /* Primary — luminous emerald */
+    --primary: #86d7ad;
+    --primary-foreground: #003824;
+
+    /* Secondary — surface container for subtle areas */
+    --secondary: #14231a;         /* surface-container */
+    --secondary-foreground: #d5e7d9;
+
+    /* Muted — recessed areas */
+    --muted: #101f16;             /* surface-container-low */
+    --muted-foreground: #bec9c0;  /* on-surface-variant */
+
+    /* Accent — warm amber for highlights and badges */
+    --accent: #f0bd8b;            /* secondary (amber) */
+    --accent-foreground: #482904;
+
+    /* Destructive — warm red */
+    --destructive: #ffb4ab;
+
+    /* Structural tokens */
+    --border: #3f494326;          /* ghost border — outline-variant at 15% */
+    --input: #14231a;             /* surface-container for inputs */
+    --ring: #86d7ad;              /* emerald focus ring */
+    --radius: 0.75rem;            /* 12px base radius */
+
+    /* Chart colors */
+    --chart-1: #86d7ad;
+    --chart-2: #f0bd8b;
+    --chart-3: #e7c268;
+    --chart-4: #4fa07a;
+    --chart-5: #a1f4c8;
+
+    /* Sidebar — slightly different surface tier */
+    --sidebar: #101f16;           /* surface-container-low */
+    --sidebar-foreground: #d5e7d9;
+    --sidebar-primary: #f0bd8b;   /* amber for sidebar highlights */
+    --sidebar-primary-foreground: #482904;
+    --sidebar-accent: #1e2d24;    /* surface-container-high */
+    --sidebar-accent-foreground: #d5e7d9;
+    --sidebar-border: #3f494326;
+    --sidebar-ring: #86d7ad;
 }
 
+/* Dark mode is the same — this IS a dark-mode design */
 .dark {
-    --background: oklch(0.13 0.02 280);
-    --foreground: oklch(0.93 0.01 280);
-    --card: oklch(0.18 0.03 280);
-    --card-foreground: oklch(0.93 0.01 280);
-    --popover: oklch(0.18 0.03 280);
-    --popover-foreground: oklch(0.93 0.01 280);
-    --primary: oklch(0.55 0.18 35);
-    --primary-foreground: oklch(0.13 0.02 280);
-    --secondary: oklch(0.22 0.04 280);
-    --secondary-foreground: oklch(0.9 0.01 280);
-    --muted: oklch(0.22 0.03 280);
-    --muted-foreground: oklch(0.65 0.02 280);
-    --accent: oklch(0.55 0.18 35);
-    --accent-foreground: oklch(0.13 0.02 280);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(0.25 0.03 280);
-    --input: oklch(0.25 0.04 280);
-    --ring: oklch(0.55 0.15 35);
-    --chart-1: oklch(0.55 0.18 35);
-    --chart-2: oklch(0.55 0.12 280);
-    --chart-3: oklch(0.6 0.15 160);
-    --chart-4: oklch(0.5 0.1 320);
-    --chart-5: oklch(0.65 0.12 80);
-    --sidebar: oklch(0.12 0.03 280);
-    --sidebar-foreground: oklch(0.9 0.01 280);
-    --sidebar-primary: oklch(0.55 0.18 35);
-    --sidebar-primary-foreground: oklch(0.98 0.005 280);
-    --sidebar-accent: oklch(0.2 0.04 280);
-    --sidebar-accent-foreground: oklch(0.9 0.01 280);
-    --sidebar-border: oklch(0.2 0.03 280);
-    --sidebar-ring: oklch(0.55 0.15 35);
+    --background: #08160e;
+    --foreground: #d5e7d9;
+    --card: #1e2d24;
+    --card-foreground: #d5e7d9;
+    --popover: #29382f;
+    --popover-foreground: #d5e7d9;
+    --primary: #86d7ad;
+    --primary-foreground: #003824;
+    --secondary: #14231a;
+    --secondary-foreground: #d5e7d9;
+    --muted: #101f16;
+    --muted-foreground: #bec9c0;
+    --accent: #f0bd8b;
+    --accent-foreground: #482904;
+    --destructive: #ffb4ab;
+    --border: #3f494326;
+    --input: #14231a;
+    --ring: #86d7ad;
+    --chart-1: #86d7ad;
+    --chart-2: #f0bd8b;
+    --chart-3: #e7c268;
+    --chart-4: #4fa07a;
+    --chart-5: #a1f4c8;
+    --sidebar: #101f16;
+    --sidebar-foreground: #d5e7d9;
+    --sidebar-primary: #f0bd8b;
+    --sidebar-primary-foreground: #482904;
+    --sidebar-accent: #1e2d24;
+    --sidebar-accent-foreground: #d5e7d9;
+    --sidebar-border: #3f494326;
+    --sidebar-ring: #86d7ad;
 }
 
 @layer base {
@@ -130,19 +153,65 @@
   }
 }
 
-/* Channel join animation — subtle magical shimmer */
+/* ═══════════════════════════════════════════
+   Custom utilities for the Enchanted Apothecary
+   ═══════════════════════════════════════════ */
+
+/* Glassmorphism card — frosted forest glass */
+.glass-card {
+  background: rgba(41, 56, 47, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(63, 73, 67, 0.15);
+}
+
+/* Emerald gradient button */
+.btn-emerald {
+  background: linear-gradient(135deg, #86d7ad 0%, #4fa07a 100%);
+  color: #003824;
+}
+.btn-emerald:hover {
+  background: linear-gradient(135deg, #a1f4c8 0%, #86d7ad 100%);
+  box-shadow: 0 0 20px rgba(134, 215, 173, 0.2);
+}
+
+/* Amber accent text */
+.text-amber-accent {
+  color: #f0bd8b;
+}
+
+/* Gold luminous text for special headers */
+.text-gold {
+  color: #e7c268;
+  text-shadow: 0 0 8px rgba(231, 194, 104, 0.15);
+}
+
+/* Hover glow effect for interactive cards */
+.hover-glow {
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.hover-glow:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px 2px rgba(134, 215, 173, 0.12);
+}
+
+/* Radial gradient background for auth pages */
+.auth-bg {
+  background: radial-gradient(ellipse at center, #101f16 0%, #08160e 60%, #041109 100%);
+}
+
+/* Channel join animation — emerald botanical shimmer */
 @keyframes channel-join {
   0% {
     background-color: transparent;
     box-shadow: none;
   }
   20% {
-    background-color: oklch(0.55 0.18 35 / 0.15);
-    box-shadow: 0 0 8px oklch(0.55 0.18 35 / 0.3);
+    background-color: rgba(134, 215, 173, 0.15);
+    box-shadow: 0 0 8px rgba(134, 215, 173, 0.3);
   }
   50% {
-    background-color: oklch(0.45 0.12 280 / 0.1);
-    box-shadow: 0 0 12px oklch(0.45 0.12 280 / 0.2);
+    background-color: rgba(240, 189, 139, 0.1);
+    box-shadow: 0 0 12px rgba(240, 189, 139, 0.2);
   }
   100% {
     background-color: transparent;
@@ -153,4 +222,19 @@
 .animate-channel-join {
   animation: channel-join 1.2s ease-out;
   border-radius: var(--radius-sm);
+}
+
+/* Custom scrollbar — thin, organic */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(63, 73, 67, 0.4);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(63, 73, 67, 0.6);
 }
