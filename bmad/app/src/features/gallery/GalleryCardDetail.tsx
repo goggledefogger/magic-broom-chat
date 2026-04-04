@@ -3,7 +3,6 @@ import { Link, useParams } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useAuth } from '@/hooks/useAuth'
 import { useGalleryCard, useCardComments, useCreateCardComment } from '@/hooks/useGalleryCards'
@@ -61,7 +60,10 @@ export function GalleryCardDetail() {
   if (cardLoading) {
     return (
       <div className="flex h-full items-center justify-center">
-        <p className="text-muted-foreground">Loading card...</p>
+        <div className="text-center space-y-2">
+          <span className="block text-2xl text-primary/30 shimmer-gold">&#10022;</span>
+          <p className="text-muted-foreground">Loading card...</p>
+        </div>
       </div>
     )
   }
@@ -80,14 +82,14 @@ export function GalleryCardDetail() {
         {/* Back link */}
         <Link
           to={`/channels/${channelId}`}
-          className="mb-4 inline-block text-sm text-muted-foreground hover:text-foreground"
+          className="mb-4 inline-block text-sm text-muted-foreground transition-colors hover:text-primary"
         >
           &larr; Back to gallery
         </Link>
 
         {/* Card content */}
         {card.imageUrl && (
-          <div className="mb-4 overflow-hidden rounded-lg">
+          <div className="mb-5 overflow-hidden rounded-lg ring-1 ring-primary/10">
             <img
               src={card.imageUrl}
               alt={card.title}
@@ -96,15 +98,15 @@ export function GalleryCardDetail() {
           </div>
         )}
 
-        <h1 className="mb-2 text-2xl font-bold">{card.title}</h1>
+        <h1 className="mb-2 font-heading text-2xl font-bold">{card.title}</h1>
 
-        <p className="mb-2 text-sm text-muted-foreground">
+        <p className="mb-2 text-sm text-muted-foreground/70">
           By {card.profile?.displayName ?? 'Unknown'} &middot;{' '}
           {formatRelativeTime(card.createdAt)}
         </p>
 
         {card.description && (
-          <p className="mb-4 whitespace-pre-wrap text-sm">{card.description}</p>
+          <p className="mb-4 whitespace-pre-wrap text-sm leading-relaxed">{card.description}</p>
         )}
 
         {card.link && (
@@ -112,7 +114,7 @@ export function GalleryCardDetail() {
             href={card.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="mb-4 inline-block text-sm text-primary underline hover:text-primary/80"
+            className="mb-4 inline-block text-sm text-primary underline underline-offset-2 transition-colors hover:text-primary/80"
           >
             View linked resource &rarr;
           </a>
@@ -126,10 +128,10 @@ export function GalleryCardDetail() {
               onClick={() =>
                 user && cardId && toggleReaction.mutate({ userId: user.id, emoji: r.emoji, cardId })
               }
-              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-sm transition-colors ${
+              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-sm transition-all ${
                 r.userReacted
-                  ? 'border-primary/50 bg-primary/10'
-                  : 'border-border bg-muted/50 hover:bg-muted'
+                  ? 'border-primary/40 bg-primary/10 text-primary'
+                  : 'border-border bg-muted/30 hover:bg-muted/60'
               }`}
             >
               <span>{r.emoji}</span>
@@ -139,12 +141,12 @@ export function GalleryCardDetail() {
           <div className="relative">
             <button
               onClick={() => setShowPicker(!showPicker)}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-sm text-muted-foreground hover:bg-muted"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               +
             </button>
             {showPicker && (
-              <div className="absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg border bg-popover p-2 shadow-md">
+              <div className="absolute bottom-full left-0 z-10 mb-1 flex gap-1 rounded-lg border border-primary/20 bg-popover p-2 shadow-lg glow-gold-sm">
                 {EMOJI_OPTIONS.map((emoji) => (
                   <button
                     key={emoji}
@@ -154,7 +156,7 @@ export function GalleryCardDetail() {
                       }
                       setShowPicker(false)
                     }}
-                    className="rounded p-1 hover:bg-muted"
+                    className="rounded p-1 transition-colors hover:bg-muted"
                   >
                     {emoji}
                   </button>
@@ -164,13 +166,15 @@ export function GalleryCardDetail() {
           </div>
         </div>
 
-        <Separator className="my-6" />
-
-        {/* Comments */}
-        <h2 className="mb-4 text-lg font-semibold">Comments</h2>
+        {/* Ornamental divider */}
+        <div className="ornament-divider my-6">
+          <span className="text-[11px] font-medium tracking-wider text-muted-foreground/50 uppercase">
+            Comments
+          </span>
+        </div>
 
         {comments?.length === 0 && (
-          <p className="mb-4 text-sm text-muted-foreground">No comments yet.</p>
+          <p className="mb-4 text-sm text-muted-foreground/60">No comments yet.</p>
         )}
 
         <div className="space-y-4">
@@ -185,18 +189,18 @@ export function GalleryCardDetail() {
 
             return (
               <div key={comment.id} className="flex gap-3">
-                <Avatar className="mt-0.5 h-7 w-7 flex-shrink-0">
+                <Avatar className="mt-0.5 h-7 w-7 flex-shrink-0 ring-1 ring-border">
                   <AvatarImage src={comment.profile?.avatarUrl ?? undefined} />
                   <AvatarFallback className="text-xs">{initials}</AvatarFallback>
                 </Avatar>
                 <div>
                   <div className="flex items-baseline gap-2">
                     <span className="text-sm font-semibold">{authorName}</span>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-[11px] text-muted-foreground/60">
                       {formatRelativeTime(comment.createdAt)}
                     </span>
                   </div>
-                  <p className="whitespace-pre-wrap text-sm">{comment.content}</p>
+                  <p className="whitespace-pre-wrap text-sm leading-relaxed">{comment.content}</p>
                 </div>
               </div>
             )

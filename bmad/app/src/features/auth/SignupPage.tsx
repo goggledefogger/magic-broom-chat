@@ -41,16 +41,17 @@ export function SignupPage() {
 
   if (confirmationSent) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background p-4">
-        <Card className="w-full max-w-md">
+      <div className="atelier-bg flex min-h-screen items-center justify-center p-4">
+        <Card className="animate-fade-in-up w-full max-w-md glow-gold ring-1 ring-primary/10">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Scroll Dispatched</CardTitle>
-            <CardDescription>
+            <div className="mb-2 text-3xl text-primary/60">&#9993;</div>
+            <CardTitle className="font-heading text-2xl tracking-wide">Scroll Dispatched</CardTitle>
+            <CardDescription className="text-muted-foreground/80">
               A confirmation scroll has been sent to your email. Open it to complete your apprenticeship.
             </CardDescription>
           </CardHeader>
           <CardFooter className="justify-center">
-            <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">
+            <Link to="/login" className="text-sm text-muted-foreground transition-colors hover:text-primary">
               Return to the workshop entrance
             </Link>
           </CardFooter>
@@ -60,18 +61,19 @@ export function SignupPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
+    <div className="atelier-bg flex min-h-screen items-center justify-center p-4">
+      <Card className="animate-fade-in-up w-full max-w-md glow-gold ring-1 ring-primary/10">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Begin Your Apprenticeship</CardTitle>
-          <CardDescription>
+          <div className="mb-2 text-3xl text-primary/60">&#10022;</div>
+          <CardTitle className="font-heading text-2xl tracking-wide">Begin Your Apprenticeship</CardTitle>
+          <CardDescription className="text-muted-foreground/80">
             Join the workshop and learn the ways of the broom.
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             {error && (
-              <p className="rounded bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              <p className="rounded border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive">
                 {error}
               </p>
             )}
@@ -113,7 +115,7 @@ export function SignupPage() {
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Inscribing your name...' : 'Join the Workshop'}
             </Button>
-            <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">
+            <Link to="/login" className="text-sm text-muted-foreground transition-colors hover:text-primary">
               Already an apprentice? Sign in
             </Link>
           </CardFooter>

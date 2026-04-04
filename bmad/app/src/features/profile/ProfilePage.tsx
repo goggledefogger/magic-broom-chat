@@ -97,14 +97,17 @@ export function ProfilePage() {
   if (isLoading) {
     return (
       <div className="flex h-full items-center justify-center">
-        <p className="text-muted-foreground">Loading your profile...</p>
+        <div className="text-center space-y-2">
+          <span className="block text-2xl text-primary/30 shimmer-gold">&#10022;</span>
+          <p className="text-muted-foreground">Loading your profile...</p>
+        </div>
       </div>
     )
   }
 
   return (
     <div className="flex h-full items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+      <Card className="animate-fade-in-up w-full max-w-md glow-gold ring-1 ring-primary/10">
         <CardHeader className="text-center">
           <div className="flex flex-col items-center gap-2">
             <button
@@ -113,9 +116,9 @@ export function ProfilePage() {
               disabled={isUploading}
               className="group relative rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
-              <Avatar className="h-20 w-20">
+              <Avatar className="h-24 w-24 ring-2 ring-primary/20">
                 <AvatarImage src={profile?.avatarUrl ?? undefined} />
-                <AvatarFallback className="text-lg">{initials}</AvatarFallback>
+                <AvatarFallback className="text-xl">{initials}</AvatarFallback>
               </Avatar>
               <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/0 transition-colors group-hover:bg-black/40">
                 {isUploading ? (
@@ -143,13 +146,13 @@ export function ProfilePage() {
                 type="button"
                 onClick={handleRemoveAvatar}
                 disabled={isUploading}
-                className="text-xs text-muted-foreground hover:text-destructive transition-colors"
+                className="text-xs text-muted-foreground transition-colors hover:text-destructive"
               >
                 Remove photo
               </button>
             )}
           </div>
-          <CardTitle className="text-2xl">Your Profile</CardTitle>
+          <CardTitle className="font-heading text-2xl tracking-wide">Your Profile</CardTitle>
           <CardDescription>{user?.email}</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
@@ -178,12 +181,12 @@ export function ProfilePage() {
               {updateProfile.isPending
                 ? 'Saving...'
                 : saved
-                  ? 'Saved!'
+                  ? '\u2728 Saved!'
                   : 'Update Profile'}
             </Button>
             <Link
               to="/channels"
-              className="text-sm text-muted-foreground hover:text-foreground"
+              className="text-sm text-muted-foreground transition-colors hover:text-primary"
             >
               Back to channels
             </Link>

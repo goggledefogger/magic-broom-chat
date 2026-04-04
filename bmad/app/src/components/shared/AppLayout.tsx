@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import {
@@ -69,10 +68,14 @@ function SidebarContent({
 }) {
   return (
     <>
-      <div className="flex items-center gap-2 p-4">
-        <h1 className="text-lg font-bold text-sidebar-primary">Magic Brooms</h1>
+      {/* Brand header */}
+      <div className="flex items-center gap-2.5 px-4 py-5">
+        <span className="text-lg text-sidebar-primary" aria-hidden="true">&#10022;</span>
+        <h1 className="font-heading text-xl tracking-wide text-sidebar-primary">
+          Magic Brooms
+        </h1>
       </div>
-      <Separator className="bg-sidebar-border" />
+      <div className="mx-4 h-px bg-gradient-to-r from-transparent via-sidebar-primary/30 to-transparent" />
 
       {/* Search */}
       <div className="p-3">
@@ -83,7 +86,7 @@ function SidebarContent({
             setSearchQuery(e.target.value)
             setShowSearch(e.target.value.length > 0)
           }}
-          className="bg-sidebar-accent/50 border-sidebar-border text-sidebar-foreground placeholder:text-sidebar-foreground/50 h-8 text-sm"
+          className="bg-sidebar-accent/50 border-sidebar-border text-sidebar-foreground placeholder:text-sidebar-foreground/40 h-8 text-sm"
         />
       </div>
 
@@ -95,9 +98,9 @@ function SidebarContent({
               <button
                 key={`${r.type}-${r.id}`}
                 onClick={() => onSearchResultClick(r)}
-                className="w-full rounded p-2 text-left text-sm hover:bg-sidebar-accent"
+                className="w-full rounded px-2 py-2 text-left text-sm transition-colors hover:bg-sidebar-accent"
               >
-                <span className="text-xs text-sidebar-foreground/60">
+                <span className="text-[10px] uppercase tracking-wider text-sidebar-primary/60">
                   {r.type === 'card' ? 'Card' : 'Message'} in #{r.channelName}
                 </span>
                 <p className="truncate text-sidebar-foreground">
@@ -113,10 +116,10 @@ function SidebarContent({
       <ScrollArea className="flex-1">
         <div className="p-3">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-sidebar-primary/50">
               Channels
             </span>
-            <Button variant="ghost" size="sm" className="h-5 w-5 p-0 text-sidebar-foreground/60 hover:text-sidebar-foreground" onClick={onCreateChannel}>
+            <Button variant="ghost" size="sm" className="h-5 w-5 p-0 text-sidebar-primary/40 hover:text-sidebar-primary" onClick={onCreateChannel}>
               +
             </Button>
           </div>
@@ -136,18 +139,18 @@ function SidebarContent({
                   {isMember ? (
                     <Link
                       to={`/channels/${ch.id}`}
-                      className={`flex-1 rounded px-2 py-1.5 text-sm transition-colors ${
+                      className={`flex-1 rounded px-2.5 py-1.5 text-sm transition-all ${
                         isActive
-                          ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
-                          : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50'
-                      } ${badgeCount > 0 ? 'font-bold' : ''}`}
+                          ? 'bg-sidebar-accent text-sidebar-primary font-medium glow-gold-sm'
+                          : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                      } ${badgeCount > 0 ? 'font-semibold' : ''}`}
                     >
-                      <span className="text-sidebar-foreground/40 mr-1">
-                        {ch.type === 'gallery' ? '🖼' : '#'}
+                      <span className="mr-1.5 text-sidebar-primary/40">
+                        {ch.type === 'gallery' ? '\u25C6' : '#'}
                       </span>
                       {ch.name}
                       {badgeCount > 0 && (
-                        <Badge variant="secondary" className="ml-1 h-4 min-w-4 justify-center px-1 text-[10px]">
+                        <Badge variant="secondary" className="ml-1.5 h-4 min-w-4 justify-center bg-sidebar-primary/20 px-1 text-[10px] text-sidebar-primary">
                           {badgeCount}
                         </Badge>
                       )}
@@ -155,11 +158,11 @@ function SidebarContent({
                   ) : (
                     <button
                       onClick={() => onJoinChannel(ch.id)}
-                      className="flex-1 rounded px-2 py-1.5 text-left text-sm text-sidebar-foreground/40 hover:text-sidebar-foreground/60 italic"
+                      className="flex-1 rounded px-2.5 py-1.5 text-left text-sm text-sidebar-foreground/30 italic transition-colors hover:text-sidebar-foreground/50"
                     >
-                      <span className="mr-1">{ch.type === 'gallery' ? '🖼' : '#'}</span>
+                      <span className="mr-1.5">{ch.type === 'gallery' ? '\u25C6' : '#'}</span>
                       {ch.name}
-                      <span className="ml-1 text-[10px]">(join)</span>
+                      <span className="ml-1 text-[10px] not-italic">(join)</span>
                     </button>
                   )}
                 </div>
@@ -169,16 +172,16 @@ function SidebarContent({
       </ScrollArea>
 
       {/* User section */}
-      <Separator className="bg-sidebar-border" />
+      <div className="mx-4 h-px bg-gradient-to-r from-transparent via-sidebar-border to-transparent" />
       <div className="flex items-center justify-between p-3">
-        <Link to="/profile" className="text-sm text-sidebar-foreground/80 hover:text-sidebar-foreground">
+        <Link to="/profile" className="text-sm text-sidebar-foreground/70 transition-colors hover:text-sidebar-primary">
           {profile?.displayName ?? user?.email ?? 'Apprentice'}
         </Link>
         <Button
           variant="ghost"
           size="sm"
           onClick={onSignOut}
-          className="h-6 text-xs text-sidebar-foreground/60 hover:text-sidebar-foreground"
+          className="h-6 text-xs text-sidebar-foreground/40 hover:text-sidebar-foreground"
         >
           Logout
         </Button>
@@ -326,11 +329,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </SheetContent>
       </Sheet>
 
-      {/* Create channel dialog (shared) */}
+      {/* Create channel dialog */}
       <Dialog open={showCreateChannel} onOpenChange={setShowCreateChannel}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Create a new channel</DialogTitle>
+            <DialogTitle className="font-heading text-lg">Create a new channel</DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
             <Input
@@ -368,7 +371,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Mobile header */}
-        <div className="flex md:hidden items-center gap-3 border-b px-3 py-2 bg-background">
+        <div className="flex md:hidden items-center gap-3 border-b border-border/50 px-3 py-2 bg-background">
           <Button
             variant="ghost"
             size="sm"
@@ -377,10 +380,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           >
             <MenuIcon className="h-5 w-5" />
           </Button>
-          <span className="flex-1 text-sm font-semibold truncate">
+          <span className="flex-1 font-heading text-sm font-semibold truncate">
             {currentChannel ? `#${currentChannel.name}` : 'Magic Brooms'}
           </span>
-          <Link to="/profile" className="text-sm text-muted-foreground">
+          <Link to="/profile" className="text-sm text-muted-foreground hover:text-primary">
             {profile?.displayName?.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() ?? '?'}
           </Link>
         </div>

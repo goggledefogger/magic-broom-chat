@@ -63,9 +63,9 @@ export function GalleryView({ channelId }: { channelId: string }) {
   return (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between border-b px-4 py-3">
+      <div className="flex items-center justify-between border-b border-border/50 px-5 py-3">
         <div className="hidden md:block">
-          <h2 className="text-lg font-semibold">#{channel?.name}</h2>
+          <h2 className="font-heading text-lg font-semibold">#{channel?.name}</h2>
           {channel?.description && (
             <p className="text-sm text-muted-foreground">{channel.description}</p>
           )}
@@ -75,11 +75,11 @@ export function GalleryView({ channelId }: { channelId: string }) {
         <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) resetForm() }}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create Gallery Card</DialogTitle>
+              <DialogTitle className="font-heading text-lg">Create Gallery Card</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleCreate} className="space-y-4">
               {error && (
-                <p className="rounded bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                <p className="rounded border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive">
                   {error}
                 </p>
               )}
@@ -132,20 +132,24 @@ export function GalleryView({ channelId }: { channelId: string }) {
       </div>
 
       {/* Card grid */}
-      <div className="flex-1 overflow-auto p-4">
+      <div className="flex-1 overflow-auto p-5">
         {isLoading && (
-          <p className="text-sm text-muted-foreground">Loading gallery...</p>
+          <div className="flex items-center justify-center py-12">
+            <span className="text-2xl text-primary/30 shimmer-gold">&#10022;</span>
+          </div>
         )}
         {cards?.length === 0 && (
-          <p className="text-sm text-muted-foreground">
-            No cards yet. Create the first one!
-          </p>
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <span className="mb-3 text-3xl text-primary/30">&#9670;</span>
+            <p className="font-heading text-lg text-muted-foreground">No cards yet</p>
+            <p className="mt-1 text-sm text-muted-foreground/60">Create the first one!</p>
+          </div>
         )}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {cards?.map((card) => (
             <Card
               key={card.id}
-              className="cursor-pointer transition-shadow hover:shadow-md"
+              className="cursor-pointer ring-1 ring-primary/8 transition-all hover:ring-primary/20 hover:glow-gold-sm"
               onClick={() => navigate(`/channels/${channelId}/card/${card.id}`)}
             >
               {card.imageUrl && (
@@ -153,12 +157,12 @@ export function GalleryView({ channelId }: { channelId: string }) {
                   <img
                     src={card.imageUrl}
                     alt={card.title}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover transition-transform hover:scale-[1.02]"
                   />
                 </div>
               )}
               <CardHeader className={card.imageUrl ? 'pt-3' : undefined}>
-                <CardTitle className="text-base">{card.title}</CardTitle>
+                <CardTitle className="font-heading text-base">{card.title}</CardTitle>
               </CardHeader>
               {card.description && (
                 <CardContent className="pt-0">
@@ -167,7 +171,7 @@ export function GalleryView({ channelId }: { channelId: string }) {
                   </p>
                 </CardContent>
               )}
-              <CardFooter className="pt-0 text-xs text-muted-foreground">
+              <CardFooter className="pt-0 text-xs text-muted-foreground/70">
                 {card.profile?.displayName ?? 'Unknown'} &middot;{' '}
                 {new Intl.DateTimeFormat('en-US', {
                   month: 'short',

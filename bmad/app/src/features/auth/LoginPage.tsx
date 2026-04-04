@@ -31,18 +31,19 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
+    <div className="atelier-bg flex min-h-screen items-center justify-center p-4">
+      <Card className="animate-fade-in-up w-full max-w-md glow-gold ring-1 ring-primary/10">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Enter the Workshop</CardTitle>
-          <CardDescription>
+          <div className="mb-2 text-3xl text-primary/60">&#10022;</div>
+          <CardTitle className="font-heading text-2xl tracking-wide">Enter the Workshop</CardTitle>
+          <CardDescription className="text-muted-foreground/80">
             The brooms await your command, apprentice.
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             {error && (
-              <p className="rounded bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              <p className="rounded border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive">
                 {error}
               </p>
             )}
@@ -74,10 +75,10 @@ export function LoginPage() {
               {loading ? 'Opening the doors...' : 'Enter'}
             </Button>
             <div className="flex gap-4 text-sm">
-              <Link to="/signup" className="text-muted-foreground hover:text-foreground">
+              <Link to="/signup" className="text-muted-foreground transition-colors hover:text-primary">
                 New apprentice? Sign up
               </Link>
-              <Link to="/forgot-password" className="text-muted-foreground hover:text-foreground">
+              <Link to="/forgot-password" className="text-muted-foreground transition-colors hover:text-primary">
                 Forgot password?
               </Link>
             </div>

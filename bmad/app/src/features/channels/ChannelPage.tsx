@@ -30,7 +30,10 @@ export function ChannelPage() {
   if (isLoading) {
     return (
       <div className="flex h-full items-center justify-center">
-        <p className="text-muted-foreground">Loading channel...</p>
+        <div className="text-center space-y-2">
+          <span className="block text-2xl text-primary/30 shimmer-gold">&#10022;</span>
+          <p className="text-sm text-muted-foreground">Loading channel...</p>
+        </div>
       </div>
     )
   }
