@@ -17,8 +17,9 @@ import {
 import { useAuth } from '@/hooks/useAuth'
 import { useProfile } from '@/hooks/useProfile'
 import { useChannel } from '@/hooks/useChannels'
-import { useMessages, useSendMessage, useEditMessage, useDeleteMessage, type Message } from '@/hooks/useMessages'
+import { useMessages, useSendMessage, useEditMessage, useDeleteMessage, useThreadReplyCounts, type Message } from '@/hooks/useMessages'
 import { useMessageReactions, useToggleReaction, summarizeReactions } from '@/hooks/useReactions'
+import { ThreadPanel } from '@/features/channels/ThreadPanel'
 
 const EMOJI_OPTIONS = ['\u{1F44D}', '\u{2764}\u{FE0F}', '\u{1F389}', '\u{1F525}', '\u{1F440}', '\u{1F4A1}', '\u{2728}', '\u{1F64C}']
 
@@ -103,11 +104,15 @@ function MessageItem({
   userId,
   isInstructor,
   channelId,
+  replyCount,
+  onOpenThread,
 }: {
   message: Message
   userId: string
   isInstructor: boolean
   channelId: string
+  replyCount: number
+  onOpenThread: (msg: Message) => void
 }) {
   const editMessage = useEditMessage()
   const deleteMessage = useDeleteMessage()
@@ -163,10 +168,10 @@ function MessageItem({
     if (isEditing) editRef.current?.focus()
   }, [isEditing])
 
-  const showToolbar = isOwn || isInstructor
+  const showToolbar = true // all users can reply
 
   const handlePointerDown = (e: React.PointerEvent) => {
-    if (e.pointerType !== 'touch' || !showToolbar || isEditing) return
+    if (e.pointerType !== 'touch' || isEditing) return
     longPressTimer.current = setTimeout(() => {
       setShowMobileToolbar(true)
     }, 500)
@@ -179,14 +184,12 @@ function MessageItem({
     }
   }
 
-  const handlePointerCancel = handlePointerUp
-
   return (
     <div
       className="group relative flex gap-3 px-4 py-2 hover:bg-muted/30"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerCancel}
+      onPointerCancel={handlePointerUp}
       onPointerMove={handlePointerUp}
     >
       <Avatar className="mt-0.5 h-8 w-8 flex-shrink-0">
@@ -230,6 +233,17 @@ function MessageItem({
         ) : (
           <p className="whitespace-pre-wrap text-sm">{message.content}</p>
         )}
+
+        {/* Reply count indicator */}
+        {replyCount > 0 && (
+          <button
+            onClick={() => onOpenThread(message)}
+            className="mt-1 text-xs text-primary hover:text-primary/80 hover:underline"
+          >
+            {replyCount} {replyCount === 1 ? 'reply' : 'replies'}
+          </button>
+        )}
+
         <MessageReactions messageId={message.id} userId={userId} />
       </div>
 
@@ -238,6 +252,16 @@ function MessageItem({
         <div className={`absolute -top-3 right-4 flex items-center gap-0.5 rounded-md border bg-background px-1 py-0.5 shadow-sm transition-opacity ${
           showMobileToolbar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
         }`}>
+          {/* Reply button - available to all users */}
+          <button
+            onClick={() => { onOpenThread(message); setShowMobileToolbar(false) }}
+            className="rounded p-2.5 md:p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+            title="Reply in thread"
+          >
+            <svg className="h-4 w-4 md:h-3.5 md:w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+          </button>
           {isOwn && (
             <button
               onClick={() => { startEditing(); setShowMobileToolbar(false) }}
@@ -302,8 +326,10 @@ export function ChatView({ channelId }: { channelId: string }) {
   const { data: profile } = useProfile(user?.id)
   const { data: channel } = useChannel(channelId)
   const { data: messages, isLoading } = useMessages(channelId)
+  const { data: replyCounts } = useThreadReplyCounts(channelId)
   const sendMessage = useSendMessage()
   const [content, setContent] = useState('')
+  const [threadMessage, setThreadMessage] = useState<Message | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
 
@@ -313,6 +339,11 @@ export function ChatView({ channelId }: { channelId: string }) {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages?.length])
+
+  // Close thread when switching channels
+  useEffect(() => {
+    setThreadMessage(null)
+  }, [channelId])
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -348,71 +379,86 @@ export function ChatView({ channelId }: { channelId: string }) {
   }
 
   return (
-    <div className="flex h-full flex-col">
-      {/* Channel header - hidden on mobile (mobile header in AppLayout) */}
-      <div className="hidden md:flex items-center gap-3 border-b px-4 py-3">
-        <div>
-          <h2 className="text-lg font-semibold">#{channel?.name}</h2>
-          {channel?.description && (
-            <p className="text-sm text-muted-foreground">{channel.description}</p>
-          )}
+    <div className="flex h-full">
+      {/* Main chat area */}
+      <div className="flex flex-1 flex-col min-w-0">
+        {/* Channel header - hidden on mobile (mobile header in AppLayout) */}
+        <div className="hidden md:flex items-center gap-3 border-b px-4 py-3">
+          <div>
+            <h2 className="text-lg font-semibold">#{channel?.name}</h2>
+            {channel?.description && (
+              <p className="text-sm text-muted-foreground">{channel.description}</p>
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* Messages */}
-      <ScrollArea className="flex-1" ref={scrollRef}>
-        <div className="py-4">
-          {isLoading && (
-            <p className="px-4 text-sm text-muted-foreground">Loading messages...</p>
-          )}
-          {messages?.length === 0 && (
-            <p className="px-4 text-sm text-muted-foreground">
-              No messages yet. Be the first to speak in this channel.
-            </p>
-          )}
-          {groupedMessages.map((group) => (
-            <div key={group.date}>
-              <div className="relative my-4 flex items-center px-4">
-                <Separator className="flex-1" />
-                <span className="px-3 text-xs text-muted-foreground">{group.date}</span>
-                <Separator className="flex-1" />
+        {/* Messages */}
+        <ScrollArea className="flex-1" ref={scrollRef}>
+          <div className="py-4">
+            {isLoading && (
+              <p className="px-4 text-sm text-muted-foreground">Loading messages...</p>
+            )}
+            {messages?.length === 0 && (
+              <p className="px-4 text-sm text-muted-foreground">
+                No messages yet. Be the first to speak in this channel.
+              </p>
+            )}
+            {groupedMessages.map((group) => (
+              <div key={group.date}>
+                <div className="relative my-4 flex items-center px-4">
+                  <Separator className="flex-1" />
+                  <span className="px-3 text-xs text-muted-foreground">{group.date}</span>
+                  <Separator className="flex-1" />
+                </div>
+                {group.messages.map((msg) => (
+                  <MessageItem
+                    key={msg.id}
+                    message={msg}
+                    userId={user?.id ?? ''}
+                    isInstructor={isInstructor}
+                    channelId={channelId}
+                    replyCount={replyCounts?.get(msg.id) ?? 0}
+                    onOpenThread={setThreadMessage}
+                  />
+                ))}
               </div>
-              {group.messages.map((msg) => (
-                <MessageItem
-                  key={msg.id}
-                  message={msg}
-                  userId={user?.id ?? ''}
-                  isInstructor={isInstructor}
-                  channelId={channelId}
-                />
-              ))}
-            </div>
-          ))}
-          <div ref={bottomRef} />
-        </div>
-      </ScrollArea>
+            ))}
+            <div ref={bottomRef} />
+          </div>
+        </ScrollArea>
 
-      {/* Message input */}
-      <div className="border-t p-4">
-        <form onSubmit={handleSubmit} className="flex gap-2">
-          <Textarea
-            placeholder={`Message #${channel?.name ?? '...'}`}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="min-h-[40px] max-h-[120px] resize-none"
-            rows={1}
-          />
-          <Button
-            type="submit"
-            size="sm"
-            disabled={!content.trim() || sendMessage.isPending}
-            className="self-end"
-          >
-            Send
-          </Button>
-        </form>
+        {/* Message input */}
+        <div className="border-t p-4">
+          <form onSubmit={handleSubmit} className="flex gap-2">
+            <Textarea
+              placeholder={`Message #${channel?.name ?? '...'}`}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="min-h-[40px] max-h-[120px] resize-none"
+              rows={1}
+            />
+            <Button
+              type="submit"
+              size="sm"
+              disabled={!content.trim() || sendMessage.isPending}
+              className="self-end"
+            >
+              Send
+            </Button>
+          </form>
+        </div>
       </div>
+
+      {/* Thread panel */}
+      {threadMessage && user && (
+        <ThreadPanel
+          parentMessage={threadMessage}
+          channelId={channelId}
+          userId={user.id}
+          onClose={() => setThreadMessage(null)}
+        />
+      )}
     </div>
   )
 }
