@@ -2,7 +2,7 @@
 // names the parser output maps to (session_date, original_timestamp_raw, etc.).
 // WriterConfig and ImportStats use camelCase as runtime TypeScript objects.
 
-type ParsedEntryBase = {
+export type ParsedEntryBase = {
   author_raw: string;          // "Danny Bauman (via Meet)"
   author_display: string;      // "Danny Bauman"
   session_date: string;        // "2026-04-09" (YYYY-MM-DD)

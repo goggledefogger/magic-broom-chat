@@ -1,4 +1,4 @@
-import type { ParsedEntry } from './types';
+import type { ParsedEntry, ParsedEntryBase } from './types';
 import { resolveTimestamp } from './resolve-timestamp';
 import { formatInTimeZone } from 'date-fns-tz';
 
@@ -116,14 +116,6 @@ function normalizeContent(contentLines: string[]): string {
 // be the only content on its line (after trimming).
 const URL_LINE_RE = /^(https?:\/\/[^\s]+)$/;
 
-type EntryBase = {
-  author_raw: string;
-  author_display: string;
-  session_date: string;
-  timestamp_raw: string;
-  timestamp_resolved: string;
-};
-
 /**
  * Classify an entry's content into one or more ParsedEntry values.
  *
@@ -134,7 +126,7 @@ type EntryBase = {
  *   3. Content mixes URLs and prose → stays as one 'message' entry, content
  *      preserved as-is.
  */
-function classifyContent(content: string, base: EntryBase): ParsedEntry[] {
+function classifyContent(content: string, base: ParsedEntryBase): ParsedEntry[] {
   const lines = content.split('\n');
   const nonBlank = lines.map((l) => l.trim()).filter((l) => l.length > 0);
 
