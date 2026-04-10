@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Brooms — Design Variant Switcher</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e8;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    background: #16161e;
+    border-bottom: 1px solid #2a2a35;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+
+  .controls h1 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #8b8b9e;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-right: 8px;
+  }
+
+  .variant-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+
+  .variant-tab {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid #2a2a35;
+    background: #1c1c26;
+    color: #9090a0;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    position: relative;
+  }
+
+  .variant-tab:hover { background: #242430; color: #c0c0d0; }
+  .variant-tab.active { border-width: 2px; }
+  .variant-tab .tool-name { font-size: 10px; display: block; margin-top: 1px; opacity: 0.6; }
+
+  .variant-tab .status {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: #ef4444; margin-right: 6px; vertical-align: middle;
+  }
+  .variant-tab .status.running { background: #22c55e; }
+
+  .divider { width: 1px; height: 28px; background: #2a2a35; }
+
+  .page-tabs { display: flex; gap: 4px; }
+  .page-tab {
+    padding: 5px 10px; border-radius: 4px; border: 1px solid transparent;
+    background: transparent; color: #707080; font-size: 12px; cursor: pointer;
+  }
+  .page-tab:hover { color: #b0b0c0; }
+  .page-tab.active { color: #c0c0d0; border-color: #3a3a45; background: #1c1c26; }
+
+  .mode-toggle { margin-left: auto; display: flex; gap: 4px; }
+  .mode-btn {
+    padding: 5px 10px; border-radius: 4px; border: 1px solid #2a2a35;
+    background: #1c1c26; color: #707080; font-size: 12px; cursor: pointer;
+  }
+  .mode-btn:hover { color: #b0b0c0; }
+  .mode-btn.active { background: #242430; color: #c0c0d0; border-color: #3a3a45; }
+
+  .device-toggle { display: flex; gap: 4px; }
+  .device-btn {
+    padding: 5px 10px; border-radius: 4px; border: 1px solid #2a2a35;
+    background: #1c1c26; color: #707080; font-size: 12px; cursor: pointer;
+  }
+  .device-btn:hover { color: #b0b0c0; }
+  .device-btn.active { background: #242430; color: #c0c0d0; border-color: #3a3a45; }
+
+  .viewport.mobile-mode { justify-content: center; background: #06060a; }
+  .viewport.mobile-mode iframe {
+    width: 390px; height: 844px; max-height: 100%;
+    border-radius: 20px;
+    box-shadow: 0 0 0 4px #2a2a35, 0 8px 32px rgba(0,0,0,0.5);
+  }
+  .viewport.mobile-mode.split iframe {
+    width: 390px; height: 844px; max-height: 100%;
+  }
+  .viewport.mobile-mode .pane { align-items: center; }
+  .viewport.mobile-mode .placeholder { width: 390px; height: 844px; max-height: 100%; border-radius: 20px; border: 2px dashed #2a2a35; }
+
+  .viewport { flex: 1; display: flex; position: relative; overflow: hidden; }
+  .viewport iframe { border: none; background: #0f0f14; }
+  .viewport.single iframe { width: 100%; height: 100%; }
+  .viewport.split { gap: 2px; }
+  .viewport.split .pane { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .viewport.split .pane-label {
+    padding: 4px 10px; font-size: 11px;
+    color: #8b8b9e; text-align: center; border-bottom: 1px solid #2a2a35; flex-shrink: 0;
+  }
+  .viewport.split .pane iframe { flex: 1; width: 100%; }
+
+  .placeholder {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 100%; color: #505060; font-size: 14px;
+    flex-direction: column; gap: 8px;
+  }
+  .placeholder code {
+    background: #1c1c26; padding: 4px 10px; border-radius: 4px;
+    font-size: 12px; color: #8b8b9e;
+  }
+
+  .split-picker { display: none; gap: 4px; }
+  .split-picker.visible { display: flex; }
+  .split-picker .variant-tab { font-size: 11px; padding: 4px 10px; }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <h1>Design Variants</h1>
+  <div class="variant-tabs" id="variantTabs"></div>
+  <div class="divider"></div>
+  <div class="page-tabs" id="pageTabs"></div>
+  <div class="divider"></div>
+  <span style="font-size:11px; color:#505060;">Compare with:</span>
+  <div class="split-picker" id="splitPicker"></div>
+  <div class="device-toggle">
+    <button class="device-btn active" data-device="desktop">Desktop</button>
+    <button class="device-btn" data-device="mobile">Mobile</button>
+  </div>
+  <div class="divider"></div>
+  <div class="mode-toggle">
+    <button class="mode-btn active" data-mode="single">Single</button>
+    <button class="mode-btn" data-mode="split">Side by Side</button>
+  </div>
+</div>
+
+<div class="viewport single" id="viewport"></div>
+
+<script>
+const VARIANTS = [
+  { name: "main (current)", branch: "main", url: "http://localhost:6200", color: "#6366f1" },
+  { name: "Superpowers", branch: "design-variant-superpowers", url: "http://localhost:6201", color: "#7B68EE" },
+  { name: "Frontend Design", branch: "design-variant-frontend-design", url: "http://localhost:6202", color: "#36C5F0" },
+  { name: "BMAD", branch: "design-variant-bmad", url: "http://localhost:6203", color: "#2BAC76" },
+  { name: "Stitch", branch: "design-variant-stitch", url: "http://localhost:6204", color: "#ECB22E" },
+  { name: "gstack", branch: "design-variant-gstack", url: "http://localhost:6205", color: "#E01E5A" }
+];
+
+const PAGES = [
+  { path: "/login", label: "Login" },
+  { path: "/", label: "Home" },
+  { path: "/channels/c1", label: "Chat Channel" }
+];
+
+let activeVariant = 0;
+let splitVariant = 1;
+let currentPage = "/";
+let mode = "single";
+let device = "desktop";
+let serverStatus = {};
+
+async function checkServers() {
+  const checks = VARIANTS.map(async (v) => {
+    try {
+      await fetch(v.url + "/", { mode: "no-cors", signal: AbortSignal.timeout(2000) });
+      serverStatus[v.name] = true;
+    } catch(e) {
+      serverStatus[v.name] = false;
+    }
+  });
+  await Promise.all(checks);
+  renderTabs();
+}
+
+function renderPageTabs() {
+  const container = document.getElementById("pageTabs");
+  container.replaceChildren();
+  PAGES.forEach((page) => {
+    const btn = document.createElement("button");
+    btn.className = "page-tab" + (page.path === currentPage ? " active" : "");
+    btn.textContent = page.label;
+    btn.onclick = () => { currentPage = page.path; renderPageTabs(); render(); };
+    container.appendChild(btn);
+  });
+}
+
+function createTab(v, index, isActive, onClick, isSplitPicker) {
+  const tab = document.createElement("button");
+  tab.className = "variant-tab" + (isActive ? " active" : "");
+  if (isActive && !isSplitPicker) {
+    tab.style.borderColor = v.color;
+    tab.style.background = v.color + "20";
+    tab.style.color = v.color;
+  }
+  if (isActive && isSplitPicker) {
+    tab.style.background = "#2d4e2d";
+    tab.style.borderColor = "#22c55e";
+    tab.style.color = "#86efac";
+  }
+
+  const dot = document.createElement("span");
+  dot.className = "status" + (serverStatus[v.name] ? " running" : "");
+  tab.appendChild(dot);
+  tab.appendChild(document.createTextNode(v.name));
+
+  if (!isSplitPicker) {
+    const toolSpan = document.createElement("span");
+    toolSpan.className = "tool-name";
+    toolSpan.textContent = v.branch;
+    tab.appendChild(toolSpan);
+  }
+
+  tab.onclick = onClick;
+  return tab;
+}
+
+function renderTabs() {
+  const tabsEl = document.getElementById("variantTabs");
+  const splitEl = document.getElementById("splitPicker");
+  tabsEl.replaceChildren();
+  splitEl.replaceChildren();
+
+  VARIANTS.forEach((v, i) => {
+    tabsEl.appendChild(createTab(v, i, i === activeVariant, () => {
+      activeVariant = i; render(); renderTabs();
+    }, false));
+
+    splitEl.appendChild(createTab(v, i, i === splitVariant, () => {
+      splitVariant = i; render(); renderTabs();
+    }, true));
+  });
+}
+
+function makeIframe(variantIdx) {
+  const v = VARIANTS[variantIdx];
+  if (!serverStatus[v.name]) {
+    const div = document.createElement("div");
+    div.className = "placeholder";
+    const msg = document.createElement("span");
+    msg.textContent = "Server not running for " + v.name;
+    const code = document.createElement("code");
+    code.textContent = v.url;
+    const hint = document.createElement("span");
+    hint.textContent = "May still be building...";
+    hint.style.fontSize = "12px";
+    div.appendChild(msg);
+    div.appendChild(code);
+    div.appendChild(hint);
+    return div;
+  }
+  const iframe = document.createElement("iframe");
+  iframe.src = v.url + currentPage;
+  return iframe;
+}
+
+function render() {
+  const vp = document.getElementById("viewport");
+  vp.replaceChildren();
+
+  const mobileClass = device === "mobile" ? " mobile-mode" : "";
+
+  if (mode === "single") {
+    vp.className = "viewport single" + mobileClass;
+    vp.appendChild(makeIframe(activeVariant));
+  } else {
+    vp.className = "viewport split" + mobileClass;
+    [activeVariant, splitVariant].forEach((idx) => {
+      const pane = document.createElement("div");
+      pane.className = "pane";
+      const label = document.createElement("div");
+      label.className = "pane-label";
+      label.style.background = VARIANTS[idx].color + "15";
+      label.style.color = VARIANTS[idx].color;
+      label.textContent = VARIANTS[idx].name;
+      pane.appendChild(label);
+      pane.appendChild(makeIframe(idx));
+      vp.appendChild(pane);
+    });
+  }
+}
+
+document.querySelectorAll(".mode-btn").forEach((btn) => {
+  btn.onclick = () => {
+    document.querySelectorAll(".mode-btn").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    mode = btn.dataset.mode;
+    document.getElementById("splitPicker").classList.toggle("visible", mode === "split");
+    render();
+  };
+});
+
+document.querySelectorAll(".device-btn").forEach((btn) => {
+  btn.onclick = () => {
+    document.querySelectorAll(".device-btn").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    device = btn.dataset.device;
+    render();
+  };
+});
+
+// Keyboard shortcuts
+document.addEventListener("keydown", (e) => {
+  if (e.key >= "1" && e.key <= "6") {
+    activeVariant = parseInt(e.key) - 1;
+    render(); renderTabs();
+  }
+  if (e.key === "s") {
+    mode = mode === "single" ? "split" : "single";
+    document.querySelectorAll(".mode-btn").forEach((b) => b.classList.toggle("active", b.dataset.mode === mode));
+    document.getElementById("splitPicker").classList.toggle("visible", mode === "split");
+    render();
+  }
+  if (e.key === "m") {
+    device = device === "desktop" ? "mobile" : "desktop";
+    document.querySelectorAll(".device-btn").forEach((b) => b.classList.toggle("active", b.dataset.device === device));
+    render();
+  }
+});
+
+checkServers().then(() => { render(); renderPageTabs(); });
+setInterval(checkServers, 5000);
+</script>
+</body>
+</html>
