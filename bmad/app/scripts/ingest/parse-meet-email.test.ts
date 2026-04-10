@@ -126,3 +126,103 @@ hi
     expect(entries[0].author_display).toBe('Dillon Schultz');
   });
 });
+
+describe('parseMeetEmail link classification', () => {
+  const EMAIL_SENT = new Date('2026-04-09T20:14:00-07:00');
+
+  it('classifies a bare URL entry as a link', () => {
+    const fixture = `Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 24, 3:17 PM
+
+https://supabase.com/
+`;
+    const entries = parseMeetEmail(fixture, EMAIL_SENT);
+    expect(entries).toHaveLength(1);
+    expect(entries[0].kind).toBe('link');
+    expect(entries[0].content).toBe('https://supabase.com/');
+    expect((entries[0] as any).preview_title).toBeUndefined();
+  });
+
+  it('captures Gmail preview title when present', () => {
+    const fixture = `Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 31, 3:38 PM
+
+https://whisperflow.app/
+
+Whisper Flow
+
+whisperflow.app
+`;
+    const entries = parseMeetEmail(fixture, EMAIL_SENT);
+    expect(entries).toHaveLength(1);
+    expect(entries[0].kind).toBe('link');
+    expect(entries[0].content).toBe('https://whisperflow.app/');
+    expect((entries[0] as any).preview_title).toBe('Whisper Flow');
+  });
+
+  it('splits an entry with multiple URLs into N link entries', () => {
+    const fixture = `Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Apr 9, 4:44 PM
+
+https://www.kimi.com/ai-models/kimi-k2-5
+
+https://openlm.ai/glm-5.1/
+
+https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash
+`;
+    const entries = parseMeetEmail(fixture, EMAIL_SENT);
+    expect(entries).toHaveLength(3);
+    expect(entries.every((e) => e.kind === 'link')).toBe(true);
+    expect(entries.map((e) => e.content)).toEqual([
+      'https://www.kimi.com/ai-models/kimi-k2-5',
+      'https://openlm.ai/glm-5.1/',
+      'https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash',
+    ]);
+    // All three share the same author + timestamp
+    expect(new Set(entries.map((e) => e.author_display))).toEqual(new Set(['Danny Bauman']));
+    expect(new Set(entries.map((e) => e.timestamp_raw))).toEqual(new Set(['Apr 9, 4:44 PM']));
+  });
+
+  it('keeps URLs embedded in shell commands as message content', () => {
+    const fixture = `Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 31, 4:12 PM
+
+curl -fsSL https://claude.ai/install.sh | bash
+`;
+    const entries = parseMeetEmail(fixture, EMAIL_SENT);
+    expect(entries).toHaveLength(1);
+    expect(entries[0].kind).toBe('message');
+    expect(entries[0].content).toBe('curl -fsSL https://claude.ai/install.sh | bash');
+  });
+
+  it('keeps multi-line prompt content as a single message entry', () => {
+    const fixture = `Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Apr 2, 4:47 PM
+
+I want to create a Design Reviewer Skill.
+
+Interview me about what makes a good UI.
+`;
+    const entries = parseMeetEmail(fixture, EMAIL_SENT);
+    expect(entries).toHaveLength(1);
+    expect(entries[0].kind).toBe('message');
+    expect(entries[0].content).toBe(
+      'I want to create a Design Reviewer Skill.\n\nInterview me about what makes a good UI.',
+    );
+  });
+});

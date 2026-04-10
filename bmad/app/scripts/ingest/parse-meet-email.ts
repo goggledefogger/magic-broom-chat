@@ -75,21 +75,22 @@ export function parseMeetEmail(source: string, emailSentAt: Date): ParsedEntry[]
   }
   if (current) rawEntries.push(current);
 
-  // Resolve timestamps and drop empty-content entries.
+  // Resolve timestamps, drop empty-content entries, and classify links.
   const realEntries: ParsedEntry[] = [];
   for (const r of rawEntries) {
     const content = normalizeContent(r.contentLines);
     if (content.length === 0) continue;
     const resolved = resolveTimestamp(r.timestamp_raw, emailSentAt);
-    realEntries.push({
-      kind: 'message',
+    const base = {
       author_raw: r.author_raw,
       author_display: r.author_display,
       session_date: resolved.sessionDate,
       timestamp_raw: r.timestamp_raw,
       timestamp_resolved: resolved.iso,
-      content,
-    });
+    };
+    for (const classified of classifyContent(content, base)) {
+      realEntries.push(classified);
+    }
   }
 
   // Prelude synthesis: lines that appeared before the first attribution header
@@ -109,6 +110,78 @@ function normalizeContent(contentLines: string[]): string {
   while (start < end && contentLines[start].trim() === '') start += 1;
   while (end > start && contentLines[end - 1].trim() === '') end -= 1;
   return contentLines.slice(start, end).join('\n');
+}
+
+// Matches an HTTP(S) URL, including query strings and fragments. Anchored to
+// be the only content on its line (after trimming).
+const URL_LINE_RE = /^(https?:\/\/[^\s]+)$/;
+
+type EntryBase = {
+  author_raw: string;
+  author_display: string;
+  session_date: string;
+  timestamp_raw: string;
+  timestamp_resolved: string;
+};
+
+/**
+ * Classify an entry's content into one or more ParsedEntry values.
+ *
+ * Cases:
+ *   1. Content is a single URL line (optionally followed by Gmail preview
+ *      text/domain lines) → one 'link' entry with preview_title.
+ *   2. Content is multiple URL lines (blank lines between) → N 'link' entries.
+ *   3. Content mixes URLs and prose → stays as one 'message' entry, content
+ *      preserved as-is.
+ */
+function classifyContent(content: string, base: EntryBase): ParsedEntry[] {
+  const lines = content.split('\n');
+  const nonBlank = lines.map((l) => l.trim()).filter((l) => l.length > 0);
+
+  // Gmail often renders a bare URL like:
+  //   https://whisperflow.app/
+  //   Whisper Flow
+  //   whisperflow.app
+  // The 2nd and 3rd lines are Gmail's preview title and domain.
+  // Detect: 1 URL line followed by 1-2 non-URL lines where the last is a
+  // plausible bare domain of the URL.
+  if (nonBlank.length >= 1 && URL_LINE_RE.test(nonBlank[0])) {
+    const url = nonBlank[0];
+    const rest = nonBlank.slice(1);
+    if (rest.length === 0) {
+      return [{ ...base, kind: 'link' as const, content: url }];
+    }
+    if (
+      rest.length <= 2 &&
+      rest.every((l) => !URL_LINE_RE.test(l)) &&
+      looksLikePreviewDomain(rest[rest.length - 1], url)
+    ) {
+      return [{
+        ...base,
+        kind: 'link' as const,
+        content: url,
+        preview_title: rest.length === 2 ? rest[0] : undefined,
+      }];
+    }
+  }
+
+  // Multiple URL lines with no prose in between → N link entries.
+  if (nonBlank.length >= 2 && nonBlank.every((l) => URL_LINE_RE.test(l))) {
+    return nonBlank.map((url) => ({ ...base, kind: 'link' as const, content: url }));
+  }
+
+  // Everything else stays as a message.
+  return [{ ...base, kind: 'message' as const, content }];
+}
+
+function looksLikePreviewDomain(line: string, url: string): boolean {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, '');
+    const candidate = line.trim().replace(/^www\./, '');
+    return candidate.startsWith(host);
+  } catch {
+    return false;
+  }
 }
 
 function buildPreludeEntries(
