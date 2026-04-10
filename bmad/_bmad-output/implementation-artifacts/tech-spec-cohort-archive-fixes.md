@@ -2,7 +2,7 @@
 title: 'Cohort Archive Fixes — channel routing, rename, thread loading, scroll bug'
 slug: 'cohort-archive-fixes'
 created: '2026-04-09'
-status: 'ready-for-dev'
+status: 'implementation-complete'
 stepsCompleted: [1, 2, 3, 4]
 tech_stack:
   - React 19 + TypeScript + Vite (ESM, `import.meta.env` for browser)
@@ -138,7 +138,7 @@ Four coordinated changes, each small and independently verifiable:
 
 Do tasks in this order. Code changes first (can be verified locally), then prod SQL migration (higher risk, done after code is ready), then PR + devlog.
 
-- [ ] **Task 1: Rename hardcoded bot / content / channel constants in ingest writer**
+- [x] **Task 1: Rename hardcoded bot / content / channel constants in ingest writer**
   - Files:
     - `bmad/app/scripts/ingest/writer/write-entries.ts`
     - `bmad/app/scripts/ingest/writer/session-roots.ts`
@@ -157,13 +157,13 @@ Do tasks in this order. Code changes first (can be verified locally), then prod 
   - Notes: the rename is purely internal/runtime. Session-root fingerprints are `sha256('session-root|' + session_date)`, which does NOT include the author_raw, so renaming the bot is safe for re-run idempotency. Normal message fingerprints use the parser's author_raw (per attendee), which is unchanged.
   - Verify: `cd bmad/app && npx tsc -p tsconfig.node.json --noEmit` passes with no errors, `npm run test` stays green (29/29), `npm run build` stays clean.
 
-- [ ] **Task 2: Install shadcn Skeleton component**
+- [x] **Task 2: Install shadcn Skeleton component**
   - Files: creates `bmad/app/src/components/ui/skeleton.tsx`
   - Action: from `bmad/app/`, run `npx shadcn@latest add skeleton` (NOT `shadcn-ui` — that's the deprecated package; this project uses `shadcn@4.1.0`)
   - Verify: file exists at `bmad/app/src/components/ui/skeleton.tsx`, exports `Skeleton`, uses the project's `cn` utility from `@/lib/utils`. Should be ~10 lines.
   - If the CLI prompts interactively, accept defaults. If the file already exists, verify its exports are `Skeleton` and `className`-accepting, then skip the install.
 
-- [ ] **Task 3: Replace ThreadPanel loading state with Skeleton rows**
+- [x] **Task 3: Replace ThreadPanel loading state with Skeleton rows**
   - File: `bmad/app/src/features/channels/ThreadPanel.tsx`
   - Action:
     - Add import at top: `import { Skeleton } from '@/components/ui/skeleton'`
@@ -191,7 +191,7 @@ Do tasks in this order. Code changes first (can be verified locally), then prod 
   - Notes: keep the existing empty-state branch. Skeleton only shows while `isLoading` is true. The `aria-busy` attribute signals loading to assistive tech.
   - Verify: manual — open the app locally, click a reply count, confirm the skeleton flashes briefly before replies render.
 
-- [ ] **Task 4: Fix scroll regression (Option A — `block: 'nearest'`)**
+- [x] **Task 4: Fix scroll regression (Option A — `block: 'nearest'`)**
   - Files:
     - `bmad/app/src/features/channels/ThreadPanel.tsx`
     - `bmad/app/src/features/channels/ChatView.tsx`
@@ -210,7 +210,7 @@ Do tasks in this order. Code changes first (can be verified locally), then prod 
   - Notes: `block: 'nearest'` tells the browser "scroll the minimum distance to make the element visible in the nearest scrollable ancestor." This prevents traversal outward and keeps scrolling scoped to the appropriate ScrollArea Viewport. Main body stays untouched.
   - Verify: manual — open a channel with long history, click a reply count, then scroll upward in the main chat area. Main area should accept upward scroll without being pinned to bottom. If the bug persists after this change, proceed to Task 5.
 
-- [ ] **Task 5: Fallback — extend ScrollArea with viewportRef prop (ONLY if Task 4 verification fails)**
+- [ ] **Task 5 (SKIPPED — Option A sufficient): Fallback — extend ScrollArea with viewportRef prop (ONLY if Task 4 verification fails)**
   - Files:
     - `bmad/app/src/components/ui/scroll-area.tsx`
     - `bmad/app/src/features/channels/ThreadPanel.tsx`
@@ -259,7 +259,7 @@ Do tasks in this order. Code changes first (can be verified locally), then prod 
   - Action in `ChatView.tsx`: same pattern — add `viewportRef`, pass it, replace the useEffect, remove `bottomRef`.
   - Verify: same manual test as Task 4.
 
-- [ ] **Task 6: Prod data migration — SQL UPDATE via Management API**
+- [x] **Task 6: Prod data migration — SQL UPDATE via Management API**
   - Files: none modified in the repo. Executes SQL against prod.
   - Action: run the following sequence from the repo root.
 
@@ -323,7 +323,7 @@ Do tasks in this order. Code changes first (can be verified locally), then prod 
       WHERE id IN (SELECT message_id FROM message_imports WHERE source = 'google-meet-email-root');
     ```
 
-- [ ] **Task 7: Visual + functional verification on prod**
+- [x] **Task 7: Visual + functional verification on prod**
   - Files: none.
   - Action: open https://magic-brooms.vercel.app, log in as Danny (instructor). Confirm:
     1. `#general` no longer has the 6 session roots and 42 imported replies (only normal cross-cohort chat remains)
@@ -333,7 +333,7 @@ Do tasks in this order. Code changes first (can be verified locally), then prod 
     5. Check `#resources` — 16 gallery cards should still be there, unchanged
   - Notes: Prod deployment has old code (with "Meet" constants in the writer), but since the SQL migration already fixed the data, and we're not re-running the ingest, prod will show the correct data. The code constants will be right after Task 8's merge.
 
-- [ ] **Task 8: Commit + PR + merge**
+- [x] **Task 8: Commit + PR + merge**
   - Files: none.
   - Action: from `/Users/Danny/Source/magic-broom-chat`:
     ```bash
@@ -350,22 +350,22 @@ Do tasks in this order. Code changes first (can be verified locally), then prod 
     ```
     Then create the PR via `gh pr create` (body should summarize the 4 changes + reference bmad-010 devlog + note that the SQL migration was applied out-of-band). Merge with `gh pr merge <num> --admin --merge --delete-branch`.
 
-- [ ] **Task 9: Append follow-up section to devlog**
+- [x] **Task 9: Append follow-up section to devlog**
   - File: `devlog/bmad-010-meet-chat-backfill.md`
   - Action: append a new `## Follow-up fixes (2026-04-09)` section at the bottom listing: channel rerouted to `#cohort-2`, naming changed (`Meet` → `Class`), skeleton loader added, scroll bug fixed. Reference the new PR number.
   - Notes: doc-only, no code impact. Commit separately OR include in Task 8's branch.
 
 ### Acceptance Criteria
 
-- [ ] **AC 1 (Channel routing — data):** Given the prod Supabase state at commit `1f68496`, when the SQL migration in Task 6 runs successfully, then a query `SELECT c.name, COUNT(*) FROM messages m JOIN channels c ON c.id = m.channel_id JOIN message_imports mi ON mi.message_id = m.id WHERE mi.import_batch_id = '2026-04-09-backfill' GROUP BY c.name` returns exactly one row: `(cohort-2, 48)`.
+- [x] **AC 1 (Channel routing — data):** Given the prod Supabase state at commit `1f68496`, when the SQL migration in Task 6 runs successfully, then a query `SELECT c.name, COUNT(*) FROM messages m JOIN channels c ON c.id = m.channel_id JOIN message_imports mi ON mi.message_id = m.id WHERE mi.import_batch_id = '2026-04-09-backfill' GROUP BY c.name` returns exactly one row: `(cohort-2, 48)`.
 
-- [ ] **AC 2 (Naming — data):** Given the SQL migration has run, when querying `SELECT content FROM messages WHERE id IN (SELECT message_id FROM message_imports WHERE source = 'google-meet-email-root')`, then all 6 returned rows have content starting with `📅 Class session — ` and no row contains the substring `Meet chat` or ends with ` session` (extra trailing suffix).
+- [x] **AC 2 (Naming — data):** Given the SQL migration has run, when querying `SELECT content FROM messages WHERE id IN (SELECT message_id FROM message_imports WHERE source = 'google-meet-email-root')`, then all 6 returned rows have content starting with `📅 Class session — ` and no row contains the substring `Meet chat` or ends with ` session` (extra trailing suffix).
 
-- [ ] **AC 3 (Bot rename — data):** Given the SQL migration has run, when querying `SELECT display_name FROM profiles WHERE display_name LIKE 'Class Archive%' OR display_name LIKE 'Meet Archive%'`, then exactly one row returns with `display_name = 'Class Archive (imported)'`.
+- [x] **AC 3 (Bot rename — data):** Given the SQL migration has run, when querying `SELECT display_name FROM profiles WHERE display_name LIKE 'Class Archive%' OR display_name LIKE 'Meet Archive%'`, then exactly one row returns with `display_name = 'Class Archive (imported)'`.
 
 - [ ] **AC 4 (Cohort-2 membership — data):** Given the SQL migration has run, when querying `SELECT COUNT(*) FROM channel_members cm JOIN profiles p ON p.id = cm.user_id JOIN channels c ON c.id = cm.channel_id WHERE c.name = 'cohort-2' AND p.display_name LIKE '%(imported)'`, then the count is ≥ 6 (5 ghost users + 1 bot; Danny/Dan/Damon are real accounts whose memberships aren't touched).
 
-- [ ] **AC 5 (Ingest script — code compiles and tests pass):** Given the file changes in Task 1, when running `npx tsc -p tsconfig.node.json --noEmit` from `bmad/app/`, then the type-check passes with zero errors. When running `npm run test`, then 29/29 vitest tests pass. When running `npm run build`, then the vite build succeeds.
+- [x] **AC 5 (Ingest script — code compiles and tests pass):** Given the file changes in Task 1, when running `npx tsc -p tsconfig.node.json --noEmit` from `bmad/app/`, then the type-check passes with zero errors. When running `npm run test`, then 29/29 vitest tests pass. When running `npm run build`, then the vite build succeeds.
 
 - [ ] **AC 6 (Ingest script — new constants work end-to-end):** Given the file changes in Task 1, when resetting local Supabase (`npx supabase db reset`) and running `npm run ingest:meet-chat` from `bmad/app/`, then: session root messages are inserted into `#cohort-2` (not `#general`), each with content prefixed `📅 Class session — ` (no trailing ` session`), and the bot profile has `display_name = 'Class Archive (imported)'`.
 
