@@ -330,19 +330,52 @@ export function ChatView({ channelId }: { channelId: string }) {
   const sendMessage = useSendMessage()
   const [content, setContent] = useState('')
   const [threadMessage, setThreadMessage] = useState<Message | null>(null)
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const bottomRef = useRef<HTMLDivElement>(null)
+  const viewportRef = useRef<HTMLDivElement>(null)
+  const wasAtBottomRef = useRef(true)
+  const prevLengthRef = useRef(0)
 
   const isInstructor = profile?.role === 'instructor'
 
-  // Auto-scroll to bottom on new messages
+  // Track whether the user is near the bottom of the viewport. This is the
+  // source of truth for "auto-scroll on new messages?" — if the user has
+  // scrolled up to read history, we leave them alone.
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
+    const vp = viewportRef.current
+    if (!vp) return
+    const handleScroll = () => {
+      const distanceFromBottom = vp.scrollHeight - vp.scrollTop - vp.clientHeight
+      wasAtBottomRef.current = distanceFromBottom < 100
+    }
+    vp.addEventListener('scroll', handleScroll, { passive: true })
+    return () => vp.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Snap to bottom on initial load; only auto-scroll on new messages if the
+  // user was already near the bottom. Channel switch resets because the
+  // component keeps mounting but prevLengthRef resets via the channelId effect.
+  useEffect(() => {
+    const vp = viewportRef.current
+    if (!vp) return
+    const currentLength = messages?.length ?? 0
+    const prevLength = prevLengthRef.current
+    prevLengthRef.current = currentLength
+
+    if (prevLength === 0 && currentLength > 0) {
+      // First load — snap to bottom without animation.
+      vp.scrollTop = vp.scrollHeight
+      wasAtBottomRef.current = true
+      return
+    }
+    if (currentLength > prevLength && wasAtBottomRef.current) {
+      vp.scrollTo({ top: vp.scrollHeight, behavior: 'smooth' })
+    }
   }, [messages?.length])
 
-  // Close thread when switching channels
+  // Close thread + reset scroll-tracking state when switching channels.
   useEffect(() => {
     setThreadMessage(null)
+    prevLengthRef.current = 0
+    wasAtBottomRef.current = true
   }, [channelId])
 
   const handleSubmit = (e: FormEvent) => {
@@ -393,7 +426,7 @@ export function ChatView({ channelId }: { channelId: string }) {
         </div>
 
         {/* Messages */}
-        <ScrollArea className="flex-1" ref={scrollRef}>
+        <ScrollArea className="flex-1" viewportRef={viewportRef}>
           <div className="py-4">
             {isLoading && (
               <p className="px-4 text-sm text-muted-foreground">Loading messages...</p>
@@ -423,7 +456,6 @@ export function ChatView({ channelId }: { channelId: string }) {
                 ))}
               </div>
             ))}
-            <div ref={bottomRef} />
           </div>
         </ScrollArea>
 

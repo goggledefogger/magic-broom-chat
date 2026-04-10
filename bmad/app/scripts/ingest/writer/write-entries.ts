@@ -44,7 +44,7 @@ export async function writeEntries(
   const resolver = makeGhostUserResolver(client, {
     instructorDisplayNames: config.instructorDisplayNames,
   });
-  const ingestBotUserId = await resolver.resolve('Class Archive');
+  const ingestBotUserId = await resolver.resolve('Chat messages');
 
   // 3. Session root resolver.
   const rootResolver = makeSessionRootResolver(client, {
