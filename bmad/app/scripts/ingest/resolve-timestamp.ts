@@ -25,9 +25,11 @@ export type ResolvedTimestamp = {
  *   - "Weekday H:MM AM/PM"   (e.g. "Tue 3:54 PM") — most recent past weekday
  *   - "H:MM AM/PM"           (e.g. "3:05 PM") — email-send date
  *
- * Year is assumed to be the email-send date's year (2026 here).
- * Timezone is America/Los_Angeles (PT); the current dump is entirely in PDT (-07:00)
- * but the implementation handles either offset via date-fns-tz.
+ * Year is inferred from the email-send date.
+ * Timezone is America/Los_Angeles (PT). Handles PST vs PDT for
+ * unambiguous times; the ambiguous DST fall-back hour (1–2 AM on the
+ * first Sunday of November) is NOT disambiguated — it resolves to PDT.
+ * Not a concern for course sessions, which do not occur at that hour.
  */
 export function resolveTimestamp(raw: string, emailSentAt: Date): ResolvedTimestamp {
   const trimmed = raw.trim();

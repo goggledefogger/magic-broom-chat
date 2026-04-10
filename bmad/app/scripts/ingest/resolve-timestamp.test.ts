@@ -38,4 +38,23 @@ describe('resolveTimestamp', () => {
   it('throws on unparseable input', () => {
     expect(() => resolveTimestamp('gibberish', EMAIL_SENT)).toThrow();
   });
+
+  it('resolves a weekday-only form matching the send day to 7 days prior (Thu 3:00 PM on a Thursday)', () => {
+    // EMAIL_SENT is Thu 2026-04-09; "Thu" must go back 7 days to 2026-04-02, not today.
+    const result = resolveTimestamp('Thu 3:00 PM', EMAIL_SENT);
+    expect(result.sessionDate).toBe('2026-04-02');
+    expect(result.iso).toBe('2026-04-02T15:00:00-07:00');
+  });
+
+  it('handles 12:00 PM (noon) correctly', () => {
+    const result = resolveTimestamp('Mar 24, 12:00 PM', EMAIL_SENT);
+    expect(result.iso).toBe('2026-03-24T12:00:00-07:00');
+  });
+
+  it('handles a PST (winter) date correctly', () => {
+    const winterSent = new Date('2026-01-15T20:00:00-08:00');
+    const result = resolveTimestamp('Jan 15, 3:00 PM', winterSent);
+    expect(result.iso).toBe('2026-01-15T15:00:00-08:00');
+    expect(result.sessionDate).toBe('2026-01-15');
+  });
 });
