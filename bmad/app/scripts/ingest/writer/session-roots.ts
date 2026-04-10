@@ -45,7 +45,7 @@ export function makeSessionRootResolver(
     const anchor = new Date(earliestEntryIso);
     const rootInstant = new Date(anchor.getTime() - 1000);
     const pretty = formatPrettyDate(sessionDate);
-    const content = `📅 Class session — ${pretty}`;
+    const content = `📅 Session — ${pretty}`;
 
     const { data: msgData, error: msgErr } = await client
       .from('messages')
@@ -67,7 +67,7 @@ export function makeSessionRootResolver(
       gallery_card_id: null,
       source: ROOT_SOURCE,
       session_date: sessionDate,
-      original_author_raw: 'Class Archive',
+      original_author_raw: 'Chat messages',
       original_timestamp_raw: 'session root',
       source_fingerprint: fingerprint,
       import_batch_id: config.importBatchId,

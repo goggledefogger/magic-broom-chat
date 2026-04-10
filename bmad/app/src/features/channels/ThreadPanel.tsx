@@ -73,10 +73,39 @@ export function ThreadPanel({
   const { data: replies, isLoading } = useThreadMessages(parentMessage.id)
   const sendMessage = useSendMessage()
   const [content, setContent] = useState('')
-  const bottomRef = useRef<HTMLDivElement>(null)
+  const viewportRef = useRef<HTMLDivElement>(null)
+  const wasAtBottomRef = useRef(true)
+  const prevLengthRef = useRef(0)
 
+  // Track whether the user is near the bottom of the thread viewport.
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
+    const vp = viewportRef.current
+    if (!vp) return
+    const handleScroll = () => {
+      const distanceFromBottom = vp.scrollHeight - vp.scrollTop - vp.clientHeight
+      wasAtBottomRef.current = distanceFromBottom < 100
+    }
+    vp.addEventListener('scroll', handleScroll, { passive: true })
+    return () => vp.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Snap to bottom on initial load; only auto-scroll on new replies if the
+  // user was already near the bottom.
+  useEffect(() => {
+    const vp = viewportRef.current
+    if (!vp) return
+    const currentLength = replies?.length ?? 0
+    const prevLength = prevLengthRef.current
+    prevLengthRef.current = currentLength
+
+    if (prevLength === 0 && currentLength > 0) {
+      vp.scrollTop = vp.scrollHeight
+      wasAtBottomRef.current = true
+      return
+    }
+    if (currentLength > prevLength && wasAtBottomRef.current) {
+      vp.scrollTo({ top: vp.scrollHeight, behavior: 'smooth' })
+    }
   }, [replies?.length])
 
   const handleSubmit = (e: FormEvent) => {
@@ -118,7 +147,7 @@ export function ThreadPanel({
       <Separator />
 
       {/* Replies */}
-      <ScrollArea className="flex-1">
+      <ScrollArea className="flex-1" viewportRef={viewportRef}>
         <div className="py-2">
           {isLoading && <ThreadReplySkeleton />}
           {replies?.length === 0 && !isLoading && (
@@ -129,7 +158,6 @@ export function ThreadPanel({
           {replies?.map((reply) => (
             <ThreadMessage key={reply.id} message={reply} />
           ))}
-          <div ref={bottomRef} />
         </div>
       </ScrollArea>
 
