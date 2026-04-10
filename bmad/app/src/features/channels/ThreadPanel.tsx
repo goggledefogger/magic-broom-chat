@@ -4,6 +4,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useThreadMessages, useSendMessage, type Message } from '@/hooks/useMessages'
 import { XIcon } from 'lucide-react'
 
@@ -14,6 +15,22 @@ function formatTime(dateStr: string): string {
     minute: '2-digit',
     hour12: true,
   }).format(date)
+}
+
+function ThreadReplySkeleton() {
+  return (
+    <div aria-label="Loading replies" aria-busy="true">
+      {[0, 1, 2].map((i) => (
+        <div key={i} className="flex gap-3 px-4 py-2">
+          <Skeleton className="h-7 w-7 flex-shrink-0 rounded-full" />
+          <div className="min-w-0 flex-1 space-y-2">
+            <Skeleton className="h-3 w-24" />
+            <Skeleton className={`h-3 ${i === 1 ? 'w-5/6' : i === 2 ? 'w-3/4' : 'w-4/5'}`} />
+          </div>
+        </div>
+      ))}
+    </div>
+  )
 }
 
 function ThreadMessage({ message }: { message: Message }) {
@@ -59,7 +76,7 @@ export function ThreadPanel({
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
   }, [replies?.length])
 
   const handleSubmit = (e: FormEvent) => {
@@ -103,9 +120,7 @@ export function ThreadPanel({
       {/* Replies */}
       <ScrollArea className="flex-1">
         <div className="py-2">
-          {isLoading && (
-            <p className="px-4 py-2 text-xs text-muted-foreground">Loading replies...</p>
-          )}
+          {isLoading && <ThreadReplySkeleton />}
           {replies?.length === 0 && !isLoading && (
             <p className="px-4 py-4 text-center text-xs text-muted-foreground">
               No replies yet. Start the conversation.

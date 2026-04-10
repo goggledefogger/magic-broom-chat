@@ -7,7 +7,7 @@ import { insertOrReuseGalleryCard } from './gallery-cards';
 
 /**
  * Orchestrate the full ingest:
- *   1. Resolve channel ids for #general and #resources.
+ *   1. Resolve channel ids for #cohort-2 and #resources.
  *   2. Resolve the ingest-bot ghost user (owns session roots).
  *   3. For each unique author, resolve/create a ghost user.
  *   4. For each unique session_date, ensure a thread root.
@@ -30,27 +30,27 @@ export async function writeEntries(
   const { data: channelData, error: channelErr } = await client
     .from('channels')
     .select('id, name')
-    .in('name', ['general', 'resources']);
+    .in('name', ['cohort-2', 'resources']);
   if (channelErr) throw new Error(`Channel lookup failed: ${channelErr.message}`);
   const channelByName = new Map<string, string>();
   for (const row of channelData ?? []) channelByName.set(row.name as string, row.id as string);
-  const generalChannelId = channelByName.get('general');
+  const archiveChannelId = channelByName.get('cohort-2');
   const resourcesChannelId = channelByName.get('resources');
-  if (!generalChannelId || !resourcesChannelId) {
-    throw new Error('Seed channels #general and #resources must exist');
+  if (!archiveChannelId || !resourcesChannelId) {
+    throw new Error('Channels #cohort-2 and #resources must exist');
   }
 
   // 2. Ghost user resolver (the ingest bot is just another ghost user).
   const resolver = makeGhostUserResolver(client, {
     instructorDisplayNames: config.instructorDisplayNames,
   });
-  const ingestBotUserId = await resolver.resolve('Meet Archive');
+  const ingestBotUserId = await resolver.resolve('Class Archive');
 
   // 3. Session root resolver.
   const rootResolver = makeSessionRootResolver(client, {
     importBatchId: config.importBatchId,
     ingestBotUserId,
-    generalChannelId,
+    archiveChannelId,
   });
 
   // 4. Pre-compute earliest instant per session_date for root anchoring.
@@ -95,7 +95,7 @@ export async function writeEntries(
       config: {
         source: config.source,
         importBatchId: config.importBatchId,
-        generalChannelId,
+        archiveChannelId,
       },
     });
     if (result === 'inserted') messagesInserted += 1;

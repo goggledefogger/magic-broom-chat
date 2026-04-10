@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 export type SessionRootsConfig = {
   importBatchId: string;
   ingestBotUserId: string;
-  generalChannelId: string;
+  archiveChannelId: string;
 };
 
 export type SessionRootResolver = {
@@ -45,12 +45,12 @@ export function makeSessionRootResolver(
     const anchor = new Date(earliestEntryIso);
     const rootInstant = new Date(anchor.getTime() - 1000);
     const pretty = formatPrettyDate(sessionDate);
-    const content = `📅 Meet chat — ${pretty} session`;
+    const content = `📅 Class session — ${pretty}`;
 
     const { data: msgData, error: msgErr } = await client
       .from('messages')
       .insert({
-        channel_id: config.generalChannelId,
+        channel_id: config.archiveChannelId,
         user_id: config.ingestBotUserId,
         content,
         created_at: rootInstant.toISOString(),
@@ -67,7 +67,7 @@ export function makeSessionRootResolver(
       gallery_card_id: null,
       source: ROOT_SOURCE,
       session_date: sessionDate,
-      original_author_raw: 'Meet Archive',
+      original_author_raw: 'Class Archive',
       original_timestamp_raw: 'session root',
       source_fingerprint: fingerprint,
       import_batch_id: config.importBatchId,

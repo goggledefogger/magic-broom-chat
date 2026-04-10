@@ -337,7 +337,7 @@ export function ChatView({ channelId }: { channelId: string }) {
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
   }, [messages?.length])
 
   // Close thread when switching channels
