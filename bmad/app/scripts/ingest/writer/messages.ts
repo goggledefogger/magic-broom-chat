@@ -5,7 +5,7 @@ import { computeSourceFingerprint } from './fingerprint';
 export type MessageWriterConfig = {
   source: string;
   importBatchId: string;
-  generalChannelId: string;
+  archiveChannelId: string;
 };
 
 export type MessageWriteResult = 'inserted' | 'skipped';
@@ -44,7 +44,7 @@ export async function insertMessageWithProvenance(
   const { data: msgData, error: msgErr } = await client
     .from('messages')
     .insert({
-      channel_id: params.config.generalChannelId,
+      channel_id: params.config.archiveChannelId,
       user_id: params.userId,
       content: entry.content,
       created_at: entry.timestamp_resolved,
