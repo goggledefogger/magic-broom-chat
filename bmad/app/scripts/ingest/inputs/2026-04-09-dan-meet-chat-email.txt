@@ -1,0 +1,552 @@
+Create a new branch called ui-experiment
+
+https://stitch.withgoogle.com/
+
+https://github.com/davideast/stitch-mcp
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Tue 3:54 PM
+
+/bmad-create-ux-design
+
+wtswill@gmail.com (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Tue 4:26 PM
+
+https://swiftlane-ir.netlify.app/#ai/1
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Tue 4:29 PM
+
+https://littlebird.ai/
+
+Littlebird
+
+littlebird.ai
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Tue 4:32 PM
+
+/bmad-create-ux-design
+
+Dillon Schultz (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Tue 4:54 PM
+
+I hate writing unit tests
+
+Damon Brennen (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Apr 2, 3:03 PM
+
+I'm going to leave and come back
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Apr 2, 3:30 PM
+
+https://github.com/dannybauman/danny-skills
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Apr 2, 3:59 PM
+
+Based on my project (describe it briefly), what Skills would help me build this faster?
+
+Suggest 3 Skills I should create — what each one does, when I'd use it, and draft the Skill file content.
+
+wtswill@gmail.com (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Apr 2, 4:03 PM
+
+ok I have to run.. Thank you
+
+David Rosenberg (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Apr 2, 4:13 PM
+
+https://ello-bingo.vercel.app/
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Apr 2, 4:20 PM
+
+https://aistudio.google.com/
+
+Look at my PRD and brainstorming output. Generate a detailed prompt I can use in Google AI Studio to create a visual prototype of this app.
+
+Make it specific about layout, colors, interactions, and the feel I want.
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Apr 2, 4:47 PM
+
+I want to create a Design Reviewer Skill. Interview me about what makes a good UI in my eyes — what I notice in apps I like, what frustrates me in bad ones, who my users are and what they need. Use simple language. Help me discover my design instincts even if I can't name them yet. Then turn my answers into a Skill that can audit any project and suggest specific improvements.
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Apr 2, 4:58 PM
+
+https://developers.google.com/workspace/guides/developer-tools
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Apr 2, 5:02 PM
+
+https://magic-brooms.vercel.app/
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Apr 1, 4:12 PM
+
+https://cursor.com/help/customization/extensions
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Apr 1, 4:17 PM
+
+https://www.aportlandcareer.com/ai-course/bmad-guide.html
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Apr 1, 4:29 PM
+
+https://magic-brooms.vercel.app/
+
+Damon Brennen (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 31, 3:04 PM
+
+Giants!
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 31, 3:13 PM
+
+https://www.aportlandcareer.com/ai-course/bmad-guide.html
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 31, 3:26 PM
+
+and Survivor app!
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 31, 3:32 PM
+
+https://www.aportlandcareer.com/ai-course/superpowers-guide.html
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 31, 3:38 PM
+
+https://whisperflow.app/
+
+Whisper Flow
+
+whisperflow.app
+
+Dillon Schultz (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 31, 3:49 PM
+
+Using my phone as my webcam. Going dark for a sec lol
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 31, 3:57 PM
+
+https://www.aportlandcareer.com/ai-course/claude-code-guide.html
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 31, 4:12 PM
+
+mac:
+
+curl -fsSL https://claude.ai/install.sh | bash
+
+windows:
+
+irm https://claude.ai/install.ps1 | iex
+
+Look at my project and tell me what you see. What's good? What could be better?
+
+Dillon Schultz (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 31, 4:17 PM
+
+at least we don't have to exit vim
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 31, 4:17 PM
+
+haha
+
+irm https://claude.ai/install.ps1 | iex
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 31, 4:31 PM
+
+curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 26, 3:17 PM
+
+Create a Cursor skill at .cursor/skills/pirate-reviewer/SKILL.md for reviewing my Todo++ app from a user's perspective. Write the instructions in markdown:
+
+* You are a ruthless pirate code reviewer. Never break character.
+* Be concise, harsh, and brutally honest. Short sentences. No sugarcoating.
+* Focus on what matters to users: does the app work? Is it clear? Would someone actually use this?
+* Roast anything that's broken, confusing, or half-baked. Don't spare feelings.
+* Call bugs "holes in the hull." Only praise something if it genuinely earns it — and even then, keep it brief.
+* Rate the overall app on a scale of "landlubber" to "captain-worthy."
+* If no specific file or task is given, review the entire app in character.
+
+Create a Cursor skill at .cursor/skills/hype-coach/SKILL.md for reviewing my Todo++ app's code quality and structure. Write the instructions in markdown:
+
+* You are an over-the-top motivational hype coach. Never break character.
+* Be thorough and detailed. Walk through every file. Explain what each piece does in simple terms.
+* Focus on code quality: file organization, naming, duplication, anything that would get messy as the app grows.
+* Celebrate what's well-structured. Use phrases like "ABSOLUTE LEGEND" and "THIS IS ART."
+* When something needs improving, frame it as a "GLOW-UP MOMENT" and explain why it matters and how to fix it.
+* If no specific file or task is given, review the entire codebase file by file in character.
+
+Dillon Schultz (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 26, 3:57 PM
+
+bmad is a scrum master? lol
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 26, 4:02 PM
+
+Activity: Install Together
+
+Create a new folder called todo-bmad inside your Desktop → AI Projects folder
+
+Open that folder in Cursor
+
+Open the terminal in Cursor (not Chat)
+
+In the terminal, run the installer:
+
+npx bmad-method install
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 26, 4:05 PM
+
+npx bmad-method install
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 26, 4:13 PM
+
+/bmad-brainstorming
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 26, 4:27 PM
+
+https://docs.bmad-method.org/
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 26, 4:36 PM
+
+/bmad-create-prd
+
+wtswill@gmail.com (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 26, 4:36 PM
+
+I have to run but will do the rest on my own
+
+thanks so much!!!
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 26, 4:57 PM
+
+The features section is missing something I care about. I want [describe it]
+
+The scope feels too big. Can you trim it to just the core features I'd need for a first version?
+
+I want this to feel more like [describe an app you like]. Can you adjust the user experience section?
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 26, 4:59 PM
+
+https://aportlandcareer.com/ai-course/
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 24, 3:17 PM
+
+supabase.com
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 24, 3:21 PM
+
+https://www.aportlandcareer.com/ai-course/supabase-guide.html
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 24, 3:43 PM
+
+For my Todo++ app, give me one simple example use case for each of these Supabase features. Explain each like I'm new to this:
+
+* Auth (user sign-in)
+* Realtime (live updates via WebSockets and Broadcast)
+* File Storage
+* Image Transformations
+* Edge Functions (server-side code)
+* Webhooks
+* Vector database (AI-powered search)
+* Row Level Security
+* Postgres full-text search
+* Database triggers
+* CAPTCHA and bot protection
+
+Help me connect Cursor to my Supabase project using the MCP server. Use the hosted endpoint at mcp.supabase.com. It should open my browser to log in and approve access
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 24, 4:07 PM
+
+I want my Todo++ app to use my Supabase database so tasks are stored permanently. Replace any existing local storage or caching with the database as the source of truth. Set up the database table and connect the app so adding, completing, and deleting tasks all save to the database. When the app loads it should show my saved tasks.
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 24, 4:07 PM
+
+Now that my todo app has a real database, I want to rethink what it can do. Interview me about how I actually manage my tasks, what frustrates me about existing tools, and what I wish this app could do now that data persists. Suggest features that take advantage of having a database.
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 24, 4:17 PM
+
+Add task priorities that save to the database
+
+Show a stats dashboard: how many tasks completed today, this week, all time
+
+Add a way to filter and sort tasks by category, priority, or date
+
+Add a notes field for each task
+
+https://www.aportlandcareer.com/ai-course/api-resource-guide.html
+
+Melissa Cikara (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 24, 4:20 PM
+
+it's asking me for a vercel account. Is that right?
+
+Dillon Schultz (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 24, 4:35 PM
+
+I did my fair share of unit tests
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 24, 4:35 PM
+
+nice!
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 24, 4:44 PM
+
+Before I commit, clean up my project: remove duplicate files, update README.md and any other docs, make sure .env is in .gitignore, and check that Row Level Security is set up properly on my Supabase tables. Then commit and push to GitHub
+
+Dillon Schultz (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, Mar 24, 5:00 PM
+
+I'm excited for the M's
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, 3:05 PM
+
+/plugin marketplace add dannybauman/danny-skills
+
+/plugin install design-variants@danny-skills
+
+/plugin install branch-compare@danny-skills
+
+wtswill@gmail.com (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, 3:57 PM
+
+what is the best way to keep your bearings and help claude get it?
+
+Dillon Schultz (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, 4:03 PM
+
+Same here
+
+wtswill@gmail.com (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, 4:21 PM
+
+whats the best secrets tool
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, 4:38 PM
+
+https://lmstudio.ai/
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, 4:44 PM
+
+https://www.kimi.com/ai-models/kimi-k2-5
+
+Kimi K2.5 | Open Visual Agentic Model for Real Work
+
+www.kimi.com
+
+https://openlm.ai/glm-5.1/
+
+https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash
+
+Danny Bauman (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, 4:50 PM
+
+https://arena.ai/leaderboard/text
+
+Dillon Schultz (via Meet), *domain_disabled*
+
+External user not managed by admin
+
+, 4:55 PM
+
+qwen is too powerful
