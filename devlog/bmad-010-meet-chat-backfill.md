@@ -75,6 +75,26 @@ Once the ingest landed in prod, three issues surfaced and were corrected in a fo
 
 Prod data verification after PR #11 migration: `#cohort-2` has exactly 48 imported messages, 6 session roots all prefixed `📅 Session —` (after PR #12 rename), `Chat messages (imported)` is the bot display name, `#general` has 0 leftover imported rows, `#resources` still has its 19 gallery cards.
 
+### Prelude misattribution fix (2026-04-10)
+
+After the deploy landed, Danny noticed 3 messages in `#cohort-2` attributed to Dan Hahn that were actually his. They were the 3 lines Dan had pasted at the TOP of his forwarded email as a summary/intro — above the structured Meet chat log — so the parser classified them as "email prelude" and the `buildPreludeEntries` helper in `parse-meet-email.ts` fell back to attributing prelude lines to the email sender (Dan). Intentional heuristic, wrong for this specific email.
+
+Rather than rework the parser (not worth it for a one-off backfill), fixed with a targeted UPDATE:
+
+```sql
+UPDATE messages SET user_id = '676f3f20-52e2-4a16-a4f1-7e302e0b4d8d'
+  WHERE id IN (SELECT message_id FROM message_imports
+               WHERE import_batch_id = '2026-04-09-backfill'
+                 AND original_author_raw = 'Dan Hahn (email sender)');
+UPDATE message_imports SET original_author_raw = 'Danny Bauman (prelude recovered)'
+  WHERE import_batch_id = '2026-04-09-backfill'
+    AND original_author_raw = 'Dan Hahn (email sender)';
+```
+
+Post-fix attribution: Danny = 27 messages (24 via-Meet + 3 prelude-recovered), Dan = 0. Note: `original_author_raw = 'Danny Bauman (prelude recovered)'` is a deliberate breadcrumb — it flags these 3 rows as manually corrected so future audits can tell them apart from the auto-parsed ones.
+
+**Known limitation:** if someone ever re-runs this ingest, the parser will reinstate the Dan Hahn attribution (the raw input file still has the 3 prelude lines at the top with no author headers). The fingerprints would still match the existing prod rows (same source / session_date / original author_raw / timestamp_raw / content), so a re-run wouldn't duplicate — it'd just skip them as "already imported". The manual correction stays. But if the fingerprint inputs ever change, this correction is lost and needs re-applying. Good enough for a one-off.
+
 ### Lessons
 
 - **Verify deploys before claiming a fix is live.** The killer detour in this pass: none of PRs #11, #12, #13 were actually deploying. Vercel's GitHub auto-deploy integration for this project had been silently broken for **3 days** — the last successful automated deploy was well before any of this work. I discovered this only after running `npx vercel ls` from `bmad/app/` (where the Vercel project is linked) and seeing the most recent deployment was 3d old. Unblocked with a manual `npx vercel --prod --yes` that picked up everything from main. **Action item: check the Vercel dashboard's GitHub integration for this project and reconnect it.** Until then, pushes to main won't auto-deploy.
