@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, type FormEvent } from 'react'
+import { useState, useRef, useEffect, useMemo, type FormEvent } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -18,7 +18,12 @@ import { useAuth } from '@/hooks/useAuth'
 import { useProfile } from '@/hooks/useProfile'
 import { useChannel } from '@/hooks/useChannels'
 import { useMessages, useSendMessage, useEditMessage, useDeleteMessage, useThreadReplyCounts, type Message } from '@/hooks/useMessages'
-import { useMessageReactions, useToggleReaction, summarizeReactions } from '@/hooks/useReactions'
+import {
+  useMessageReactionsForChannel,
+  useToggleReaction,
+  summarizeReactions,
+  type Reaction,
+} from '@/hooks/useReactions'
 import { ThreadPanel } from '@/features/channels/ThreadPanel'
 
 const EMOJI_OPTIONS = ['\u{1F44D}', '\u{2764}\u{FE0F}', '\u{1F389}', '\u{1F525}', '\u{1F440}', '\u{1F4A1}', '\u{2728}', '\u{1F64C}']
@@ -48,8 +53,17 @@ function formatDate(dateStr: string): string {
   }).format(date)
 }
 
-function MessageReactions({ messageId, userId }: { messageId: string; userId: string }) {
-  const { data: reactions } = useMessageReactions(messageId)
+function MessageReactions({
+  messageId,
+  channelId,
+  userId,
+  reactions,
+}: {
+  messageId: string
+  channelId: string
+  userId: string
+  reactions: Reaction[] | undefined
+}) {
   const toggleReaction = useToggleReaction()
   const [showPicker, setShowPicker] = useState(false)
 
@@ -60,7 +74,9 @@ function MessageReactions({ messageId, userId }: { messageId: string; userId: st
       {summary.map((r) => (
         <button
           key={r.emoji}
-          onClick={() => toggleReaction.mutate({ userId, emoji: r.emoji, messageId })}
+          onClick={() =>
+            toggleReaction.mutate({ userId, emoji: r.emoji, messageId, channelId })
+          }
           className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs transition-colors ${
             r.userReacted
               ? 'border-primary/50 bg-primary/10'
@@ -84,7 +100,7 @@ function MessageReactions({ messageId, userId }: { messageId: string; userId: st
               <button
                 key={emoji}
                 onClick={() => {
-                  toggleReaction.mutate({ userId, emoji, messageId })
+                  toggleReaction.mutate({ userId, emoji, messageId, channelId })
                   setShowPicker(false)
                 }}
                 className="rounded p-1 text-sm hover:bg-muted"
@@ -105,6 +121,7 @@ function MessageItem({
   isInstructor,
   channelId,
   replyCount,
+  reactions,
   onOpenThread,
 }: {
   message: Message
@@ -112,6 +129,7 @@ function MessageItem({
   isInstructor: boolean
   channelId: string
   replyCount: number
+  reactions: Reaction[] | undefined
   onOpenThread: (msg: Message) => void
 }) {
   const editMessage = useEditMessage()
@@ -244,7 +262,12 @@ function MessageItem({
           </button>
         )}
 
-        <MessageReactions messageId={message.id} userId={userId} />
+        <MessageReactions
+          messageId={message.id}
+          channelId={channelId}
+          userId={userId}
+          reactions={reactions}
+        />
       </div>
 
       {/* Floating toolbar - desktop hover + mobile long-press */}
@@ -326,6 +349,8 @@ export function ChatView({ channelId }: { channelId: string }) {
   const { data: profile } = useProfile(user?.id)
   const { data: channel } = useChannel(channelId)
   const { data: messages, isLoading } = useMessages(channelId)
+  const messageIds = useMemo(() => messages?.map((m) => m.id) ?? [], [messages])
+  const { data: reactionsByMessage } = useMessageReactionsForChannel(channelId, messageIds)
   const { data: replyCounts } = useThreadReplyCounts(channelId)
   const sendMessage = useSendMessage()
   const [content, setContent] = useState('')
@@ -451,6 +476,7 @@ export function ChatView({ channelId }: { channelId: string }) {
                     isInstructor={isInstructor}
                     channelId={channelId}
                     replyCount={replyCounts?.get(msg.id) ?? 0}
+                    reactions={reactionsByMessage?.get(msg.id)}
                     onOpenThread={setThreadMessage}
                   />
                 ))}

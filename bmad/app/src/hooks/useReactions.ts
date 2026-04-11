@@ -1,5 +1,9 @@
+import { useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
+
+/** PostgREST `in` URL size stays safe; merge chunks if a channel ever grows huge. */
+const MESSAGE_REACTION_BATCH = 200
 
 export interface Reaction {
   id: string
@@ -42,19 +46,40 @@ export function summarizeReactions(reactions: Reaction[], currentUserId: string)
   }))
 }
 
-export function useMessageReactions(messageId: string | undefined) {
+/** One request per chunk for all visible messages in a channel (replaces per-row fetches). */
+export function useMessageReactionsForChannel(
+  channelId: string | undefined,
+  messageIds: string[] | undefined,
+) {
+  const sortedIdKey = useMemo(
+    () => (messageIds?.length ? [...messageIds].sort().join('\u0001') : ''),
+    [messageIds],
+  )
+
   return useQuery({
-    queryKey: ['reactions', 'message', messageId],
+    queryKey: ['reactions', 'messagesBatch', channelId, sortedIdKey],
     queryFn: async () => {
-      if (!messageId) throw new Error('No message ID')
-      const { data, error } = await supabase
-        .from('reactions')
-        .select('*')
-        .eq('message_id', messageId)
-      if (error) throw error
-      return (data ?? []).map(toReaction)
+      if (!channelId || !messageIds?.length) return new Map<string, Reaction[]>()
+      const map = new Map<string, Reaction[]>()
+      for (let i = 0; i < messageIds.length; i += MESSAGE_REACTION_BATCH) {
+        const chunk = messageIds.slice(i, i + MESSAGE_REACTION_BATCH)
+        const { data, error } = await supabase
+          .from('reactions')
+          .select('*')
+          .in('message_id', chunk)
+        if (error) throw error
+        for (const row of data ?? []) {
+          const r = toReaction(row as Record<string, unknown>)
+          const mid = r.messageId
+          if (!mid) continue
+          const list = map.get(mid) ?? []
+          list.push(r)
+          map.set(mid, list)
+        }
+      }
+      return map
     },
-    enabled: !!messageId,
+    enabled: !!channelId && !!messageIds?.length,
   })
 }
 
@@ -82,6 +107,8 @@ export function useToggleReaction() {
       emoji: string
       messageId?: string
       cardId?: string
+      /** When set, invalidates batched message-reaction queries for this channel. */
+      channelId?: string
     }) => {
       // Check if reaction exists
       let query = supabase.from('reactions').select('id').eq('user_id', userId).eq('emoji', emoji)
@@ -100,8 +127,10 @@ export function useToggleReaction() {
         return { action: 'added' as const }
       }
     },
-    onSuccess: (_, { messageId, cardId }) => {
-      if (messageId) queryClient.invalidateQueries({ queryKey: ['reactions', 'message', messageId] })
+    onSuccess: (_, { messageId, cardId, channelId }) => {
+      if (messageId && channelId) {
+        queryClient.invalidateQueries({ queryKey: ['reactions', 'messagesBatch', channelId] })
+      }
       if (cardId) queryClient.invalidateQueries({ queryKey: ['reactions', 'card', cardId] })
     },
   })
