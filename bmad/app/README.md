@@ -75,4 +75,6 @@ Tables: profiles, channels, channel_members, messages, gallery_cards, card_comme
 
 ## Deployment
 
-Vercel with root directory `bmad/app/`. Env vars `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in Vercel dashboard. Pushes to main auto-deploy.
+Vercel project `team-town/magic-brooms` with root directory `bmad/app/`. Env vars `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in the Vercel dashboard.
+
+The intended flow is **push to `main` → auto-deploy** via Vercel's GitHub integration, but that integration has been broken since ~2026-04-07 (see `../../devlog/bmad-010-meet-chat-backfill.md`). Until it's reconnected, push to main and then run `npx vercel --prod --yes` from this directory **exactly once**. Don't double-deploy. Verify with `vercel ls`.
