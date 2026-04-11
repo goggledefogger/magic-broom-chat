@@ -2,6 +2,9 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useMemo } from 'react'
 import { supabase } from '@/lib/supabase'
 
+/** PostgREST `in` URL size stays safe; chunk if a workshop ever grows huge. */
+const GALLERY_COUNT_BATCH = 200
+
 export function useGalleryCardCounts(channelIds: string[]) {
   const queryClient = useQueryClient()
   const stableKey = useMemo(() => channelIds.slice().sort().join(','), [channelIds])
@@ -9,18 +12,19 @@ export function useGalleryCardCounts(channelIds: string[]) {
   const query = useQuery({
     queryKey: ['gallery-card-counts', stableKey],
     queryFn: async () => {
-      const results = await Promise.all(
-        channelIds.map(async (channelId) => {
-          const { count } = await supabase
-            .from('gallery_cards')
-            .select('id', { count: 'exact', head: true })
-            .eq('channel_id', channelId)
-          return { channelId, count: count ?? 0 }
-        })
-      )
       const counts = new Map<string, number>()
-      for (const r of results) {
-        if (r.count > 0) counts.set(r.channelId, r.count)
+      if (!channelIds.length) return counts
+      for (let i = 0; i < channelIds.length; i += GALLERY_COUNT_BATCH) {
+        const chunk = channelIds.slice(i, i + GALLERY_COUNT_BATCH)
+        const { data, error } = await supabase
+          .from('gallery_cards')
+          .select('channel_id')
+          .in('channel_id', chunk)
+        if (error) throw error
+        for (const row of data ?? []) {
+          const cid = (row as { channel_id: string }).channel_id
+          counts.set(cid, (counts.get(cid) ?? 0) + 1)
+        }
       }
       return counts
     },
