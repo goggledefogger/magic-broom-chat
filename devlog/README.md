@@ -56,3 +56,4 @@ Educational course on AI-assisted software development. Each version builds the 
 - [2026-04-01 — UX Polish: Join Flow & First-Time Experience](./bmad-008-ux-polish-join-flow.md)
 - [2026-04-02 — Profile Image Feature & Architecture Fixes](./bmad-009-profile-image-and-architecture-fixes.md)
 - [2026-04-09 — Meet Chat Backfill Ingest](./bmad-010-meet-chat-backfill.md)
+- [2026-04-14 — Signup 500 from NULL token columns in auth.users](./bmad-011-signup-null-token-fix.md)
