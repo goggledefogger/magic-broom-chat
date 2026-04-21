@@ -1,5 +1,13 @@
 import type { SlashCommand } from './types'
 
+// Add a command by appending to this array. Each entry is self-contained:
+// the parser, the composer integration, and the /help dialog all read from
+// here, so there's no wiring to update elsewhere.
+//
+// Return { kind: 'send', content } to send text, or { kind: 'consume' } for
+// a UI-only effect (like /help opening a dialog). If args are required but
+// missing, return { kind: 'consume' } to silently drop — the command name
+// and usage string are shown via /help.
 export const COMMANDS: SlashCommand[] = [
   {
     name: 'help',
