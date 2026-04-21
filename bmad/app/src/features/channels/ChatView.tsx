@@ -25,6 +25,7 @@ import {
   type Reaction,
 } from '@/hooks/useReactions'
 import { ThreadPanel } from '@/features/channels/ThreadPanel'
+import { parseCommand, CommandHelpDialog } from '@/features/commands'
 
 const EMOJI_OPTIONS = ['\u{1F44D}', '\u{2764}\u{FE0F}', '\u{1F389}', '\u{1F525}', '\u{1F440}', '\u{1F4A1}', '\u{2728}', '\u{1F64C}']
 
@@ -355,6 +356,7 @@ export function ChatView({ channelId }: { channelId: string }) {
   const sendMessage = useSendMessage()
   const [content, setContent] = useState('')
   const [threadMessage, setThreadMessage] = useState<Message | null>(null)
+  const [helpOpen, setHelpOpen] = useState(false)
   const viewportRef = useRef<HTMLDivElement>(null)
   const wasAtBottomRef = useRef(true)
   const prevLengthRef = useRef(0)
@@ -406,6 +408,24 @@ export function ChatView({ channelId }: { channelId: string }) {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (!content.trim() || !user) return
+
+    const parsed = parseCommand(content)
+    if (parsed) {
+      const result = parsed.command.execute({
+        args: parsed.args,
+        displayName: profile?.displayName ?? 'Unknown Apprentice',
+        openHelp: () => setHelpOpen(true),
+      })
+      if (result.kind === 'send') {
+        sendMessage.mutate({
+          channelId,
+          userId: user.id,
+          content: result.content,
+        })
+      }
+      setContent('')
+      return
+    }
 
     sendMessage.mutate({
       channelId,
@@ -517,6 +537,8 @@ export function ChatView({ channelId }: { channelId: string }) {
           onClose={() => setThreadMessage(null)}
         />
       )}
+
+      <CommandHelpDialog open={helpOpen} onOpenChange={setHelpOpen} />
     </div>
   )
 }
