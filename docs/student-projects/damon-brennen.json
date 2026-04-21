@@ -1,0 +1,11 @@
+{
+  "author": "Damon Brennen",
+  "github_username": "mrdamonb",
+  "card": {
+    "title": "PDX Deliciousness Finder",
+    "description": "A native iOS app for Portland food lovers to track, curate, and share restaurant picks — iOS share extension for zero-friction adds, MapKit map with Want-to-Go/Favorite/Been-There pins, and a trusted friend sync layer so your circle's recommendations flow into your list.",
+    "tech_stack": ["Swift", "SwiftUI", "MapKit", "Supabase", "Apple Sign In", "iOS Share Extension"],
+    "link": "https://github.com/mrdamonb/PDXDeliciousnessFinder",
+    "gallery_channel": "project-showcase"
+  }
+}
