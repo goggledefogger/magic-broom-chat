@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { Github } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuth } from '@/hooks/useAuth'
@@ -18,10 +19,12 @@ export function SignupPage() {
   const [loading, setLoading] = useState(false)
   const [githubLoading, setGithubLoading] = useState(false)
   const [confirmationSent, setConfirmationSent] = useState(false)
+  const [alreadyRegistered, setAlreadyRegistered] = useState(false)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError(null)
+    setAlreadyRegistered(false)
     setLoading(true)
 
     const { data, error: signUpError } = await signUp(email, password, displayName || undefined)
@@ -32,13 +35,47 @@ export function SignupPage() {
       return
     }
 
-    // If email confirmation is required, the session will be null
     if (data?.session) {
       navigate('/channels')
-    } else {
-      setConfirmationSent(true)
-      setLoading(false)
+      return
     }
+
+    // Supabase's anti-enumeration behavior: a duplicate-email signup returns 200
+    // with data.user populated but identities: []. No email is sent. Detecting
+    // this is the only way to tell the user their email is already registered —
+    // without it, the "check your email" screen misleads them into waiting forever.
+    if (data?.user && (data.user.identities?.length ?? 0) === 0) {
+      setAlreadyRegistered(true)
+      setLoading(false)
+      return
+    }
+
+    setConfirmationSent(true)
+    setLoading(false)
+  }
+
+  if (alreadyRegistered) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background p-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">This apprentice is already enrolled</CardTitle>
+            <CardDescription>
+              <span className="font-medium">{email}</span> is already registered in the workshop.
+              Sign in with your existing incantation, or reset it if you've forgotten.
+            </CardDescription>
+          </CardHeader>
+          <CardFooter className="flex flex-col gap-3">
+            <Link to="/login" className={cn(buttonVariants(), 'w-full')}>
+              Sign in
+            </Link>
+            <Link to="/forgot-password" className="text-sm text-muted-foreground hover:text-foreground">
+              Forgot your incantation?
+            </Link>
+          </CardFooter>
+        </Card>
+      </div>
+    )
   }
 
   const handleGitHub = async () => {

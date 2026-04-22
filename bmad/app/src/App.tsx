@@ -7,6 +7,7 @@ import { LoginPage } from '@/features/auth/LoginPage'
 import { SignupPage } from '@/features/auth/SignupPage'
 import { AuthCallbackPage } from '@/features/auth/AuthCallbackPage'
 import { ForgotPasswordPage } from '@/features/auth/ForgotPasswordPage'
+import { ResetPasswordPage } from '@/features/auth/ResetPasswordPage'
 import { ProfilePage } from '@/features/profile/ProfilePage'
 import { ChannelPage } from '@/features/channels/ChannelPage'
 import { GalleryCardDetail } from '@/features/gallery/GalleryCardDetail'
@@ -31,6 +32,7 @@ function App() {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/auth/callback" element={<AuthCallbackPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
 
             {/* Protected routes */}
             <Route
