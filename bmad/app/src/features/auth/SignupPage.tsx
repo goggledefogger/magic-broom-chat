@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router'
+import { Github } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -9,12 +10,13 @@ import { handleSupabaseError } from '@/lib/errors'
 
 export function SignupPage() {
   const navigate = useNavigate()
-  const { signUp } = useAuth()
+  const { signUp, signInWithGitHub } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [displayName, setDisplayName] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [githubLoading, setGithubLoading] = useState(false)
   const [confirmationSent, setConfirmationSent] = useState(false)
 
   const handleSubmit = async (e: FormEvent) => {
@@ -36,6 +38,16 @@ export function SignupPage() {
     } else {
       setConfirmationSent(true)
       setLoading(false)
+    }
+  }
+
+  const handleGitHub = async () => {
+    setError(null)
+    setGithubLoading(true)
+    const { error: oAuthError } = await signInWithGitHub()
+    if (oAuthError) {
+      setError(handleSupabaseError(oAuthError))
+      setGithubLoading(false)
     }
   }
 
@@ -108,9 +120,27 @@ export function SignupPage() {
                 minLength={6}
               />
             </div>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs">
+                <span className="bg-card px-2 text-muted-foreground">or</span>
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={handleGitHub}
+              disabled={githubLoading}
+            >
+              <Github className="size-4" />
+              {githubLoading ? 'Redirecting to GitHub...' : 'Continue with GitHub'}
+            </Button>
           </CardContent>
           <CardFooter className="flex flex-col gap-3">
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full" disabled={loading || githubLoading}>
               {loading ? 'Inscribing your name...' : 'Join the Workshop'}
             </Button>
             <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground">

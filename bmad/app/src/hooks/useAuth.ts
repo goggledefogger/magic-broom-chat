@@ -45,6 +45,16 @@ export function useAuth() {
     return { data, error }
   }, [])
 
+  const signInWithGitHub = useCallback(async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
+    return { data, error }
+  }, [])
+
   const signOut = useCallback(async () => {
     const { error } = await supabase.auth.signOut()
     return { error }
@@ -68,6 +78,7 @@ export function useAuth() {
     loading,
     signUp,
     signIn,
+    signInWithGitHub,
     signOut,
     resetPassword,
     updatePassword,
