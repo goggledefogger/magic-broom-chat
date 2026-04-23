@@ -57,7 +57,7 @@ export function parseMeetEmail(source: string, emailSentAt: Date): ParsedEntry[]
       const authorRaw = `${nameMatch[1]} (via Meet)`;
       current = {
         author_raw: authorRaw,
-        author_display: nameMatch[1].trim(),
+        author_display: nameMatch[1].trim().split('@')[0],
         timestamp_raw: tsMatch[1],
         contentLines: [],
       };
