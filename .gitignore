@@ -32,3 +32,4 @@ settings.local.json
 # QA test artifacts
 .gstack/qa-reports/
 .vercel
+scratch/
