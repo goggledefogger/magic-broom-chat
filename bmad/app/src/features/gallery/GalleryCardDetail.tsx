@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, useRef, useEffect, type FormEvent } from 'react'
 import { Link, useParams } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -14,9 +14,10 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useAuth } from '@/hooks/useAuth'
-import { useGalleryCard, useCardComments, useCreateCardComment, useUpdateGalleryCard } from '@/hooks/useGalleryCards'
+import { useGalleryCard, useCardComments, useCreateCardComment, useUpdateGalleryCard, useUploadCardImage } from '@/hooks/useGalleryCards'
 import { useCardReactions, useToggleReaction, summarizeReactions } from '@/hooks/useReactions'
 import { handleSupabaseError } from '@/lib/errors'
+import { Image as ImageIcon, X, Loader2 } from 'lucide-react'
 
 const EMOJI_OPTIONS = ['\u{1F44D}', '\u{2764}\u{FE0F}', '\u{1F389}', '\u{1F525}', '\u{1F440}', '\u{1F4A1}', '\u{2728}', '\u{1F64C}']
 
@@ -46,6 +47,7 @@ export function GalleryCardDetail() {
   const { data: comments } = useCardComments(cardId)
   const createComment = useCreateCardComment()
   const updateCard = useUpdateGalleryCard()
+  const uploadImage = useUploadCardImage()
   const { data: reactions } = useCardReactions(cardId)
   const toggleReaction = useToggleReaction()
 
@@ -58,6 +60,72 @@ export function GalleryCardDetail() {
   const [editLink, setEditLink] = useState('')
   const [editImageUrl, setEditImageUrl] = useState('')
   const [editError, setEditError] = useState<string | null>(null)
+
+  const [isUploading, setIsUploading] = useState(false)
+  const [isDragActive, setIsDragActive] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleFileUpload = async (file: File) => {
+    if (!user) return
+    if (!file.type.startsWith('image/')) {
+      setEditError('Please select an image file.')
+      return
+    }
+    
+    setIsUploading(true)
+    setEditError(null)
+    try {
+      const url = await uploadImage.mutateAsync({ file, userId: user.id })
+      setEditImageUrl(url)
+    } catch (err) {
+      setEditError(handleSupabaseError(err as { message: string }))
+    } finally {
+      setIsUploading(false)
+    }
+  }
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) handleFileUpload(file)
+    if (e.target) e.target.value = ''
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragActive(true)
+  }
+
+  const handleDragLeave = () => {
+    setIsDragActive(false)
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragActive(false)
+    const file = e.dataTransfer.files?.[0]
+    if (file) handleFileUpload(file)
+  }
+
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      if (!editOpen) return
+      
+      const items = e.clipboardData?.items
+      if (!items) return
+      
+      for (const item of items) {
+        if (item.type.indexOf('image') === 0) {
+          e.preventDefault()
+          const file = item.getAsFile()
+          if (file) handleFileUpload(file)
+          break
+        }
+      }
+    }
+    
+    document.addEventListener('paste', handlePaste)
+    return () => document.removeEventListener('paste', handlePaste)
+  }, [editOpen, user, uploadImage])
 
   const reactionSummary = reactions && user
     ? summarizeReactions(reactions, user.id)
@@ -318,14 +386,74 @@ export function GalleryCardDetail() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-image">Image URL (optional)</Label>
-              <Input
-                id="edit-image"
-                type="url"
-                placeholder="https://example.com/image.png"
-                value={editImageUrl}
-                onChange={(e) => setEditImageUrl(e.target.value)}
-              />
+              <Label>Image</Label>
+              <div 
+                className={`relative flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors ${
+                  isDragActive ? 'border-primary bg-primary/5' : 'border-border bg-muted/20'
+                } ${isUploading ? 'pointer-events-none opacity-50' : ''}`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                {isUploading && (
+                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-lg bg-background/50 backdrop-blur-sm">
+                    <Loader2 className="mb-2 h-8 w-8 animate-spin text-primary" />
+                    <p className="text-sm font-medium">Uploading image...</p>
+                  </div>
+                )}
+                
+                {editImageUrl ? (
+                  <div className="group relative flex max-h-48 w-full items-center justify-center overflow-hidden rounded-md bg-black/5">
+                    <img src={editImageUrl} alt="Preview" className="max-h-48 object-contain" />
+                    <Button 
+                      type="button"
+                      variant="destructive" 
+                      size="icon" 
+                      className="absolute right-2 top-2 h-8 w-8 rounded-full opacity-0 transition-opacity group-hover:opacity-100"
+                      onClick={() => setEditImageUrl('')}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center space-y-3 text-center">
+                    <div className="rounded-full bg-primary/10 p-3">
+                      <ImageIcon className="h-6 w-6 text-primary" />
+                    </div>
+                    <div className="text-sm">
+                      <p className="font-semibold text-foreground">Click to upload, or drag and drop</p>
+                      <p className="mt-1 text-muted-foreground">You can also paste an image from your clipboard</p>
+                    </div>
+                    <Button 
+                      type="button" 
+                      variant="secondary" 
+                      size="sm" 
+                      onClick={() => fileInputRef.current?.click()}
+                      className="mt-2"
+                    >
+                      Browse Files
+                    </Button>
+                  </div>
+                )}
+                
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  onChange={handleFileSelect} 
+                  className="hidden" 
+                  accept="image/*" 
+                />
+              </div>
+              <div className="mt-2">
+                <Input
+                  id="edit-image"
+                  type="url"
+                  placeholder="Or paste an image URL directly..."
+                  value={editImageUrl}
+                  onChange={(e) => setEditImageUrl(e.target.value)}
+                  className="h-8 text-xs"
+                />
+              </div>
             </div>
             <Button type="submit" className="w-full" disabled={!editTitle.trim() || updateCard.isPending}>
               {updateCard.isPending ? 'Saving...' : 'Save Changes'}
