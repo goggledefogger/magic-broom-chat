@@ -59,3 +59,4 @@ Educational course on AI-assisted software development. Each version builds the 
 - [2026-04-14 — Signup 500 from NULL token columns in auth.users](./bmad-011-signup-null-token-fix.md)
 - [2026-04-21 — Fantasia-themed slash commands](./bmad-012-slash-commands.md)
 - [2026-04-21 — Missing /reset-password page + misleading repeat-signup UX](./bmad-013-reset-password-and-repeat-signup.md)
+- [2026-04-22 — Gallery Edit Feature with RLS](./bmad-014-gallery-edit-feature.md)

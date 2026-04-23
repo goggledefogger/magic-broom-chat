@@ -150,6 +150,37 @@ export function useCreateGalleryCard() {
   })
 }
 
+export function useUpdateGalleryCard() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ cardId, title, description, link, imageUrl }: {
+      cardId: string
+      title: string
+      description?: string
+      link?: string
+      imageUrl?: string
+    }) => {
+      const { data, error } = await supabase
+        .from('gallery_cards')
+        .update({
+          title,
+          description,
+          link,
+          image_url: imageUrl,
+        })
+        .eq('id', cardId)
+        .select('*, profiles!gallery_cards_user_id_profiles_fkey(display_name, avatar_url)')
+        .single()
+      if (error) throw error
+      return toCard(data)
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['gallery-card', data.id] })
+      queryClient.invalidateQueries({ queryKey: ['gallery-cards', data.channelId] })
+    },
+  })
+}
+
 export function useCardComments(cardId: string | undefined) {
   return useQuery({
     queryKey: ['card-comments', cardId],

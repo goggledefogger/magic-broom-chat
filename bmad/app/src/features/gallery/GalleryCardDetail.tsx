@@ -5,9 +5,18 @@ import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { useAuth } from '@/hooks/useAuth'
-import { useGalleryCard, useCardComments, useCreateCardComment } from '@/hooks/useGalleryCards'
+import { useGalleryCard, useCardComments, useCreateCardComment, useUpdateGalleryCard } from '@/hooks/useGalleryCards'
 import { useCardReactions, useToggleReaction, summarizeReactions } from '@/hooks/useReactions'
+import { handleSupabaseError } from '@/lib/errors'
 
 const EMOJI_OPTIONS = ['\u{1F44D}', '\u{2764}\u{FE0F}', '\u{1F389}', '\u{1F525}', '\u{1F440}', '\u{1F4A1}', '\u{2728}', '\u{1F64C}']
 
@@ -36,11 +45,19 @@ export function GalleryCardDetail() {
   const { data: card, isLoading: cardLoading } = useGalleryCard(cardId)
   const { data: comments } = useCardComments(cardId)
   const createComment = useCreateCardComment()
+  const updateCard = useUpdateGalleryCard()
   const { data: reactions } = useCardReactions(cardId)
   const toggleReaction = useToggleReaction()
 
   const [commentText, setCommentText] = useState('')
   const [showPicker, setShowPicker] = useState(false)
+
+  const [editOpen, setEditOpen] = useState(false)
+  const [editTitle, setEditTitle] = useState('')
+  const [editDescription, setEditDescription] = useState('')
+  const [editLink, setEditLink] = useState('')
+  const [editImageUrl, setEditImageUrl] = useState('')
+  const [editError, setEditError] = useState<string | null>(null)
 
   const reactionSummary = reactions && user
     ? summarizeReactions(reactions, user.id)
@@ -56,6 +73,35 @@ export function GalleryCardDetail() {
       content: commentText.trim(),
     })
     setCommentText('')
+  }
+
+  const openEditModal = () => {
+    if (!card) return
+    setEditTitle(card.title)
+    setEditDescription(card.description || '')
+    setEditLink(card.link || '')
+    setEditImageUrl(card.imageUrl || '')
+    setEditError(null)
+    setEditOpen(true)
+  }
+
+  const handleEdit = async (e: FormEvent) => {
+    e.preventDefault()
+    if (!editTitle.trim() || !user || !card || !channelId) return
+    setEditError(null)
+
+    try {
+      await updateCard.mutateAsync({
+        cardId: card.id,
+        title: editTitle.trim(),
+        description: editDescription.trim() || undefined,
+        link: editLink.trim() || undefined,
+        imageUrl: editImageUrl.trim() || undefined,
+      })
+      setEditOpen(false)
+    } catch (err) {
+      setEditError(handleSupabaseError(err as { message: string }))
+    }
   }
 
   if (cardLoading) {
@@ -77,13 +123,20 @@ export function GalleryCardDetail() {
   return (
     <ScrollArea className="h-full">
       <div className="mx-auto max-w-2xl p-6">
-        {/* Back link */}
-        <Link
-          to={`/channels/${channelId}`}
-          className="mb-4 inline-block text-sm text-muted-foreground hover:text-foreground"
-        >
-          &larr; Back to gallery
-        </Link>
+        {/* Back link and actions */}
+        <div className="mb-4 flex items-center justify-between">
+          <Link
+            to={`/channels/${channelId}`}
+            className="inline-block text-sm text-muted-foreground hover:text-foreground"
+          >
+            &larr; Back to gallery
+          </Link>
+          {user?.id === card.userId && (
+            <Button variant="outline" size="sm" onClick={openEditModal}>
+              Edit Card
+            </Button>
+          )}
+        </div>
 
         {/* Card content */}
         {card.imageUrl && (
@@ -222,6 +275,64 @@ export function GalleryCardDetail() {
           </Button>
         </form>
       </div>
+
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Gallery Card</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleEdit} className="space-y-4">
+            {editError && (
+              <p className="rounded bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                {editError}
+              </p>
+            )}
+            <div className="space-y-2">
+              <Label htmlFor="edit-title">Title</Label>
+              <Input
+                id="edit-title"
+                placeholder="Card title"
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-desc">Description</Label>
+              <Textarea
+                id="edit-desc"
+                placeholder="Describe your creation..."
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                rows={3}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-link">Link (optional)</Label>
+              <Input
+                id="edit-link"
+                type="url"
+                placeholder="https://..."
+                value={editLink}
+                onChange={(e) => setEditLink(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-image">Image URL (optional)</Label>
+              <Input
+                id="edit-image"
+                type="url"
+                placeholder="https://example.com/image.png"
+                value={editImageUrl}
+                onChange={(e) => setEditImageUrl(e.target.value)}
+              />
+            </div>
+            <Button type="submit" className="w-full" disabled={!editTitle.trim() || updateCard.isPending}>
+              {updateCard.isPending ? 'Saving...' : 'Save Changes'}
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </ScrollArea>
   )
 }
