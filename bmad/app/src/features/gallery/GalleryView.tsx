@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, useEffect, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -15,6 +15,7 @@ import {
 import { useAuth } from '@/hooks/useAuth'
 import { useChannel } from '@/hooks/useChannels'
 import { useGalleryCards, useCreateGalleryCard } from '@/hooks/useGalleryCards'
+import { useMarkChannelRead } from '@/hooks/useUnreadCounts'
 import { handleSupabaseError } from '@/lib/errors'
 
 export function GalleryView({ channelId }: { channelId: string }) {
@@ -23,6 +24,14 @@ export function GalleryView({ channelId }: { channelId: string }) {
   const { data: channel } = useChannel(channelId)
   const { data: cards, isLoading } = useGalleryCards(channelId)
   const createCard = useCreateGalleryCard()
+  const markRead = useMarkChannelRead()
+
+  // Mark gallery as read as soon as it loads — no need to click individual cards
+  useEffect(() => {
+    if (channelId && user?.id) {
+      markRead(channelId, user.id)
+    }
+  }, [channelId, user?.id, markRead])
 
   const [open, setOpen] = useState(false)
   const [title, setTitle] = useState('')

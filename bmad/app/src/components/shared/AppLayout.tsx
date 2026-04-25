@@ -15,7 +15,7 @@ import { Sheet, SheetContent } from '@/components/ui/sheet'
 import { useAuth } from '@/hooks/useAuth'
 import { useChannels, useMyMemberships, useCreateChannel, useJoinChannel, type Channel } from '@/hooks/useChannels'
 import { useProfile } from '@/hooks/useProfile'
-import { useUnreadCounts, useGalleryCardCounts } from '@/hooks/useUnreadCounts'
+import { useUnreadCounts, useUnreadGalleryCardCounts } from '@/hooks/useUnreadCounts'
 import { useSearch, type SearchResult } from '@/hooks/useSearch'
 import { MenuIcon } from 'lucide-react'
 
@@ -203,7 +203,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     () => (channels ?? []).filter((c) => c.type === 'gallery').map((c) => c.id),
     [channels]
   )
-  const { data: galleryCardCounts } = useGalleryCardCounts(galleryChannelIds)
+  const { data: galleryCardCounts } = useUnreadGalleryCardCounts(galleryChannelIds, user?.id)
 
   const [showCreateChannel, setShowCreateChannel] = useState(false)
   const [newChannelName, setNewChannelName] = useState('')
