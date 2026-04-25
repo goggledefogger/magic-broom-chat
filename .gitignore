@@ -33,3 +33,4 @@ settings.local.json
 .gstack/qa-reports/
 .vercel
 scratch/
+.env*.local
