@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSocket } from '../context/SocketContext.jsx';
 
-export default function Sidebar({ channels, activeChannel, onSelectChannel, onChannelsChanged }) {
+export default function Sidebar({ channels, activeChannel, onSelectChannel, onChannelsChanged, unreadCounts = {} }) {
   const { presence } = useSocket();
   const [showCreate, setShowCreate] = useState(false);
   const [newName, setNewName] = useState('');
@@ -95,19 +95,32 @@ export default function Sidebar({ channels, activeChannel, onSelectChannel, onCh
             </form>
           )}
 
-          {myChannels.map((channel) => (
-            <button
-              key={channel.id}
-              onClick={() => onSelectChannel(channel)}
-              className={`w-full text-left px-3 py-1.5 rounded text-sm mb-0.5 transition-colors ${
-                activeChannel?.id === channel.id
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-300 hover:bg-gray-700'
-              }`}
-            >
-              # {channel.name}
-            </button>
-          ))}
+          {myChannels.map((channel) => {
+            const isActive = activeChannel?.id === channel.id;
+            const unread = isActive ? 0 : (unreadCounts[channel.id] ?? 0);
+            const hasUnread = unread > 0;
+
+            return (
+              <button
+                key={channel.id}
+                onClick={() => onSelectChannel(channel)}
+                className={`w-full text-left px-3 py-1.5 rounded text-sm mb-0.5 transition-colors flex items-center justify-between ${
+                  isActive
+                    ? 'bg-blue-600 text-white'
+                    : hasUnread
+                    ? 'text-white hover:bg-gray-700 font-semibold'
+                    : 'text-gray-300 hover:bg-gray-700'
+                }`}
+              >
+                <span className="truncate"># {channel.name}</span>
+                {hasUnread && (
+                  <span className="ml-2 shrink-0 min-w-[1.25rem] h-5 px-1.5 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center leading-none">
+                    {unread > 99 ? '99+' : unread}
+                  </span>
+                )}
+              </button>
+            );
+          })}
 
           {otherChannels.length > 0 && (
             <>
