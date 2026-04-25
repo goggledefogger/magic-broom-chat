@@ -43,6 +43,16 @@ export function initDb() {
 
     CREATE INDEX IF NOT EXISTS idx_messages_channel ON messages(channel_id, created_at);
     CREATE INDEX IF NOT EXISTS idx_messages_content ON messages(content);
+
+    CREATE TABLE IF NOT EXISTS channel_reads (
+      channel_id INTEGER REFERENCES channels(id) ON DELETE CASCADE,
+      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+      last_read_message_id INTEGER DEFAULT 0,
+      updated_at TEXT DEFAULT (datetime('now')),
+      PRIMARY KEY (channel_id, user_id)
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_channel_reads ON channel_reads(user_id, channel_id);
   `);
 
   // Seed a #general channel if none exist
