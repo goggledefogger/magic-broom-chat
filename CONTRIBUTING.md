@@ -274,7 +274,7 @@ Vercel gives you a unique URL like `your-fork-name.vercel.app`. Every push to yo
 For your deployed fork, you need your own Supabase project (free tier works):
 
 1. Go to [supabase.com/dashboard](https://supabase.com/dashboard) and create a new project
-2. Go to your project's SQL Editor and run each migration file from `bmad/app/supabase/migrations/` in order (00001 through 00009)
+2. Go to your project's SQL Editor and run each migration file from `bmad/app/supabase/migrations/` in numeric order (lowest number first)
 3. Or use the CLI:
    ```bash
    npx supabase link --project-ref YOUR_PROJECT_REF
