@@ -17,6 +17,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { useGalleryCard, useCardComments, useCreateCardComment, useUpdateGalleryCard, useUploadCardImage } from '@/hooks/useGalleryCards'
 import { useCardReactions, useToggleReaction, summarizeReactions } from '@/hooks/useReactions'
 import { handleSupabaseError } from '@/lib/errors'
+import { safeHref } from '@/lib/utils'
 import { Image as ImageIcon, X, Loader2 } from 'lucide-react'
 
 const EMOJI_OPTIONS = ['\u{1F44D}', '\u{2764}\u{FE0F}', '\u{1F389}', '\u{1F525}', '\u{1F440}', '\u{1F4A1}', '\u{2728}', '\u{1F64C}']
@@ -188,6 +189,8 @@ export function GalleryCardDetail() {
     )
   }
 
+  const linkHref = safeHref(card.link)
+
   return (
     <ScrollArea className="h-full">
       <div className="mx-auto max-w-2xl p-6">
@@ -228,9 +231,9 @@ export function GalleryCardDetail() {
           <p className="mb-4 whitespace-pre-wrap text-sm">{card.description}</p>
         )}
 
-        {card.link && (
+        {linkHref && (
           <a
-            href={card.link}
+            href={linkHref}
             target="_blank"
             rel="noopener noreferrer"
             className="mb-4 inline-block text-sm text-primary underline hover:text-primary/80"

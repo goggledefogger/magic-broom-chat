@@ -70,7 +70,7 @@ bmad/app/              # The app. All your code goes here.
   src/features/        # Auth, channels, gallery, profile
   src/hooks/           # Data fetching (useMessages, useChannels, etc.)
   src/components/ui/   # Reusable UI bits
-  supabase/migrations/ # Database schema (9 migrations)
+  supabase/migrations/ # Database schema (SQL migrations)
 devlog/                # How we got here (the whole experiment)
 CONTRIBUTING.md        # How to contribute
 ```
